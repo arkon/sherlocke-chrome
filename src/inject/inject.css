@@ -1,0 +1,179 @@
+@font-face {
+  font-family: 'Open Sans';
+  src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenSans-Regular.woff') format('truetype');
+}
+
+#wrap {
+  display: inline-block;
+  margin: 0 0 -58px;
+  vertical-align: top;
+}
+
+#wrap,
+#footer {
+  transition: width 0.2s ease-out;
+  width: calc(100% - 250px);
+}
+
+  body.show-sidebar #wrap,
+  body.show-sidebar #footer {
+    width: 100%;
+  }
+
+#sherlocke {
+  background: #fff;
+  border-left: 1px solid #777;
+  color: #333;
+  font-family: 'Open Sans', Arial, sans-serif;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  overflow-y: auto;
+  transition: right 0.2s ease-out;
+  width: 250px;
+}
+
+  body.show-sidebar #sherlocke {
+    right: -250px;
+  }
+
+  #sherlocke::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #sherlocke::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+
+  #sherlocke::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+  }
+
+  #sherlocke a {
+    color: #333;
+    text-decoration: none;
+  }
+
+  #sherlocke ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  #sherlocke-toggle {
+    background-color: #777;
+    border-radius: 3px 0 0 3px;
+    cursor: pointer;
+    display: block;
+    height: 50px;
+    width: 16px;
+    position: fixed;
+    top: 50%;
+    right: 250px;
+    margin-top: -25px;
+    transition: background-color 0.3s, right 0.2s ease-out;
+  }
+
+    #sherlocke-toggle::after {
+      color: #fff;
+      content: ">";
+      display: block;
+      position: relative;
+      top: 0;
+      left: 0;
+      line-height: 50px;
+      text-align: center;
+      height: 50px;
+      width: 16px;
+      transition: transform 0.3s;
+    }
+
+    #sherlocke-toggle:hover {
+      background-color: #444;
+    }
+
+    body.show-sidebar #sherlocke-toggle {
+      right: 0;
+    }
+
+      body.show-sidebar #sherlocke-toggle::after {
+        transform: rotate(180deg);
+      }
+
+  #sherlocke-header {
+    background: #f0f0f0 url('chrome-extension://__MSG_@@extension_id__/img/logo.png') no-repeat center center / contain;
+    border-bottom: 2px solid #000;
+    height: 55px;
+    text-indent: -3000em;
+  }
+
+  #sherlocke-filters {
+    border-bottom: 1px solid #777;
+    cursor: pointer;
+  }
+
+    #sherlocke-filter {
+      background: #fafafa url('chrome-extension://__MSG_@@extension_id__/img/logo.png') no-repeat right center / contain;
+      display: block;
+      font-size: 1.2em;
+      font-weight: bold;
+      padding: 0.65em 1em;
+      z-index: 1000;
+    }
+
+    ul#sherlocke-filters-list {
+      border-top: 1px solid #777;
+      height: 0;
+      position: absolute;
+      width: 100%;
+      z-index: -1;
+    }
+
+    .show-menu ul#sherlocke-filters-list {
+      z-index: 10;
+    }
+
+      ul#sherlocke-filters-list li {
+        background-color: #fff;
+        border-bottom: 1px solid #777;
+        list-style: none;
+        padding: 0.65em 1em;
+        transition: background-color 0.3s;
+      }
+
+      ul#sherlocke-filters-list li:hover {
+        background-color: #eee;
+      }
+
+  ul#sherlocke-suggestions {
+    background-color: #fff;
+    transition: background-color 0.3s, opacity 0.3s;
+    z-index: 10;
+  }
+
+    .show-menu ul#sherlocke-suggestions {
+      background-color: #777;
+      opacity: 0.5;
+    }
+
+    ul#sherlocke-suggestions li {
+      border-bottom: 1px solid #777;
+      list-style: none;
+      padding: 0;
+      transition: background-color 0.3s;
+    }
+
+      ul#sherlocke-suggestions li:hover {
+        background-color: #eee;
+      }
+
+      ul#sherlocke-suggestions li a {
+        display: block;
+        padding: 1em;
+      }
+
+    #sherlocke-suggestions h1 {
+      font-size: 1.5em;
+      margin: 0;
+    }
