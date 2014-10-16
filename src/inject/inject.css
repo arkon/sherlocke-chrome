@@ -3,6 +3,10 @@
   src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenSans-Regular.woff') format('truetype');
 }
 
+.hidden {
+  display: none;
+}
+
 #wrap {
   display: inline-block;
   margin: 0 0 -58px;
@@ -107,6 +111,17 @@
     height: 55px;
     text-indent: -3000em;
   }
+
+  #sherlocke-loading {
+    background-color: #fff;
+    height: 100%;
+    text-align: center;
+    padding: 2em 1em;
+  }
+
+    #sherlocke-loading-message {
+
+    }
 
   #sherlocke-filters {
     border-bottom: 1px solid #777;
