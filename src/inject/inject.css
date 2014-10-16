@@ -28,7 +28,7 @@
   background: #fff;
   border-left: 1px solid #777;
   color: #333;
-  font-family: 'Open Sans', Arial, sans-serif;
+  font: normal 12px/16px 'Open Sans', Arial, sans-serif;
   height: 100%;
   position: fixed;
   top: 0;
