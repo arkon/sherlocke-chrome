@@ -39,7 +39,7 @@ $('#wrap').after('<div id="sherlocke">\
 
 
 var i = 1;
-var crunch = setInterval(function() { $('#sherlocke-loading-message').html('Analyzed ' + i + ' documents'); i++; }, 10);
+var crunch = setInterval(function() { $('#sherlocke-loading-message').html('Analyzed ' + i + ' documents'); i+=10; }, 10);
 setTimeout(function() {
   clearInterval(crunch);
   $('#sherlocke-content').removeClass('hidden');

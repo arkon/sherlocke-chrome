@@ -119,6 +119,10 @@
     padding: 2em 1em;
   }
 
+    #sherlocke-loading h1 {
+      line-height: 1.25em;
+    }
+
     #sherlocke-loading-message {
 
     }
@@ -129,13 +133,25 @@
   }
 
     #sherlocke-filter {
-      background: #fafafa url('chrome-extension://__MSG_@@extension_id__/img/logo.png') no-repeat right center / contain;
+      /*background: #fafafa url('chrome-extension://__MSG_@@extension_id__/img/logo.png') no-repeat right center / contain;*/
       display: block;
       font-size: 1.2em;
       font-weight: bold;
       padding: 0.65em 1em;
       z-index: 1000;
     }
+
+      #sherlocke-filter::after {
+        color: #333;
+        content: "▾";
+        display: inline-block;
+        position: relative;
+        top: 0;
+        right: 0;
+        text-align: center;
+        height: 16px;
+        width: 16px;
+      }
 
     ul#sherlocke-filters-list {
       border-top: 1px solid #777;
