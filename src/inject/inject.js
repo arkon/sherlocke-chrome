@@ -20,9 +20,9 @@ $('#wrap').after('<div id="sherlocke">\
     <div id="sherlocke-header">Sherlocke</div>\
     <div id="sherlocke-content" class="hidden">\
       <div id="sherlocke-filters">\
-        <span id="sherlocke-filter">All suggestions</span>\
+        <span id="sherlocke-filter">All related documents</span>\
         <ul id="sherlocke-filters-list">\
-          <li>All suggestions</li>\
+          <li>All related documents</li>\
           <li>Legislation</li>\
           <li>Cases</li>\
           <li>Miscellaneous</li>\
@@ -44,7 +44,7 @@ setTimeout(function() {
   clearInterval(crunch);
   $('#sherlocke-content').removeClass('hidden');
   $('#sherlocke-loading').addClass('hidden');
-}, 2000);
+}, 200);
 
 
 // Handle sidebar toggle
@@ -55,8 +55,9 @@ $('#sherlocke-toggle').click(function() {
 
 // Handle showing/hiding of filters menu
 var $sherlocke = $('#sherlocke');
+var $filters   = $('#sherlocke-filters');
 
-$('#sherlocke-filters').click(function(e) {
+$filters.click(function(e) {
   $sherlocke.toggleClass('show-menu');
   e.stopPropagation();
 });
@@ -66,6 +67,25 @@ document.body.addEventListener('click', function() {
     $sherlocke.removeClass('show-menu');
   }
 }, false);
+
+var filtersOffset = $filters.offset().top;
+
+$(window).scroll(function() {
+  // var scroll = $filters.scrollTop();
+
+  // console.log(scroll + ', ' + filtersOffset);
+
+  // if (scroll >= filtersOffset)
+  //   $filters.addClass('fixed');
+  // else
+  //   $filters.removeClass('fixed');
+});
+
+
+// Handle the filters
+$('#sherlocke-filters li').click(function() {
+  $('#sherlocke-filter').html(this.innerHTML);
+});
 
 
 // Aggregate suggestions and show it in a list
