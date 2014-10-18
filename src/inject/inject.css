@@ -7,14 +7,14 @@
   display: none;
 }
 
-#wrap {
+.sherlocke #wrap {
   display: inline-block;
   margin: 0 0 -58px;
   vertical-align: top;
 }
 
-#wrap,
-#footer {
+.sherlocke #wrap,
+.sherlocke #footer {
   transition: width 0.2s ease-out;
   width: calc(100% - 250px);
 }
