@@ -13,8 +13,7 @@
   "background": {
     "scripts": [
       "src/bg/background.js"
-    ],
-    "persistent": false
+    ]
   },
   "options_page": "src/options/options.html",
   "browser_action": {
@@ -26,11 +25,13 @@
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
+    "storage",
     "contextMenus",
     "https://www.canlii.org/*"
   ],
   "web_accessible_resources": [
-    "/img/logo.png"
+    "/img/logo.png",
+    "/fonts/OpenSans-Regular.ttf"
   ],
   "omnibox": {
     "keyword": "sherlocke"
