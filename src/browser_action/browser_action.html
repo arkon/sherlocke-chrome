@@ -12,39 +12,87 @@
       margin: 0;
     }
 
+    ::selection {
+      background-color: #456373;
+      color: #fff;
+    }
+
     h1 {
       font-size: 2em;
+      font-weight: normal;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      font-weight: normal;
+      margin: 0;
     }
 
     #header {
       background: #456373 url('img/logo_white.png') no-repeat left center / contain;
       font-family: 'Open Sans', Arial, sans-serif;
-      height: 70px;
+      height: 60px;
       padding: 1em;
       width: 350px;
     }
 
-    #options {
-      border: 1px solid #fff;
-      border-radius: 50%;
-      text-indent: -3000em;
-      display: block;
-      height: 30px;
-      width: 30px;
-      position: absolute;
-      top: 20px;
-      right: 1em;
+      #options {
+        background: transparent url('img/gear.png') no-repeat center center;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        text-indent: -3000em;
+        display: block;
+        height: 30px;
+        width: 30px;
+        position: absolute;
+        top: 25px;
+        right: 1em;
+      }
+
+    #user {
+      border-bottom: 1px solid #456373;
+      color: #456373;
+      padding: 1em;
     }
 
-    #priority-clear {
-      float: right;
+      #username {
+        font-weight: bold;
+      }
+
+    #priority {
+      padding: 1em;
     }
+
+      #priority-clear {
+        background-color: #eee;
+        border: 1px solid #456373;
+        border-radius: 3px;
+        cursor: pointer;
+        font-family: 'Open Sans', Arial, sans-serif;
+        float: right;
+        margin-top: 0.25em;
+        padding: 0.15em 0.5em;
+      }
+
+    ul {
+      margin: 1em 0 0;
+      padding-left: 1.25em;
+    }
+
+      li {
+        /*list-style: none;*/
+      }
   </style>
 </head>
 <body>
   <header id="header">
     <a id="options" href="/src/options/options.html" target="_blank">Options</a>
   </header>
+
+  <section id="user">
+    <h2>Logged in as <span id="username">arkon</span></h2>
+  </section>
 
   <section id="priority">
     <button id="priority-clear">Clear</button>
