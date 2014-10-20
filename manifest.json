@@ -26,6 +26,7 @@
   },
   "permissions": [
     "storage",
+    "history",
     "contextMenus",
     "https://www.canlii.org/*"
   ],

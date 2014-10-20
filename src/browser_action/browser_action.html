@@ -17,6 +17,11 @@
       color: #fff;
     }
 
+    a {
+      color: #456373;
+      text-decoration: none;
+    }
+
     h1 {
       font-size: 2em;
       font-weight: normal;
@@ -64,6 +69,10 @@
       padding: 1em;
     }
 
+      #priority-history {
+        margin-bottom: 1.5em;
+      }
+
       #priority-clear {
         background-color: #eee;
         border: 1px solid #456373;
@@ -95,12 +104,17 @@
   </section>
 
   <section id="priority">
+    <h1>History</h1>
+    <ul id="priority-history"></ul>
+
     <button id="priority-clear">Clear</button>
-    <h1>Prioritized text</h1>
-    <ul>
+    <h1>Prioritized items</h1>
+    <ul id="priority-list">
       <li>Lorem</li>
       <li>Ipsum</li>
     </ul>
   </section>
+
+  <script src="browser_action.js"></script>
 </body>
 </html>
