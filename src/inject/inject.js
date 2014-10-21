@@ -11,6 +11,11 @@
 // - confidence level bars in suggestions list
 // - fixed filter bar?
 
+
+// Settings
+var optShowMenu;
+
+
 var isDocument = false;
 
 if (document.getElementById('documentHeader') != null) {
@@ -53,7 +58,10 @@ if (isDocument) {
 
   // Handle sidebar toggle
   $('#sherlocke-toggle').click(function() {
-    $('body').toggleClass('show-sidebar');
+    $('body').toggleClass('hide-sidebar');
+
+    // Sync setting
+    chrome.storage.sync.set({ 'opt-hide-sidebar': $('body').hasClass('hide-sidebar') });
   });
 
 
@@ -63,12 +71,19 @@ if (isDocument) {
 
   $filters.click(function(e) {
     $sherlocke.toggleClass('show-menu');
+
+    if (optShowMenu)
+      chrome.storage.sync.set({ 'opt-show-menu': false });
+
     e.stopPropagation();
   });
 
   document.body.addEventListener('click', function() {
     if ($sherlocke.hasClass('show-menu')) {
       $sherlocke.removeClass('show-menu');
+
+      if (optShowMenu)
+        chrome.storage.sync.set({ 'opt-show-menu': false });
     }
   }, false);
 
@@ -78,6 +93,26 @@ if (isDocument) {
     $('#sherlocke-filter').html(this.innerHTML);
   });
 
+
+  // Settings
+  chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function(items) {
+    if (items['opt-hide-sidebar']) {
+      $('body').toggleClass('hide-sidebar', items['opt-hide-sidebar']);
+    } else {
+      chrome.storage.sync.set({ 'opt-hide-sidebar': false });
+    }
+
+    if (items['opt-show-menu']) {
+      optShowMenu = items['opt-show-menu'];
+      $sherlocke.toggleClass('show-menu', optShowMenu);
+    } else {
+      optShowMenu = true;
+      chrome.storage.sync.set({ 'opt-show-menu': true });
+    }
+  });
+
+
+  // Fixed filters on scroll
   var filtersOffset = $filters.offset().top;
 
   $(window).scroll(function() {

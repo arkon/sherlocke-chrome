@@ -19,8 +19,8 @@
   width: calc(100% - 250px);
 }
 
-  body.show-sidebar #wrap,
-  body.show-sidebar #footer {
+  body.hide-sidebar #wrap,
+  body.hide-sidebar #footer {
     width: 100%;
   }
 
@@ -38,7 +38,7 @@
   width: 250px;
 }
 
-  body.show-sidebar #sherlocke {
+  body.hide-sidebar #sherlocke {
     right: -250px;
   }
 
@@ -97,11 +97,11 @@
       background-color: #444;
     }
 
-    body.show-sidebar #sherlocke-toggle {
+    body.hide-sidebar #sherlocke-toggle {
       right: 0;
     }
 
-      body.show-sidebar #sherlocke-toggle::after {
+      body.hide-sidebar #sherlocke-toggle::after {
         transform: rotate(180deg);
       }
 
@@ -213,7 +213,7 @@
 
       ul#sherlocke-suggestions li a {
         display: block;
-        padding: 1em;
+        padding: 2em 1em 1em;
       }
 
     #sherlocke-suggestions h1 {

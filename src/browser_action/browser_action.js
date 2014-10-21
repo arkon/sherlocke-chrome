@@ -33,10 +33,10 @@ function buildPopupDom(divName, data) {
 // Search history to find up to ten links that a user has typed in,
 // and show those links in a popup.
 function buildTypedUrlList(divName) {
-  // To look for history items visited in the last week,
+  // To look for history items visited in the last day,
   // subtract a week of microseconds from the current time.
-  var microsecondsPerWeek = 1000 * 60 * 60 * 24 * 7;
-  var oneWeekAgo = (new Date).getTime() - microsecondsPerWeek;
+  var microsecondsPerDay = 1000 * 60 * 60 * 24;
+  var oneDayAgo = (new Date).getTime() - microsecondsPerDay;
 
   // Track the number of callbacks from chrome.history.getVisits()
   // that we expect to get.  When it reaches zero, we have all results.
@@ -44,7 +44,7 @@ function buildTypedUrlList(divName) {
 
   chrome.history.search({
       'text': '',              // Return every history item....
-      'startTime': oneWeekAgo  // that was accessed less than one week ago.
+      'startTime': oneDayAgo   // that was accessed less than one day ago.
     },
     function(historyItems) {
       // For each history item, get details on all visits.
@@ -52,7 +52,7 @@ function buildTypedUrlList(divName) {
         var url = historyItems[i].url;
         var processVisitsWithUrl = function(url) {
           // We need the url of the visited item to process the visit.
-          // Use a closure to bind the  url into the callback's args.
+          // Use a closure to bind the url into the callback's args.
           return function(visitItems) {
             processVisits(url, visitItems);
           };
@@ -75,9 +75,9 @@ function buildTypedUrlList(divName) {
   var processVisits = function(url, visitItems) {
     for (var i = 0, ie = visitItems.length; i < ie; ++i) {
       // Ignore items unless the user typed the URL.
-      if (visitItems[i].transition != 'typed') {
-        continue;
-      }
+      // if (visitItems[i].transition != 'typed') {
+      //   continue;
+      // }
 
       if (!urlToCount[url]) {
         urlToCount[url] = 0;
