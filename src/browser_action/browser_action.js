@@ -1,14 +1,23 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 // Event listner for clicks on links in a browser action popup.
 // Open the link in a new tab of the current window.
 function onAnchorClick(event) {
-  chrome.tabs.create({
-    selected: true,
-    url: event.srcElement.href
-  });
+  // chrome.tabs.create({
+  //   selected: true,
+  //   url: event.srcElement.href
+  // });
+
+  var none = document.getElementById('priority-list-none');
+
+  if (none)
+    none.parentElement.removeChild(none);
+
+  var newItem = '<li>' + event.srcElement.href + '</li>';
+
+  var inList = document.getElementById('priority-list').innerHTML.indexOf(newItem) > -1;
+
+  if (!inList)
+    document.getElementById('priority-list').innerHTML += newItem;
+
   return false;
 }
 
