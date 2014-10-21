@@ -15,8 +15,11 @@ function onAnchorClick(event) {
 
   var inList = document.getElementById('priority-list').innerHTML.indexOf(newItem) > -1;
 
-  if (!inList)
+  if (!inList) {
     document.getElementById('priority-list').innerHTML += newItem;
+
+    chrome.storage.sync.set({ 'priority-list': document.getElementById('priority-list').innerHTML });
+  }
 
   return false;
 }
@@ -122,4 +125,10 @@ function buildTypedUrlList(divName) {
 
 document.addEventListener('DOMContentLoaded', function () {
   buildTypedUrlList("priority-history");
+
+  chrome.storage.sync.get(['priority-list'], function(items) {
+    if (items['priority-list']) {
+      document.getElementById('priority-list').innerHTML = items['priority-list'];
+    }
+  });
 });
