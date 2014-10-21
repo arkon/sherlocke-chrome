@@ -132,3 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+document.getElementById('priority-clear').addEventListener('click', function() {
+  document.getElementById('priority-list').innerHTML = '';
+}, false);
