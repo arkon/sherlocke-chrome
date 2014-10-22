@@ -1,25 +1,42 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <!-- build:css styles/vendor.css -->
-        <!-- bower:css -->
-        <!-- endbower -->
-        <!-- endbuild -->
-        <!-- build:css styles/main.css -->
-        <link href="styles/main.css" rel="stylesheet">
-        <!-- endbuild -->
-    </head>
-    <body>
-        <h1>'Allo, 'Allo!</h1>
+  <head>
+    <title>Sherlocke</title>
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css styles/popup.css -->
+    <link href="styles/popup.css" rel="stylesheet">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <header id="header">
+      <a id="options" href="options.html" target="_blank">Options</a>
+    </header>
 
-        <!-- build:js scripts/vendor.js -->
-        <!-- bower:js -->
-        <!-- endbower -->
-        <!-- endbuild -->
+    <section id="user">
+      <h2>Logged in as <span id="username">arkon</span></h2>
+    </section>
 
-        <!-- build:js scripts/popup.js -->
-        <script src="scripts/popup.js"></script>
-        <!-- endbuild -->
-    </body>
+    <section id="priority">
+      <h1>History</h1>
+      <ul id="priority-history"></ul>
+
+      <button id="priority-clear">Clear</button>
+      <h1>Prioritized items</h1>
+      <ul id="priority-list">
+        <li id="priority-list-none">No items prioritized yet</li>
+      </ul>
+    </section>
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/popup.js -->
+    <script src="scripts/popup.js"></script>
+    <!-- endbuild -->
+  </body>
 </html>

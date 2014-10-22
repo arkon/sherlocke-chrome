@@ -1,6 +1,9 @@
 {
   "name": "sherlocke",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "angular": "~1.3.0"
+  },
   "devDependencies": {}
 }
