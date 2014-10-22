@@ -277,7 +277,7 @@ module.exports = function (grunt) {
             '{,*/}*.html',
             'styles/{,*/}*.css',
             'styles/fonts/{,*/}*.*',
-            '_locales/{,*/}*.json',
+            '_locales/{,*/}*.json'
           ]
         }]
       }
@@ -286,7 +286,7 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up build process
     concurrent: {
       chrome: [
-        'compass:chrome',
+        'compass:chrome'
       ],
       dist: [
         'compass:dist',
@@ -294,7 +294,7 @@ module.exports = function (grunt) {
         'svgmin'
       ],
       test: [
-        'compass:test',
+        'compass:test'
       ]
     },
 
