@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sherlocke</title>
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css styles/popup.css -->
+    <link href="styles/popup.css" rel="stylesheet">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <header id="header">
+      <a id="options" href="options.html" target="_blank">Options</a>
+    </header>
+
+    <section id="user">
+      <h2>Logged in as <span id="username">arkon</span></h2>
+    </section>
+
+    <section id="priority">
+      <h1>History</h1>
+      <ul id="priority-history"></ul>
+
+      <button id="priority-clear">Clear</button>
+      <h1>Prioritized items</h1>
+      <ul id="priority-list">
+        <li id="priority-list-none">No items prioritized yet</li>
+      </ul>
+    </section>
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/popup.js -->
+    <script src="scripts/popup.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>
