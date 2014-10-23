@@ -21,6 +21,7 @@
   "smarttabs": true,
   "globals" : {
     "chrome": true,
-    "angular": true
+    "angular": true,
+    "_": true
   }
 }

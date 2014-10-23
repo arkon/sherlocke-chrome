@@ -56,7 +56,15 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
   QuestionService.postQuestion({
     questionText: questions[$window.location.href] || 'What is the Labour Code?'
   }).then(function success(data/*, status, headers, config*/) {
-    $scope.evidence = data.data.question.evidencelist;
+    var links = {
+      'PB_74093ED8A37A20A251ED45580874251': 'https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-l-2/latest/rsc-1985-c-l-2.html'
+    };
+
+    $scope.evidence = _.map(data.data.question.evidencelist, function (document) {
+      document.link = links[document.id] || '#';
+      return document;
+    });
+
   }, function failure(/*data, status, headers, config*/) {
 
   });
@@ -131,7 +139,7 @@ var SelectDirective = [function () {
             chrome.storage.sync.set({ 'opt-show-menu': false });
           }
         }
-      }, false);
+      });
 
 
       // Handle the filters
