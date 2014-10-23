@@ -18,15 +18,15 @@ function getElemId(elementId) {
 
 Element.prototype.addClass = function(className) {
   this.classList.add(className);
-}
+};
 
 Element.prototype.removeClass = function(className) {
   this.classList.remove(className);
-}
+};
 
 Element.prototype.hasClass = function(className) {
   return this.classList.contains(className);
-}
+};
 
 
 /* Declare AngularJS app and modules */
@@ -140,7 +140,7 @@ angular.element(document).ready(function () {
     var $suggestions = $('#sherlocke-suggestions');
 
     // Dummy list items
-    for (var i = 0; i < 20; i++) {
+    for (i = 0; i < 20; i++) {
       $suggestions.append('<li><a href="#"><h1>Wow</h1><p>' + i + '</p><p>CanLII</p></a></li>');
     }
   }
