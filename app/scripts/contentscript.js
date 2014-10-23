@@ -29,15 +29,37 @@ Element.prototype.hasClass = function(className) {
 };
 
 
-/* Declare AngularJS app and modules */
-angular.module('Sherlocke', [/*'BakerStreet'*/]);
+/* Declare AngularJS app */
+angular.module('Sherlocke', ['BakerStreet']);
 
+/*
+ * Controllers
+ */
+var MainController = ['$scope', function ($scope) {
+  $scope.test = 'test';
+}];
+angular
+    .module('Sherlocke')
+    .controller('MainController', MainController);
+
+var SidePanelController = ['$scope', 'QuestionService', function ($scope, QuestionService) {
+  QuestionService.postQuestion({
+    questionText: 'What is the Labour Code?'
+  }).then(function success(data/*, status, headers, config*/) {
+    $scope.sampleResponse = data;
+  }, function failure(/*data, status, headers, config*/) {
+
+  });
+}];
+angular
+    .module('Sherlocke')
+    .controller('SidePanelController', SidePanelController);
 
 /*
  * Directives
  */
 
-var SidePanelDirective = ['$sce', /*'BakerStreet', */function ($sce /*BakerStreet*/) {
+var SidePanelDirective = ['$sce', function ($sce) {
   return {
     restrict: 'A',
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html'))
@@ -53,7 +75,6 @@ angular
  * https://docs.angularjs.org/guide/bootstrap
  */
 angular.element(document).ready(function () {
-
   var optShowMenu;
   var isDocument = false;
 
@@ -63,8 +84,10 @@ angular.element(document).ready(function () {
   }
 
   if (isDocument) {
-    // Inject a side panel after CanLII's #wrap div
-    angular.element('#wrap').after('<div side-panel id="sherlocke"></div>');
+    // Inject the main controller onto CanLII's #wrap div and insert the side panel
+    angular.element('#wrap')
+        .attr('ng-controller', 'MainController as main')
+        .after('<div side-panel ng-controller="SidePanelController as side" id="sherlocke"></div>');
 
     angular.bootstrap(document, ['Sherlocke']);
 

@@ -37,9 +37,11 @@
         "styles/inject.css"
       ],
       "js": [
-        "bower_components/jquery/dist/jquery.min.js",
-        "bower_components/lodash/dist/lodash.min.js",
-        "bower_components/angular/angular.min.js",
+        "bower_components/jquery/dist/jquery.js",
+        "bower_components/lodash/dist/lodash.js",
+        "bower_components/angular/angular.js",
+        "bower_components/angular-restmod/dist/angular-restmod-bundle.js",
+        "scripts/angular-baker-street.js",
         "scripts/contentscript.js"
       ]
     }
@@ -55,6 +57,7 @@
     "contextMenus",
     "storage",
     "history",
-    "https://www.canlii.org/*"
+    "https://www.canlii.org/*",
+    "https://watson-wdc01.ihost.com/*"
   ]
 }
