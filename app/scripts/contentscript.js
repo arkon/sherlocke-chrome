@@ -51,7 +51,8 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
 
   var questions = {
     'https://www.canlii.org/en/qc/laws/stat/cqlr-c-c-27/latest/cqlr-c-c-27.html': 'What is the Labour Code?',
-    'https://www.canlii.org/en/sk/laws/stat/rss-1978-c-l-1/latest/rss-1978-c-l-1.html': 'What is the Labour Standards Act?'
+    'https://www.canlii.org/en/sk/laws/stat/rss-1978-c-l-1/latest/rss-1978-c-l-1.html': 'What is the Labour Standards Act?',
+    'https://www.canlii.org/en/on/laws/stat/so-2000-c-41/latest/so-2000-c-41.html': 'What does the "Employment Standards Act" say about minimum wage?'
 
   };
 
