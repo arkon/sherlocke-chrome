@@ -55,13 +55,13 @@ if (isDocument) {
       <div id="sherlocke-toggle"></div>\
     </div>');
 
-  // var i = 1;
-  // var crunch = setInterval(function() { $('#sherlocke-loading-message').html('Analyzed ' + i + ' documents'); i++; }, 10);
-  // setTimeout(function() {
-  //   clearInterval(crunch);
-  //   $('#sherlocke-content').removeClass('hidden');
-  //   $('#sherlocke-loading').addClass('hidden');
-  // }, 2000);
+  var i = 1;
+  var crunch = setInterval(function() { $('#sherlocke-loading-message').html('Analyzed ' + i + ' documents'); i++; }, 10);
+  setTimeout(function() {
+    clearInterval(crunch);
+    $('#sherlocke-content').removeClass('hidden');
+    $('#sherlocke-loading').addClass('hidden');
+  }, 2000);
 
 
   // Handle sidebar toggle
