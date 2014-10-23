@@ -7,28 +7,6 @@
   - fixed filter bar?
 */
 
-
-/*
- * Some shortcuts for long JavaScript calls
- */
-
-function getElemId(elementId) {
-  return document.getElementById(elementId);
-}
-
-Element.prototype.addClass = function(className) {
-  this.classList.add(className);
-};
-
-Element.prototype.removeClass = function(className) {
-  this.classList.remove(className);
-};
-
-Element.prototype.hasClass = function(className) {
-  return this.classList.contains(className);
-};
-
-
 /* Declare AngularJS app */
 angular.module('Sherlocke', ['BakerStreet']);
 
@@ -36,13 +14,41 @@ angular.module('Sherlocke', ['BakerStreet']);
  * Controllers
  */
 var MainController = ['$scope', function ($scope) {
-  $scope.test = 'test';
+  debugger;
+
+  // Settings
+  chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
+    if ('opt-hide-sidebar' in items) {
+      $scope.isSidebarHidden = items['opt-hide-sidebar'];
+    } else {
+      chrome.storage.sync.set({ 'opt-hide-sidebar': false });
+    }
+
+    if ('opt-show-menu' in items) {
+      $scope.showMenu = items['opt-show-menu'];
+    } else {
+      chrome.storage.sync.set({ 'opt-show-menu': true });
+    }
+  });
+
 }];
 angular
     .module('Sherlocke')
     .controller('MainController', MainController);
 
-var SidePanelController = ['$scope', 'QuestionService', function ($scope, QuestionService) {
+var SidePanelController = ['$scope', '$window', 'QuestionService', function ($scope, $window, QuestionService) {
+  // Dummy loading
+  $scope.isLoading = true;
+  var i = 1;
+  var crunch = $window.setInterval(function () {
+    $scope.progress = i++;
+  }, 10);
+  $window.setTimeout(function() {
+    $window.clearInterval(crunch);
+    $scope.isLoading = false;
+  }, 2000);
+
+  // Post sample question
   QuestionService.postQuestion({
     questionText: 'What is the Labour Code?'
   }).then(function success(data/*, status, headers, config*/) {
@@ -58,16 +64,82 @@ angular
 /*
  * Directives
  */
-
-var SidePanelDirective = ['$sce', function ($sce) {
+var MainDirective = [function () {
   return {
-    restrict: 'A',
-    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html'))
+    link: function (scope) {
+      angular.element('body').toggleClass('hide-sidebar', scope.isSidebarHidden);
+    }
   };
 }];
 angular
     .module('Sherlocke')
-    .directive('sidePanel', SidePanelDirective);
+    .directive('skMain', MainDirective);
+
+var SidePanelDirective = ['$sce', function ($sce) {
+  return {
+    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html')),
+    link: function (scope, element) {
+      debugger;
+      // Handle sidebar toggle
+      element.find('#sherlocke-toggle').click(function () {
+        var body = angular.element('body');
+        body.toggleClass('hide-sidebar');
+
+        debugger;
+        scope.isSidebarHidden = body.hasClass('hide-sidebar');
+
+        // Sync setting
+        chrome.storage.sync.set({
+          'opt-hide-sidebar': scope.isSidebarHidden
+        });
+      });
+    }
+  };
+}];
+angular
+    .module('Sherlocke')
+    .directive('skSidePanel', SidePanelDirective);
+
+var SelectDirective = [function () {
+  return {
+    link: function (scope, element) {
+      // Handle showing/hiding of filters menu
+      var $filters   = element;
+      var $sherlocke = element.closest('#sherlocke');
+
+      $sherlocke.toggleClass('show-menu', scope.showMenu);
+
+      $filters.click(function(e) {
+        $sherlocke.toggleClass('show-menu');
+
+        if (scope.showMenu) {
+          chrome.storage.sync.set({ 'opt-show-menu': false });
+        }
+
+        e.stopPropagation();
+      });
+
+      angular.element('body').click(function () {
+        if ($sherlocke.hasClass('show-menu')) {
+          $sherlocke.removeClass('show-menu');
+
+          if (scope.showMenu) {
+            chrome.storage.sync.set({ 'opt-show-menu': false });
+          }
+        }
+      }, false);
+
+
+      // Handle the filters
+      $('#sherlocke-filters li').click(function() {
+        $('#sherlocke-filter').html(this.innerHTML);
+      });
+    }
+  };
+}];
+angular
+    .module('Sherlocke')
+    .directive('skSelect', SelectDirective);
 
 
 /*
@@ -75,97 +147,19 @@ angular
  * https://docs.angularjs.org/guide/bootstrap
  */
 angular.element(document).ready(function () {
-  var optShowMenu;
-  var isDocument = false;
+  if (angular.element('#documentHeader') !== null) {
+    // Add class to body for styling
+    angular.element('body').addClass('sherlocke');
 
-  if (getElemId('documentHeader') !== null) {
-    isDocument = true;
-    document.body.addClass('sherlocke');
-  }
-
-  if (isDocument) {
-    // Inject the main controller onto CanLII's #wrap div and insert the side panel
+    // Inject the main directive & controller onto CanLII's #wrap div and insert the side panel
     angular.element('#wrap')
-        .attr('ng-controller', 'MainController as main')
-        .after('<div side-panel ng-controller="SidePanelController as side" id="sherlocke"></div>');
+        .attr('sk-main', true)
+        .attr('ng-controller', 'MainController')
+        .after('<div sk-side-panel ng-controller="SidePanelController" id="sherlocke"></div>');
+
+    debugger;
 
     angular.bootstrap(document, ['Sherlocke']);
-
-    // Dummy loading
-    var i = 1;
-    var crunch = setInterval(function() { $('#sherlocke-loading-message').html('Analyzed ' + i + ' documents'); i++; }, 10);
-    setTimeout(function() {
-      clearInterval(crunch);
-      $('#sherlocke-content').removeClass('hidden');
-      $('#sherlocke-loading').addClass('hidden');
-    }, 2000);
-
-
-    // Handle sidebar toggle
-    $('#sherlocke-toggle').click(function() {
-      $('body').toggleClass('hide-sidebar');
-
-      // Sync setting
-      chrome.storage.sync.set({ 'opt-hide-sidebar': $('body').hasClass('hide-sidebar') });
-    });
-
-
-    // Handle showing/hiding of filters menu
-    var $sherlocke = $('#sherlocke');
-    var $filters   = $('#sherlocke-filters');
-
-    $filters.click(function(e) {
-      $sherlocke.toggleClass('show-menu');
-
-      if (optShowMenu) {
-        chrome.storage.sync.set({ 'opt-show-menu': false });
-      }
-
-      e.stopPropagation();
-    });
-
-    document.body.addEventListener('click', function() {
-      if ($sherlocke.hasClass('show-menu')) {
-        $sherlocke.removeClass('show-menu');
-
-        if (optShowMenu) {
-          chrome.storage.sync.set({ 'opt-show-menu': false });
-        }
-      }
-    }, false);
-
-
-    // Handle the filters
-    $('#sherlocke-filters li').click(function() {
-      $('#sherlocke-filter').html(this.innerHTML);
-    });
-
-
-    // Settings
-    chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function(items) {
-      if (items['opt-hide-sidebar']) {
-        $('body').toggleClass('hide-sidebar', items['opt-hide-sidebar']);
-      } else {
-        chrome.storage.sync.set({ 'opt-hide-sidebar': false });
-      }
-
-      if (items['opt-show-menu']) {
-        optShowMenu = items['opt-show-menu'];
-        $sherlocke.toggleClass('show-menu', optShowMenu);
-      } else {
-        optShowMenu = true;
-        chrome.storage.sync.set({ 'opt-show-menu': true });
-      }
-    });
-
-
-    // Aggregate suggestions and show it in a list
-    var $suggestions = $('#sherlocke-suggestions');
-
-    // Dummy list items
-    for (i = 0; i < 20; i++) {
-      $suggestions.append('<li><a href="#"><h1>Wow</h1><p>' + i + '</p><p>CanLII</p></a></li>');
-    }
   }
 
 });

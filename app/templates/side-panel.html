@@ -1,6 +1,6 @@
 <div id="sherlocke-header">Sherlocke</div>
-<div id="sherlocke-content" class="hidden">
-  <div id="sherlocke-filters">
+<div id="sherlocke-content" ng-if="side.isLoading === false">
+  <div sk-select id="sherlocke-filters">
     <span id="sherlocke-filter">All related documents</span>
     <ul id="sherlocke-filters-list">
       <li>All related documents</li>
@@ -9,12 +9,15 @@
       <li>Miscellaneous</li>
     </ul>
   </div>
-  <ul id="sherlocke-suggestions"></ul>
+  <ul id="sherlocke-suggestions">
+    <li><a href="#"><h1>Wow</h1><p>1</p><p>CanLII</p></a></li>
+    <li><a href="#"><h1>Wow</h1><p>2</p><p>CanLII</p></a></li>
+  </ul>
 </div>
 
-<div id="sherlocke-loading">
+<div id="sherlocke-loading" ng-if="side.isLoading === true">
   <h1>Crunching data...</h1>
-  <p id="sherlocke-loading-message"></p>
+  <p id="sherlocke-loading-message">Analyzed {{ side.progress }} documents</p>
 </div>
 
 <div id="sherlocke-toggle"></div>
