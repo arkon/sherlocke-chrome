@@ -9,3 +9,6 @@ package
 
 # JetBrains IDEs
 .idea
+
+# Generated CSS
+*.css
