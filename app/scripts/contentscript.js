@@ -47,9 +47,14 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
 //    $scope.isLoading = false;
 //  }, 2000);
 
+  var questions = {
+    'https://www.canlii.org/en/qc/laws/stat/cqlr-c-c-27/latest/cqlr-c-c-27.html': 'What is the Labour Code?'
+    
+  };
+
   // Post sample question
   QuestionService.postQuestion({
-    questionText: 'What is the Labour Code?'
+    questionText: questions[$window.location.href] || 'What is the Labour Code?'
   }).then(function success(data/*, status, headers, config*/) {
     $scope.evidence = data.data.question.evidencelist;
   }, function failure(/*data, status, headers, config*/) {
