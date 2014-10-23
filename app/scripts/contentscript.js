@@ -2,8 +2,23 @@
 /* jshint multistr: true */
 
 
-/* Initialize AngularJS app and modules */
-angular.module('sherlocke', []);
+/* Declare AngularJS app and modules */
+angular.module('Sherlocke', [/*'BakerStreet'*/]);
+
+
+/*
+ * Directives
+ */
+
+var SidePanelDirective = ['$sce', /*'BakerStreet', */function ($sce /*BakerStreet*/) {
+  return {
+    restrict: 'A',
+    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html'))
+  };
+}];
+angular
+    .module('Sherlocke')
+    .directive('sidePanel', SidePanelDirective);
 
 
 /*
@@ -11,7 +26,10 @@ angular.module('sherlocke', []);
  * https://docs.angularjs.org/guide/bootstrap
  */
 angular.element(document).ready(function () {
-  angular.bootstrap(document, ['sherlocke']);
+  // Inject a side panel after CanLII's #wrap div
+  angular.element('#wrap').after('<div side-panel id="sherlocke"></div>');
+
+  angular.bootstrap(document, ['Sherlocke']);
 });
 
 
@@ -41,28 +59,6 @@ if (document.getElementById('documentHeader') !== null) {
 }
 
 if (isDocument) {
-
-  // Base Sherlocke sidebar
-  $('#wrap').after('<div id="sherlocke">\
-      <div id="sherlocke-header">Sherlocke</div>\
-      <div id="sherlocke-content" class="hidden">\
-        <div id="sherlocke-filters">\
-          <span id="sherlocke-filter">All related documents</span>\
-          <ul id="sherlocke-filters-list">\
-            <li>All related documents</li>\
-            <li>Legislation</li>\
-            <li>Cases</li>\
-            <li>Miscellaneous</li>\
-          </ul>\
-        </div>\
-        <ul id="sherlocke-suggestions"></ul>\
-      </div>\
-      <div id="sherlocke-loading">\
-        <h1>Crunching data...</h1>\
-        <p id="sherlocke-loading-message"></p>\
-      </div>\
-      <div id="sherlocke-toggle"></div>\
-    </div>');
 
   var i = 1;
   var crunch = setInterval(function() { $('#sherlocke-loading-message').html('Analyzed ' + i + ' documents'); i++; }, 10);
