@@ -1,5 +1,5 @@
 <div id="sherlocke-header">Sherlocke</div>
-<div id="sherlocke-content" ng-if="side.isLoading === false">
+<div id="sherlocke-content" ng-if="isLoading === false">
   <div sk-select id="sherlocke-filters">
     <span id="sherlocke-filter">All related documents</span>
     <ul id="sherlocke-filters-list">
@@ -10,14 +10,19 @@
     </ul>
   </div>
   <ul id="sherlocke-suggestions">
-    <li><a href="#"><h1>Wow</h1><p>1</p><p>CanLII</p></a></li>
-    <li><a href="#"><h1>Wow</h1><p>2</p><p>CanLII</p></a></li>
+    <li ng-repeat="document in evidence | limitTo:10">
+      <a href="#">
+        <h1>{{ document.title }}</h1>
+        <p>{{ document.value * 100 }}</p>
+        <p>CanLII</p>
+      </a>
+    </li>
   </ul>
 </div>
 
-<div id="sherlocke-loading" ng-if="side.isLoading === true">
+<div id="sherlocke-loading" ng-if="isLoading === true">
   <h1>Crunching data...</h1>
-  <p id="sherlocke-loading-message">Analyzed {{ side.progress }} documents</p>
+  <p id="sherlocke-loading-message">Analyzed {{ progress }} documents</p>
 </div>
 
 <div id="sherlocke-toggle"></div>

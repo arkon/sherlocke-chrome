@@ -36,21 +36,22 @@ angular
 
 var SidePanelController = ['$scope', '$window', 'QuestionService', function ($scope, $window, QuestionService) {
   // Dummy loading
-  $scope.isLoading = true;
-  var i = 1;
-  var crunch = $window.setInterval(function () {
-    $scope.progress = i++;
-  }, 10);
-  $window.setTimeout(function() {
-    $window.clearInterval(crunch);
-    $scope.isLoading = false;
-  }, 2000);
+  $scope.isLoading = false;
+//  $scope.isLoading = true;
+//  var i = 1;
+//  var crunch = $window.setInterval(function () {
+//    $scope.progress = i++;
+//  }, 10);
+//  $window.setTimeout(function() {
+//    $window.clearInterval(crunch);
+//    $scope.isLoading = false;
+//  }, 2000);
 
   // Post sample question
   QuestionService.postQuestion({
     questionText: 'What is the Labour Code?'
   }).then(function success(data/*, status, headers, config*/) {
-    $scope.sampleResponse = data;
+    $scope.evidence = data.data.question.evidencelist;
   }, function failure(/*data, status, headers, config*/) {
 
   });
