@@ -31,7 +31,7 @@
   "content_scripts": [
     {
       "matches": [
-        "*://*.canlii.org/en/*"
+        "*://www.canlii.org/en/*"
       ],
       "css": [
         "styles/inject.css"
@@ -57,7 +57,7 @@
     "contextMenus",
     "storage",
     "history",
-    "https://www.canlii.org/*",
+    "*://www.canlii.org/*",
     "https://watson-wdc01.ihost.com/*"
   ]
 }
