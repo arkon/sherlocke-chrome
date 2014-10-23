@@ -14,8 +14,6 @@ angular.module('Sherlocke', ['BakerStreet']);
  * Controllers
  */
 var MainController = ['$scope', function ($scope) {
-  debugger;
-
   // Settings
   chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
     if ('opt-hide-sidebar' in items) {
@@ -67,7 +65,9 @@ angular
 var MainDirective = [function () {
   return {
     link: function (scope) {
-      angular.element('body').toggleClass('hide-sidebar', scope.isSidebarHidden);
+      scope.$watch('isSidebarHidden', function (value) {
+        angular.element('body').toggleClass('hide-sidebar', value);
+      });
     }
   };
 }];
@@ -79,7 +79,6 @@ var SidePanelDirective = ['$sce', function ($sce) {
   return {
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html')),
     link: function (scope, element) {
-      debugger;
       // Handle sidebar toggle
       element.find('#sherlocke-toggle').click(function () {
         var body = angular.element('body');
@@ -156,8 +155,6 @@ angular.element(document).ready(function () {
         .attr('sk-main', true)
         .attr('ng-controller', 'MainController')
         .after('<div sk-side-panel ng-controller="SidePanelController" id="sherlocke"></div>');
-
-    debugger;
 
     angular.bootstrap(document, ['Sherlocke']);
   }
