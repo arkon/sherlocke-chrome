@@ -1,9 +1,18 @@
 'use strict';
-/* jshint jquery: true, multistr: true */
+/* jshint multistr: true */
 
-// Initialize angular
-// https://docs.angularjs.org/guide/bootstrap
 
+/* Initialize AngularJS app and modules */
+angular.module('sherlocke', []);
+
+
+/*
+ * Bootstrap AngularJS
+ * https://docs.angularjs.org/guide/bootstrap
+ */
+angular.element(document).ready(function () {
+  angular.bootstrap(document, ['sherlocke']);
+});
 
 
 // chrome.extension.sendMessage({}, function(response) {
