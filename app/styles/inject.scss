@@ -7,21 +7,25 @@
   display: none;
 }
 
-.sherlocke #wrap {
-  display: inline-block;
-  margin: 0 0 -58px;
-  vertical-align: top;
+.sherlocke {
+  #wrap {
+    display: inline-block;
+    margin: 0 0 -58px;
+    vertical-align: top;
+  }
+
+  #wrap,
+  #footer {
+    transition: width 0.2s ease-out;
+    width: calc(100% - 250px);
+  }
 }
 
-.sherlocke #wrap,
-.sherlocke #footer {
-  transition: width 0.2s ease-out;
-  width: calc(100% - 250px);
-}
-
-  body.hide-sidebar #wrap,
-  body.hide-sidebar #footer {
-    width: 100%;
+  body.hide-sidebar {
+    #wrap,
+    #footer {
+      width: 100%;
+    }
   }
 
 #sherlocke {
@@ -36,33 +40,39 @@
   overflow-y: auto;
   transition: right 0.2s ease-out;
   width: 250px;
-}
 
-  body.hide-sidebar #sherlocke {
-    right: -250px;
-  }
 
-  #sherlocke::-webkit-scrollbar {
+  // Scrollbar
+
+  &::-webkit-scrollbar {
     width: 6px;
   }
 
-  #sherlocke::-webkit-scrollbar-track {
+  &::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   }
 
-  #sherlocke::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb {
     background-color: #ccc;
     border-radius: 3px;
   }
 
-  #sherlocke a {
+
+  // Core elements
+
+  a {
     color: #333;
     text-decoration: none;
   }
 
-  #sherlocke ul {
+  ul {
     margin: 0;
     padding: 0;
+  }
+}
+
+  body.hide-sidebar #sherlocke {
+    right: -250px;
   }
 
   #sherlocke-toggle {
@@ -77,9 +87,8 @@
     right: 250px;
     margin-top: -25px;
     transition: background-color 0.3s, right 0.2s ease-out;
-  }
 
-    #sherlocke-toggle::after {
+    &::after {
       color: #fff;
       content: ">";
       display: block;
@@ -93,17 +102,19 @@
       transition: transform 0.3s;
     }
 
-    #sherlocke-toggle:hover {
+    &:hover {
       background-color: #444;
     }
+  }
+
 
     body.hide-sidebar #sherlocke-toggle {
       right: 0;
-    }
 
-      body.hide-sidebar #sherlocke-toggle::after {
+      &::after {
         transform: rotate(180deg);
       }
+    }
 
   #sherlocke-header {
     background: #f0f0f0 url('chrome-extension://__MSG_@@extension_id__/images/logo.png') no-repeat center center / contain;
@@ -116,11 +127,11 @@
     background-color: #fff;
     text-align: center;
     padding: 0 1em;
-  }
 
-    #sherlocke-loading h1 {
+    h1 {
       line-height: 1.25em;
     }
+  }
 
     #sherlocke-loading-message {
       font-style: italic;
@@ -129,14 +140,14 @@
   #sherlocke-filters {
     border-bottom: 1px solid #777;
     cursor: pointer;
-  }
 
-    #sherlocke-filters.fixed {
+    &.fixed {
       position: fixed;
       top: 0;
       right: 0;
       width: 250px;
     }
+  }
 
     #sherlocke-filter {
       background-color: #fafafa;
@@ -145,9 +156,8 @@
       font-weight: bold;
       padding: 0.65em 1em;
       z-index: 1000;
-    }
 
-      #sherlocke-filter::after {
+      &::after {
         color: #333;
         content: "▾";
         display: inline-block;
@@ -160,39 +170,57 @@
         height: 18px;
         width: 16px;
       }
+    }
 
       .show-menu #sherlocke-filter::after {
         transform: rotate(180deg);
       }
 
-    ul#sherlocke-filters-list {
-      border-top: 1px solid #777;
-      height: 0;
-      position: absolute;
-      width: 100%;
-      z-index: -1;
-    }
+      ul#sherlocke-filters-list {
+        border-top: 1px solid #777;
+        height: 0;
+        position: absolute;
+        width: 100%;
+        z-index: -1;
 
-    .show-menu ul#sherlocke-filters-list {
-      z-index: 10;
-    }
+        li {
+          background-color: #fff;
+          border-bottom: 1px solid #777;
+          list-style: none;
+          padding: 0.65em 1em;
+          transition: background-color 0.3s;
 
-      ul#sherlocke-filters-list li {
-        background-color: #fff;
-        border-bottom: 1px solid #777;
-        list-style: none;
-        padding: 0.65em 1em;
-        transition: background-color 0.3s;
+          &:hover {
+            background-color: #eee;
+          }
+        }
       }
 
-      ul#sherlocke-filters-list li:hover {
-        background-color: #eee;
+      .show-menu ul#sherlocke-filters-list {
+        z-index: 10;
       }
 
   ul#sherlocke-suggestions {
     background-color: #fff;
     transition: background-color 0.3s, opacity 0.3s;
     z-index: 10;
+
+    li {
+      border-top: 1px solid #777;
+      list-style: none;
+      padding: 0;
+      transition: background-color 0.3s;
+
+      a {
+        display: block;
+        padding: 2em 1em 1em;
+      }
+    }
+
+    h1 {
+      font-size: 1.5em;
+      margin: 0;
+    }
   }
 
     .show-menu ul#sherlocke-suggestions {
@@ -200,23 +228,6 @@
       opacity: 0.5;
     }
 
-    ul#sherlocke-suggestions li {
-      border-top: 1px solid #777;
-      list-style: none;
-      padding: 0;
-      transition: background-color 0.3s;
-    }
-
       #sherlocke:not(.show-menu) ul#sherlocke-suggestions li:hover {
         background-color: #eee;
       }
-
-      ul#sherlocke-suggestions li a {
-        display: block;
-        padding: 2em 1em 1em;
-      }
-
-    #sherlocke-suggestions h1 {
-      font-size: 1.5em;
-      margin: 0;
-    }
