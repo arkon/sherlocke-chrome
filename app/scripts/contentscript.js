@@ -49,7 +49,7 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
 
   var questions = {
     'https://www.canlii.org/en/qc/laws/stat/cqlr-c-c-27/latest/cqlr-c-c-27.html': 'What is the Labour Code?'
-    
+
   };
 
   // Post sample question
@@ -90,7 +90,6 @@ var SidePanelDirective = ['$sce', function ($sce) {
         var body = angular.element('body');
         body.toggleClass('hide-sidebar');
 
-        debugger;
         scope.isSidebarHidden = body.hasClass('hide-sidebar');
 
         // Sync setting
