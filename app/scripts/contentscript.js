@@ -52,8 +52,8 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
   var questions = {
     'https://www.canlii.org/en/qc/laws/stat/cqlr-c-c-27/latest/cqlr-c-c-27.html': 'What is the Labour Code?',
     'https://www.canlii.org/en/sk/laws/stat/rss-1978-c-l-1/latest/rss-1978-c-l-1.html': 'What is the Labour Standards Act?',
-    'https://www.canlii.org/en/on/laws/stat/so-2000-c-41/latest/so-2000-c-41.html': 'What does the "Employment Standards Act" say about minimum wage?'
-
+    'https://www.canlii.org/en/on/laws/stat/so-2000-c-41/latest/so-2000-c-41.html': 'What does the "Employment Standards Act" say about minimum wage?',
+    'https://www.canlii.org/en/on/onlrb/doc/2000/2000canlii7807/2000canlii7807.html?searchUrlHash=AAAAAQAMbWluaW11bSB3YWdlAAAAAAE': 'What is minimum wage?'
   };
 
   // Post sample question
@@ -164,7 +164,8 @@ angular
  * https://docs.angularjs.org/guide/bootstrap
  */
 angular.element(document).ready(function () {
-  if (angular.element('#documentHeader') !== null) {
+  var documentHeader = angular.element('#documentHeader');
+  if (documentHeader && documentHeader.length) {
     // Add class to body for styling
     angular.element('body').addClass('sherlocke');
 
