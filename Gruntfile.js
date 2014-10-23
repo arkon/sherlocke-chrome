@@ -302,7 +302,7 @@ module.exports = function (grunt) {
     chromeManifest: {
       dist: {
         options: {
-          buildnumber: true,
+          buildnumber: false,  // disable auto-increment
           background: {
             target: 'scripts/background.js',
             exclude: [
