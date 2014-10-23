@@ -1,4 +1,17 @@
+@import 'core';
+
 $padding: 20px;
+
 body {
   padding: $padding;
 }
+
+#user {
+  border-bottom: 1px solid #456373;
+  color: #456373;
+  padding: 1em;
+}
+
+  #username {
+    font-weight: bold;
+  }

@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'Open Sans';
+  src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+::selection {
+  background-color: #456373;
+  color: #fff;
+}
+
+a {
+  color: #456373;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: normal;
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.5em;
+  font-weight: normal;
+  margin: 0;
+}
