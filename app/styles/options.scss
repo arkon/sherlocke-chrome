@@ -1,15 +1,28 @@
 @import 'core';
 
-$padding: 20px;
+$side-padding: 2em;
 
 body {
-  padding: $padding;
+  font-family: 'Open Sans', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #456373 url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png') no-repeat 2em center / contain;
+  color: #fff;
+  padding: $side-padding 1em $side-padding 17em;
+
+  h1 {
+    border-left: 1px solid #fff;
+    padding-left: 1em;
+  }
 }
 
 #user {
   border-bottom: 1px solid #456373;
   color: #456373;
-  padding: 1em;
+  padding: 1em $side-padding;
 }
 
   #username {
