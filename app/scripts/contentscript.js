@@ -20,12 +20,14 @@ var MainController = ['$scope', function ($scope) {
       $scope.isSidebarHidden = items['opt-hide-sidebar'];
     } else {
       chrome.storage.sync.set({ 'opt-hide-sidebar': false });
+      $scope.isSidebarHidden = false;
     }
 
     if ('opt-show-menu' in items) {
       $scope.showMenu = items['opt-show-menu'];
     } else {
       chrome.storage.sync.set({ 'opt-show-menu': true });
+      $scope.showMenu = true;
     }
   });
 
@@ -48,7 +50,8 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
 //  }, 2000);
 
   var questions = {
-    'https://www.canlii.org/en/qc/laws/stat/cqlr-c-c-27/latest/cqlr-c-c-27.html': 'What is the Labour Code?'
+    'https://www.canlii.org/en/qc/laws/stat/cqlr-c-c-27/latest/cqlr-c-c-27.html': 'What is the Labour Code?',
+    'https://www.canlii.org/en/sk/laws/stat/rss-1978-c-l-1/latest/rss-1978-c-l-1.html': 'What is the Labour Standards Act?'
 
   };
 
@@ -57,7 +60,8 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
     questionText: questions[$window.location.href] || 'What is the Labour Code?'
   }).then(function success(data/*, status, headers, config*/) {
     var links = {
-      'PB_74093ED8A37A20A251ED45580874251': 'https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-l-2/latest/rsc-1985-c-l-2.html'
+      'PB_74093ED8A37A20A251ED45580874251': 'https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-l-2/latest/rsc-1985-c-l-2.html',
+      'T_E52D6070706DC1A240C9266A18A26365': 'https://www.canlii.org/en/nu/laws/stat/rsnwt-nu-1988-c-l-1/latest/rsnwt-nu-1988-c-l-1.html'
     };
 
     $scope.evidence = _.map(data.data.question.evidencelist, function (document) {
