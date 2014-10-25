@@ -39,15 +39,15 @@ angular
 var SidePanelController = ['$scope', '$window', 'QuestionService', function ($scope, $window, QuestionService) {
   // Dummy loading
   $scope.isLoading = false;
-//  $scope.isLoading = true;
-//  var i = 1;
-//  var crunch = $window.setInterval(function () {
-//    $scope.progress = i++;
-//  }, 10);
-//  $window.setTimeout(function() {
-//    $window.clearInterval(crunch);
-//    $scope.isLoading = false;
-//  }, 2000);
+  // $scope.isLoading = true;
+  // var i = 1;
+  // var crunch = $window.setInterval(function () {
+  //   $scope.progress = i++;
+  // }, 10);
+  // $window.setTimeout(function() {
+  //   $window.clearInterval(crunch);
+  //   $scope.isLoading = false;
+  // }, 2000);
 
   var questions = {
     'https://www.canlii.org/en/qc/laws/stat/cqlr-c-c-27/latest/cqlr-c-c-27.html': 'What is the Labour Code?',
@@ -70,6 +70,7 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
       return document;
     });
 
+    $scope.isLoading = false;
   }, function failure(/*data, status, headers, config*/) {
 
   });

@@ -1,5 +1,20 @@
 'use strict';
 
+// Handles tabs
+$(function() {
+  $('ul.tabs li:first').addClass('active');
+  $('.block article').hide();
+  $('.block article:first').show();
+
+  $('ul.tabs li').on('click', function(){
+    $('ul.tabs li').removeClass('active');
+    $(this).addClass('active');
+    $('.block article').hide();
+    $($(this).find('a').attr('href')).show();
+    return false;
+  });
+});
+
 // // Event listner for clicks on links in a browser action popup.
 // // Open the link in a new tab of the current window.
 // function onAnchorClick(event) {

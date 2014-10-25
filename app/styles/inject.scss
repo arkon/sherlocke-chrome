@@ -16,7 +16,7 @@
 
   #wrap,
   #footer {
-    transition: width 0.2s ease-out;
+    transition: width 0.2s;
     width: calc(100% - 250px);
   }
 }
@@ -38,9 +38,9 @@
   top: 0;
   right: 0;
   overflow-y: auto;
-  transition: right 0.2s ease-out;
+  transform: translate(0, 0);
+  transition: transform 0.2s;
   width: 250px;
-
 
   // Scrollbar
 
@@ -57,7 +57,6 @@
     border-radius: 3px;
   }
 
-
   // Core elements
 
   a {
@@ -72,7 +71,7 @@
 }
 
   body.hide-sidebar #sherlocke {
-    right: -250px;
+    transform: translate(250px, 0);
   }
 
   #sherlocke-toggle {
@@ -84,9 +83,11 @@
     width: 16px;
     position: fixed;
     top: 50%;
-    right: 250px;
+    right: 245px;
     margin-top: -25px;
-    transition: background-color 0.3s, right 0.2s ease-out;
+    transition: background-color 0.3s;
+    z-index: 100;
+    // -webkit-backface-visibility: hidden;
 
     &::after {
       color: #fff;
@@ -107,13 +108,8 @@
     }
   }
 
-
-    body.hide-sidebar #sherlocke-toggle {
-      right: 0;
-
-      &::after {
-        transform: rotate(180deg);
-      }
+    body.hide-sidebar #sherlocke-toggle::after {
+      transform: rotate(180deg);
     }
 
   #sherlocke-header {
@@ -121,6 +117,11 @@
     border-bottom: 2px solid #000;
     height: 55px;
     text-indent: -3000em;
+  }
+
+  #sherlocke-content {
+    position: absolute;
+    z-index: 10000;
   }
 
   #sherlocke-loading {
@@ -140,12 +141,12 @@
   #sherlocke-filters {
     border-bottom: 1px solid #777;
     cursor: pointer;
+    width: auto;
 
     &.fixed {
       position: fixed;
       top: 0;
       right: 0;
-      width: 250px;
     }
   }
 
@@ -162,7 +163,7 @@
         content: "▾";
         display: inline-block;
         position: absolute;
-        top: 65px;
+        top: 8px;
         right: 10px;
         text-align: center;
         transition: transform 0.3s;
@@ -225,7 +226,7 @@
   }
 
     .show-menu ul#sherlocke-suggestions {
-      background-color: #777;
+      background-color: #888;
       opacity: 0.5;
     }
 

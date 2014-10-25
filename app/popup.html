@@ -15,15 +15,33 @@
       <a id="options" href="options.html" target="_blank">Options</a>
     </header>
 
-    <section id="priority">
-      <h1>History</h1>
-      <ul id="priority-history"></ul>
-
+    <section id="session">
       <button id="priority-clear">Clear</button>
-      <h1>Prioritized items</h1>
-      <ul id="priority-list">
-        <li id="priority-list-none">No items prioritized yet</li>
+      <h1>Current session</h1>
+    </section>
+
+    <section class="priority">
+      <ul class="tabs">
+        <li><a href="#tab1">Pinned documents</a></li>
+        <li><a href="#tab2">Prioritized items</a></li>
+        <li><a href="#tab3">History</a></li>
       </ul>
+      <div class="clr"></div>
+      <section class="block">
+        <article id="tab1">
+          <p>You can view your pinned documents here.</p>
+        </article>
+
+        <article id="tab2">
+          <ul id="priority-list">
+            <li id="priority-list-none">No items prioritized yet</li>
+          </ul>
+        </article>
+
+        <article id="tab3">
+          <ul id="priority-history"></ul>
+        </article>
+      </section>
     </section>
 
     <!-- build:js scripts/vendor.js -->
