@@ -12,3 +12,6 @@ package
 
 # Generated CSS
 *.css
+
+# OS things
+Thumbs.db
