@@ -14,7 +14,8 @@ ul {
   }
 
 #header {
-  background: #456373 url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png') no-repeat 0.5em center / contain;
+  background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png') no-repeat 1em center;
+  background-size: auto 50px;
   font-family: 'Open Sans', Arial, sans-serif;
   height: 60px;
   padding: 1em;
@@ -29,23 +30,64 @@ ul {
   display: block;
   height: 30px;
   width: 30px;
+  transition: background-color 0.3s, background-image 0.3s;
   position: absolute;
   top: 25px;
   right: 1em;
+
+  &:hover {
+    background-color: #fff;
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear_hover.png');
+  }
+}
+
+#session {
+  padding: 1em;
 }
 
 #priority {
   overflow-y: auto;
   padding: 1em;
-
-  li {
-    max-width: 325px;
-    word-break: break-all;
-  }
 }
 
+  ul.tabs {
+    list-style-type: none;
+    margin: 0;
+    padding: 1em;
+
+    li {
+      border: $brand-color solid 1px;
+      border-bottom: none;
+      float: left;
+      margin: 0 0.25em 0 0;
+      padding: 0.25em 0.75em;
+
+      a {
+        color: $brand-color;
+        text-decoration: none;
+      }
+
+      &.active {
+        background: $brand-color;
+
+        a {
+          color: white;
+        }
+      }
+    }
+  }
+
+  .clr {
+    clear: both;
+  }
+
+  article {
+    border-top: gray solid 1px;
+    padding: 1em;
+  }
+
   #priority-history {
-    margin-bottom: 1.5em;
+    // margin-bottom: 1.5em;
   }
 
   #priority-clear {
@@ -59,39 +101,7 @@ ul {
     padding: 0.15em 0.5em;
   }
 
-ul.tabs {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-
-  li {
-    border: gray solid 1px;
-    border-bottom: none;
-    float: left;
-    margin: 0 0.25em 0 0;
-    padding: 0.25em 0.5em;
-
-    a {
-      color: gray;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    &.active {
-      background: gray;
-
-      a {
-        color: white;
-      }
-    }
+  #priority-list li {
+    max-width: 325px;
+    word-break: break-all;
   }
-}
-
-.clr {
-  clear: both;
-}
-
-article {
-  border-top: gray solid 1px;
-  padding: 0 1em;
-}

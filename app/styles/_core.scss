@@ -1,3 +1,5 @@
+$brand-color: #456373;
+
 @font-face {
   font-family: 'Open Sans';
   src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenSans-Regular.ttf') format('truetype');
@@ -27,12 +29,12 @@
 }
 
 ::selection {
-  background-color: #456373;
+  background-color: $brand-color;
   color: #fff;
 }
 
 a {
-  color: #456373;
+  color: $brand-color;
   text-decoration: none;
 }
 
