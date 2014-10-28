@@ -1,4 +1,6 @@
-$brand-color: #456373;
+$brand-color: #4179a1;
+$font-stack: 'Open Sans', Arial, sans-serif;
+
 
 @font-face {
   font-family: 'Open Sans';
@@ -27,6 +29,7 @@ $brand-color: #456373;
   font-weight: 600;
   font-style: italic;
 }
+
 
 ::selection {
   background-color: $brand-color;

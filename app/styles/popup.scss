@@ -1,6 +1,7 @@
 @import 'core';
 
 body {
+  background-color: #dedede;
   margin: 0;
 }
 
@@ -16,7 +17,7 @@ ul {
 #header {
   background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png') no-repeat 1em center;
   background-size: auto 50px;
-  font-family: 'Open Sans', Arial, sans-serif;
+  font-family: $font-stack;
   height: 60px;
   padding: 1em;
   width: 350px;
@@ -53,22 +54,28 @@ ul {
   ul.tabs {
     list-style-type: none;
     margin: 0;
-    padding: 1em;
+    padding: 0 1em;
 
     li {
+      background-color: #fff;
       border: $brand-color solid 1px;
       border-bottom: none;
       float: left;
+      font-size: 1.1em;
       margin: 0 0.25em 0 0;
-      padding: 0.25em 0.75em;
+      transition: background-color 0.2s;
 
       a {
         color: $brand-color;
+        display: block;
+        padding: 0.5em 1em;
         text-decoration: none;
+        transition: color 0.2s;
       }
 
+      &:hover,
       &.active {
-        background: $brand-color;
+        background-color: $brand-color;
 
         a {
           color: white;
@@ -82,7 +89,9 @@ ul {
   }
 
   article {
-    border-top: gray solid 1px;
+    background-color: #fff;
+    border-top: $brand-color solid 1px;
+    box-shadow: 0 -1px 3px #aaa;
     padding: 1em;
   }
 
@@ -91,14 +100,21 @@ ul {
   }
 
   #priority-clear {
-    background-color: #eee;
-    border: 1px solid #456373;
+    background-color: #fff;
+    border: 1px solid $brand-color;
     border-radius: 3px;
     cursor: pointer;
-    font-family: 'Open Sans', Arial, sans-serif;
+    color: $brand-color;
+    font-family: $font-stack;
     float: right;
     margin-top: 0.25em;
     padding: 0.15em 0.5em;
+    transition: background-color 0.2s, color 0.2s;
+
+    &:hover {
+      background-color: $brand-color;
+      color: #fff;
+    }
   }
 
   #priority-list li {

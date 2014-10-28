@@ -87,7 +87,6 @@
     margin-top: -25px;
     transition: background-color 0.3s;
     z-index: 100;
-    // -webkit-backface-visibility: hidden;
 
     &::after {
       color: #fff;
@@ -113,7 +112,8 @@
     }
 
   #sherlocke-header {
-    background: #f0f0f0 url('chrome-extension://__MSG_@@extension_id__/images/logo.png') no-repeat center center / contain;
+    background: #f0f0f0 url('chrome-extension://__MSG_@@extension_id__/images/logo.png') no-repeat center center;
+    background-size: auto 36px;
     border-bottom: 2px solid #000;
     height: 55px;
     text-indent: -3000em;
@@ -141,7 +141,7 @@
   #sherlocke-filters {
     border-bottom: 1px solid #777;
     cursor: pointer;
-    width: auto;
+    width: 250px;
 
     &.fixed {
       position: fixed;
