@@ -16,8 +16,18 @@
     </header>
 
     <section id="session">
-      <button id="priority-clear">Clear</button>
-      <h1>Current session</h1>
+      <h1>Current session:</h1>
+
+      <select id="session-list">
+        <option value="session1">Example</option>
+        <option value="session2">Lorem Ipsum</option>
+      </select>
+
+      <div id="session-controls">
+        <button class="session-btn">New</button>
+        <button class="session-btn">Pause</button>
+        <button class="session-btn">Delete</button>
+      </div>
     </section>
 
     <section class="priority">
@@ -29,17 +39,18 @@
       <div class="clr"></div>
       <section class="block">
         <article id="tab1">
+          <ul id="session-pinned"></ul>
           <p>You can view your pinned documents here.</p>
         </article>
 
         <article id="tab2">
-          <ul id="priority-list">
+          <ul id="session-priority">
             <li id="priority-list-none">No items prioritized yet</li>
           </ul>
         </article>
 
         <article id="tab3">
-          <ul id="priority-history"></ul>
+          <ul id="session-history"></ul>
         </article>
       </section>
     </section>

@@ -5,6 +5,10 @@ body {
   margin: 0;
 }
 
+h1 {
+  font-size: 1.5em;
+}
+
 ul {
   margin: 1em 0 0;
   padding-left: 1.25em;
@@ -16,9 +20,9 @@ ul {
 
 #header {
   background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png') no-repeat 1em center;
-  background-size: auto 50px;
+  background-size: auto 40px;
   font-family: $font-stack;
-  height: 60px;
+  height: 40px;
   padding: 1em;
   width: 350px;
 }
@@ -33,7 +37,7 @@ ul {
   width: 30px;
   transition: background-color 0.3s, background-image 0.3s;
   position: absolute;
-  top: 25px;
+  top: 15px;
   right: 1em;
 
   &:hover {
@@ -43,8 +47,48 @@ ul {
 }
 
 #session {
+  border-bottom: 1px solid $brand-color;
+  margin-bottom: 1em;
   padding: 1em;
+
+  h1 {
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
+
+  #session-list {
+    background-color: #fff;
+    border: 1px solid $brand-color;
+    border-radius: 3px;
+    font-family: $font-stack;
+    margin-left: 1em;
+    padding: 0.25em 0.5em;
+    vertical-align: middle;
+  }
+
+  #session-controls {
+    display: block;
+    margin-top: 1em;
+  }
+
+    .session-btn {
+      background-color: #fff;
+      border: 1px solid $brand-color;
+      border-radius: 3px;
+      cursor: pointer;
+      color: $brand-color;
+      display: inline-block;
+      font-family: $font-stack;
+      margin-right: 0.5em;
+      padding: 0.15em 0.5em;
+      transition: background-color 0.2s, color 0.2s;
+
+      &:hover {
+        background-color: $brand-color;
+        color: #fff;
+      }
+    }
 
 #priority {
   overflow-y: auto;
@@ -95,29 +139,15 @@ ul {
     padding: 1em;
   }
 
-  #priority-history {
-    // margin-bottom: 1.5em;
+  #session-pinned {
+
   }
 
-  #priority-clear {
-    background-color: #fff;
-    border: 1px solid $brand-color;
-    border-radius: 3px;
-    cursor: pointer;
-    color: $brand-color;
-    font-family: $font-stack;
-    float: right;
-    margin-top: 0.25em;
-    padding: 0.15em 0.5em;
-    transition: background-color 0.2s, color 0.2s;
-
-    &:hover {
-      background-color: $brand-color;
-      color: #fff;
-    }
-  }
-
-  #priority-list li {
+  #session-priority li {
     max-width: 325px;
     word-break: break-all;
+  }
+
+  #session-history {
+    // margin-bottom: 1.5em;
   }
