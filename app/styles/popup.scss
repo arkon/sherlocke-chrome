@@ -88,8 +88,7 @@ ul {
   #session {
     background-color: #eee;
     border-bottom: 1px solid $brand-color;
-    padding: 1em;
-    height: 60px;
+    padding: 1.3em 1em;
     width: 250px;
   }
 
@@ -102,25 +101,49 @@ ul {
     }
 
     #session-controls {
+      font-size: 0;
       float: right;
     }
 
       .session-btn {
         background-color: #fff;
         border: 1px solid $brand-color;
-        border-radius: 3px;
         cursor: pointer;
         color: $brand-color;
         display: inline-block;
         font-family: $font-stack;
-        margin-right: 0.5em;
         padding: 0.15em 0.5em;
+        text-indent: -3000em;
         transition: background-color 0.2s, color 0.2s;
+        width: 30px;
+        height: 30px;
 
         &:hover {
           background-color: $brand-color;
           color: #fff;
         }
+
+        &:first-child {
+          border-radius: 3px 0 0 3px;
+          border-right: none;
+        }
+
+        &:last-child {
+          border-radius: 0 3px 3px 0;
+          border-left: none;
+        }
+      }
+
+      #session-pause {
+
+      }
+
+      #session-delete {
+
+      }
+
+      #session-new {
+
       }
 
   article {
