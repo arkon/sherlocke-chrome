@@ -31,48 +31,52 @@ ul {
   display: table-cell;
 }
 
+  %nav-item {
+    background-repeat: no-repeat;
+    background-position: center center;
+    text-indent: -3000em;
+    display: block;
+    height: 60px;
+    width: 60px;
+    transition: background-color 0.3s;
+
+    &:hover,
+    &.active {
+      background-color: lighten($brand-color, 10%);
+    }
+  }
+
   #logo {
-    background: url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png') no-repeat center center;
+    @extend %nav-item;
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png');
   }
 
   #options {
-    background: transparent url('chrome-extension://__MSG_@@extension_id__/images/gear.png') no-repeat center center;
-    text-indent: -3000em;
-    display: block;
-    height: 30px;
-    width: 30px;
-    transition: background-color 0.3s, background-image 0.3s;
-
-    &:hover {
-      background-color: #fff;
-      background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear_hover.png');
-    }
+    @extend %nav-item;
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
   }
 
   ul.tabs {
     list-style-type: none;
     margin: 0;
-    padding: 0 1em;
+    padding: 0;
 
-    li {
-      display: block;
-      font-size: 1.1em;
-      margin: 0 0.25em 0 0;
-      transition: background-color 0.2s;
-
-      a {
-        color: #fff;
-        padding: 0.5em 1em;
-        text-decoration: none;
-        transition: color 0.2s;
-      }
-
-      &:hover,
-      &.active {
-        background-color: lighten($brand-color, 10%);
-      }
+    li a {
+      @extend %nav-item;
     }
   }
+
+    #tab-pinned {
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
+    }
+
+    #tab-priority {
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
+    }
+
+    #tab-history {
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
+    }
 
 .block {
   background-color: #fff;
@@ -85,26 +89,20 @@ ul {
     background-color: #eee;
     border-bottom: 1px solid $brand-color;
     padding: 1em;
+    height: 60px;
     width: 250px;
-
-    h1 {
-      display: inline-block;
-      vertical-align: middle;
-    }
   }
 
     #session-list {
       border: 1px solid $brand-color;
       border-radius: 3px;
       font-family: $font-stack;
-      margin-left: 1em;
       padding: 0.25em 0.5em;
       vertical-align: middle;
     }
 
     #session-controls {
-      display: block;
-      margin-top: 1em;
+      float: right;
     }
 
       .session-btn {

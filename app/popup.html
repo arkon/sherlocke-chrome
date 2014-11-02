@@ -13,11 +13,9 @@
   <body>
     <section class="block">
       <section id="session">
-        <h1>Session:</h1>
-
         <select id="session-list">
-          <option value="session1">Example</option>
-          <option value="session2">Lorem Ipsum</option>
+          <option value="session1">Example session</option>
+          <option value="session2">Lorem ipsum</option>
         </select>
 
         <div id="session-controls">
@@ -28,17 +26,20 @@
       </section>
 
       <article id="tab1">
+        <h1>Pinned documents</h1>
         <ul id="session-pinned"></ul>
         <p>You can view your pinned documents here.</p>
       </article>
 
       <article id="tab2">
+        <h1>Prioritized items</h1>
         <ul id="session-priority">
           <li id="priority-list-none">No items prioritized yet</li>
         </ul>
       </article>
 
       <article id="tab3">
+        <h1>Browsing history</h1>
         <ul id="session-history"></ul>
       </article>
     </section>
@@ -46,11 +47,11 @@
     <nav id="nav">
       <div id="logo">Sherlocke</div>
       <ul class="tabs">
-        <li><a href="#tab1">Pinned documents</a></li>
-        <li><a href="#tab2">Prioritized items</a></li>
-        <li><a href="#tab3">History</a></li>
+        <li><a id="tab-pinned" title="Pinned documents" href="#tab1">Pinned documents</a></li>
+        <li><a id="tab-priority" title="Prioritized items" href="#tab2">Prioritized items</a></li>
+        <li><a id="tab-history" title="Browsing history" href="#tab3">Browsing history</a></li>
       </ul>
-      <a id="options" href="options.html" target="_blank">Options</a>
+      <a id="options" title="Sherlocke options" href="options.html" target="_blank">Options</a>
     </nav>
 
     <!-- build:js scripts/vendor.js -->
