@@ -11,49 +11,47 @@
     <!-- endbuild -->
   </head>
   <body>
-    <header id="header">
-      <a id="options" href="options.html" target="_blank">Options</a>
-    </header>
+    <section class="block">
+      <section id="session">
+        <h1>Session:</h1>
 
-    <section id="session">
-      <h1>Current session:</h1>
+        <select id="session-list">
+          <option value="session1">Example</option>
+          <option value="session2">Lorem Ipsum</option>
+        </select>
 
-      <select id="session-list">
-        <option value="session1">Example</option>
-        <option value="session2">Lorem Ipsum</option>
-      </select>
+        <div id="session-controls">
+          <button class="session-btn">New</button>
+          <button class="session-btn">Pause</button>
+          <button class="session-btn">Delete</button>
+        </div>
+      </section>
 
-      <div id="session-controls">
-        <button class="session-btn">New</button>
-        <button class="session-btn">Pause</button>
-        <button class="session-btn">Delete</button>
-      </div>
+      <article id="tab1">
+        <ul id="session-pinned"></ul>
+        <p>You can view your pinned documents here.</p>
+      </article>
+
+      <article id="tab2">
+        <ul id="session-priority">
+          <li id="priority-list-none">No items prioritized yet</li>
+        </ul>
+      </article>
+
+      <article id="tab3">
+        <ul id="session-history"></ul>
+      </article>
     </section>
 
-    <section class="priority">
+    <nav id="nav">
+      <div id="logo">Sherlocke</div>
       <ul class="tabs">
         <li><a href="#tab1">Pinned documents</a></li>
         <li><a href="#tab2">Prioritized items</a></li>
         <li><a href="#tab3">History</a></li>
       </ul>
-      <div class="clr"></div>
-      <section class="block">
-        <article id="tab1">
-          <ul id="session-pinned"></ul>
-          <p>You can view your pinned documents here.</p>
-        </article>
-
-        <article id="tab2">
-          <ul id="session-priority">
-            <li id="priority-list-none">No items prioritized yet</li>
-          </ul>
-        </article>
-
-        <article id="tab3">
-          <ul id="session-history"></ul>
-        </article>
-      </section>
-    </section>
+      <a id="options" href="options.html" target="_blank">Options</a>
+    </nav>
 
     <!-- build:js scripts/vendor.js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
