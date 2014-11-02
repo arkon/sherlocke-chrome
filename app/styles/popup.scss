@@ -41,16 +41,18 @@ ul {
     width: 60px;
     transition: background-color 0.3s;
 
-    &:hover,
-    &.active {
+    &:hover {
       background-color: lighten($brand-color, 10%);
     }
   }
 
   #logo {
     @extend %nav-item;
-    background-color: lighten($brand-color, 10%);
     background-image: url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png');
+
+    &:hover {
+      background-color: $brand-color;
+    }
   }
 
   #options {
@@ -64,8 +66,14 @@ ul {
     margin: 0;
     padding: 0;
 
-    li a {
-      @extend %nav-item;
+    li {
+      a {
+        @extend %nav-item;
+      }
+
+      &.active {
+        background-color: lighten($brand-color, 10%);
+      }
     }
   }
 
@@ -84,7 +92,7 @@ ul {
 .block {
   background-color: #fff;
   display: table-cell;
-  width: 300px;
+  width: 320px;
   vertical-align: top;
 }
 
@@ -92,15 +100,15 @@ ul {
     background-color: #eee;
     border-bottom: 1px solid $brand-color;
     padding: 1.3em 1em;
-    width: 250px;
+    width: 280px;
   }
 
     #session-list {
       border: 1px solid $brand-color;
       border-radius: 3px;
       font-family: $font-stack;
-      max-width: 150px;
       padding: 0.25em 0.5em;
+      width: 180px;
       vertical-align: middle;
     }
 
