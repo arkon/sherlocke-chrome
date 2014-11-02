@@ -96,6 +96,7 @@ ul {
       border: 1px solid $brand-color;
       border-radius: 3px;
       font-family: $font-stack;
+      max-width: 150px;
       padding: 0.25em 0.5em;
       vertical-align: middle;
     }
@@ -116,7 +117,7 @@ ul {
         text-indent: -3000em;
         transition: background-color 0.2s, color 0.2s;
         width: 30px;
-        height: 30px;
+        height: 28px;
 
         &:hover {
           background-color: $brand-color;
