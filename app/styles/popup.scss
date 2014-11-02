@@ -34,6 +34,7 @@ ul {
   %nav-item {
     background-repeat: no-repeat;
     background-position: center center;
+    background-size: 50% 50%;
     text-indent: -3000em;
     display: block;
     height: 60px;
@@ -48,12 +49,14 @@ ul {
 
   #logo {
     @extend %nav-item;
+    background-color: lighten($brand-color, 10%);
     background-image: url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png');
   }
 
   #options {
     @extend %nav-item;
     background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
+    background-size: auto;
   }
 
   ul.tabs {
@@ -67,15 +70,15 @@ ul {
   }
 
     #tab-pinned {
-      background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/nav-pinned.png');
     }
 
     #tab-priority {
-      background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/nav-priority.png');
     }
 
     #tab-history {
-      background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
+      background-image: url('chrome-extension://__MSG_@@extension_id__/images/nav-history.png');
     }
 
 .block {
@@ -108,6 +111,8 @@ ul {
 
       .session-btn {
         background-color: #fff;
+        background-repeat: no-repeat;
+        background-position: center center;
         border: 1px solid $brand-color;
         cursor: pointer;
         color: $brand-color;
@@ -115,13 +120,12 @@ ul {
         font-family: $font-stack;
         padding: 0.15em 0.5em;
         text-indent: -3000em;
-        transition: background-color 0.2s, color 0.2s;
+        transition: background-color 0.2s;
         width: 30px;
         height: 28px;
 
         &:hover {
-          background-color: $brand-color;
-          color: #fff;
+          background-color: #eee;
         }
 
         &:first-child {
@@ -136,15 +140,15 @@ ul {
       }
 
       #session-pause {
-
+        background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-pause.png');
       }
 
       #session-delete {
-
+        background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-delete.png');
       }
 
       #session-new {
-
+        background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-new.png');
       }
 
   article {
