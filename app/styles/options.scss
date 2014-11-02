@@ -9,7 +9,7 @@ body {
 }
 
 header {
-  background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png') no-repeat 2em center;
+  background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white_name.png') no-repeat 2em center;
   background-size: auto 45px;
   color: #fff;
   padding: $side-padding 1em $side-padding 17em;
