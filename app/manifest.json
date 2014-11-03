@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "homepage_url": "https://sherlocke.me",
@@ -37,10 +37,10 @@
         "styles/inject.css"
       ],
       "js": [
-        "bower_components/jquery/dist/jquery.js",
-        "bower_components/lodash/dist/lodash.js",
-        "bower_components/angular/angular.js",
-        "bower_components/angular-restmod/dist/angular-restmod-bundle.js",
+        "bower_components/jquery/dist/jquery.min.js",
+        "bower_components/lodash/dist/lodash.min.js",
+        "bower_components/angular/angular.min.js",
+        "bower_components/angular-restmod/dist/angular-restmod-bundle.min.js",
         "scripts/angular-baker-street.js",
         "scripts/contentscript.js"
       ]

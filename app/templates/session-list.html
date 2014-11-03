@@ -1,0 +1,9 @@
+<select id="session-list" ng-repeat="session in sessions">
+  <option ng-href="{{ session.id }}">{{ session.name }}</option>
+</select>
+
+<div id="session-controls">
+  <a href="#" id="session-pause" title="Pause session" class="session-btn">Pause</a>
+  <a href="#" id="session-delete" title="Delete session" class="session-btn">Delete</a>
+  <a href="#/new" id="session-new" title="New session" class="session-btn">New</a>
+</div>

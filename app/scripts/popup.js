@@ -1,7 +1,47 @@
 'use strict';
 
 // Handles tabs
-$(function() {
+// $(function() {
+//   $('ul.tabs li:first').addClass('active');
+//   $('.block article').hide();
+//   $('.block article:first').show();
+
+//   $('ul.tabs li').on('click', function(){
+//     $('ul.tabs li').removeClass('active');
+//     $(this).addClass('active');
+//     $('.block article').hide();
+//     $($(this).find('a').attr('href')).show();
+//     return false;
+//   });
+// });
+
+
+/* Declare AngularJS app */
+angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
+
+// angular.config(function($routeProvider) {
+//   $routeProvider
+//     .when('/tab1', {
+//       // controller:'PopupController',
+//       templateUrl:'popup-pinned.html'
+//     })
+//     .when('/tab2', {
+//       // controller:'EditCtrl',
+//       templateUrl:'popup-priority.html'
+//     })
+//     .when('/tab3', {
+//       // controller:'CreateCtrl',
+//       templateUrl:'popup-history.html'
+//     })
+//     .otherwise({
+//       redirectTo:'/tab1'
+//     });
+// });
+
+/*
+ * Controllers
+ */
+var PopupController = ['$scope', function ($scope) {
   $('ul.tabs li:first').addClass('active');
   $('.block article').hide();
   $('.block article:first').show();
@@ -13,7 +53,52 @@ $(function() {
     $($(this).find('a').attr('href')).show();
     return false;
   });
-});
+
+  // Settings
+  // chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
+  //   if ('opt-hide-sidebar' in items) {
+  //     $scope.isSidebarHidden = items['opt-hide-sidebar'];
+  //   } else {
+  //     chrome.storage.sync.set({ 'opt-hide-sidebar': false });
+  //     $scope.isSidebarHidden = false;
+  //   }
+
+  //   if ('opt-show-menu' in items) {
+  //     $scope.showMenu = items['opt-show-menu'];
+  //   } else {
+  //     chrome.storage.sync.set({ 'opt-show-menu': true });
+  //     $scope.showMenu = true;
+  //   }
+  // });
+
+}];
+angular
+    .module('SherlockePopup')
+    .controller('PopupController', PopupController);
+
+
+var SessionsDirective = ['$sce', function ($sce) {
+  return {
+    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/sessions-list.html')),
+    link: function (scope, element) {
+      // Handle sidebar toggle
+      // element.find('#sherlocke-toggle').click(function () {
+      //   var body = angular.element('body');
+      //   body.toggleClass('hide-sidebar');
+
+      //   scope.isSidebarHidden = body.hasClass('hide-sidebar');
+
+      //   // Sync setting
+      //   chrome.storage.sync.set({
+      //     'opt-hide-sidebar': scope.isSidebarHidden
+      //   });
+      // });
+    }
+  };
+}];
+angular
+    .module('SherlockePopup')
+    .directive('skSession', SessionsDirective);
 
 // // Event listner for clicks on links in a browser action popup.
 // // Open the link in a new tab of the current window.
