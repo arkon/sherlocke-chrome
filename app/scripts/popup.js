@@ -76,10 +76,19 @@ angular
     .module('SherlockePopup')
     .controller('PopupController', PopupController);
 
+var SessionsController = ['$scope', function ($scope) {
+
+  // Some example stuff
+  $scope.sessions = [{'id': '1', 'name': 'Example'}, {'id': '2', 'name': 'Lorem ipsum'}];
+
+}];
+angular
+    .module('SherlockePopup')
+    .controller('SessionsController', SessionsController);
 
 var SessionsDirective = ['$sce', function ($sce) {
   return {
-    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/sessions-list.html')),
+    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/session-list.html')),
     link: function (scope, element) {
       // Handle sidebar toggle
       // element.find('#sherlocke-toggle').click(function () {

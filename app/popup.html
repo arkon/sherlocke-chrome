@@ -12,7 +12,7 @@
   </head>
   <body ng-controller="PopupController">
     <section class="block">
-      <section id="session" sk-session></section>
+      <section id="session" sk-session ng-controller="SessionsController"></section>
 
       <section id="tab-content" ng-view></section>
     </section>

@@ -1,5 +1,5 @@
-<select id="session-list" ng-repeat="session in sessions">
-  <option ng-href="{{ session.id }}">{{ session.name }}</option>
+<select id="session-list">
+  <option ng-repeat="session in sessions" ng-href="{{ session.id }}">{{ session.name }}</option>
 </select>
 
 <div id="session-controls">
