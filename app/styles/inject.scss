@@ -8,9 +8,8 @@
 }
 
 .sherlocke-original-page {
-  position: absolute;
-  top: 0; bottom: 0; left: 0; right: 0;
   width: calc(100% - 250px);
+  z-index: 0;
 
   body.hide-sidebar & {
     width: 100%;
@@ -30,7 +29,7 @@
   text-align: left;
   transition: transform 0.2s;
   width: 250px;
-  z-index: 1000000;
+  z-index: 100000;
 
   // Scrollbar
   &::-webkit-scrollbar {
@@ -59,7 +58,7 @@
 }
 
   body.hide-sidebar #sherlocke {
-    transform: translate(250px, 0);
+    right: -250px;
   }
 
   #sherlocke-toggle {
@@ -71,10 +70,10 @@
     width: 16px;
     position: fixed;
     top: 50%;
-    right: 245px;
+    right: 250px;
     margin-top: -25px;
-    transition: background-color 0.3s;
-    z-index: 100;
+    z-index: 100000;
+    -webkit-backface-visibility: hidden;
 
     &::after {
       color: #fff;
@@ -87,7 +86,6 @@
       text-align: center;
       height: 50px;
       width: 16px;
-      transition: transform 0.3s;
     }
 
     &:hover {
@@ -95,8 +93,12 @@
     }
   }
 
-    body.hide-sidebar #sherlocke-toggle::after {
-      transform: rotate(180deg);
+    body.hide-sidebar #sherlocke-toggle {
+      right: 0;
+
+      &::after {
+        content: "<";
+      }
     }
 
   #sherlocke-header {
