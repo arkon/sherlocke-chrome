@@ -32,6 +32,7 @@
     {
       "matches": [
         "*://www.canlii.org/en/*"
+        // "<all_urls>"
       ],
       "css": [
         "styles/inject.css"

@@ -164,15 +164,17 @@ angular
 angular.element(document).ready(function () {
   var documentHeader = angular.element('#documentHeader');
   if (documentHeader && documentHeader.length) {
-    // Add class to body for styling
-    angular.element('body').addClass('sherlocke');
+
+    // Wrap the actial page contents within a div for manipulating width
+    $('body').wrapInner('<div class="sherlocke-original-page" />');
 
     // Inject the main directive & controller onto CanLII's #wrap div and insert the side panel
-    angular.element('#wrap')
+    // angular.element('#wrap')
+    angular.element('body')
         .attr('sk-main', true)
-        .attr('ng-controller', 'MainController')
-        .after('<div sk-side-panel ng-controller="SidePanelController" id="sherlocke"></div>');
+        .append('<div ng-controller="MainController" id="sherlocke"><div sk-side-panel ng-controller="SidePanelController"></div></div>');
 
     angular.bootstrap(document, ['Sherlocke']);
+
   }
 });
