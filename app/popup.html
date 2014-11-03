@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="project">
   <head>
     <title>Sherlocke</title>
     <!-- build:css styles/vendor.css -->
@@ -12,16 +12,17 @@
   </head>
   <body>
     <section class="block">
-      <section id="session">
-        <select id="session-list">
-          <option value="session1">Example session</option>
-          <option value="session2">Lorem ipsum</option>
+      <section id="session" ng-view>
+
+        <select id="session-list" ng-repeat="session in sessions">
+          <option ng-href="{{ session.id }}">{{ session.name }}</option>
+          <option ng-href="{{ session.id }}">Lorem ipsum</option>
         </select>
 
         <div id="session-controls">
           <button id="session-pause" title="Pause session" class="session-btn">Pause</button>
           <button id="session-delete" title="Delete session" class="session-btn">Delete</button>
-          <button id="session-new" title="New session" class="session-btn">New</button>
+          <a href="#/new" id="session-new" title="New session" class="session-btn">New</a>
         </div>
       </section>
 
@@ -70,6 +71,7 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/lodash/dist/lodash.js"></script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-restmod/dist/angular-restmod-bundle.js"></script>
     <!-- endbuild -->
 

@@ -59,6 +59,8 @@ ul {
     @extend %nav-item;
     background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
     background-size: auto;
+    position: absolute;
+    bottom: 0;
   }
 
   ul.tabs {
@@ -104,6 +106,7 @@ ul {
   }
 
     #session-list {
+      background-color: #fff;
       border: 1px solid $brand-color;
       border-radius: 3px;
       font-family: $font-stack;
