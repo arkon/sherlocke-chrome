@@ -22,6 +22,25 @@ ul {
   padding-left: 1.25em;
 }
 
+form {
+  padding: 1em 0;
+}
+
+label {
+  display: block;
+}
+
+input {
+  border: 1px solid $brand-color;
+  border-radius: 3px;
+  font-family: $font-stack;
+  padding: 0.25em 0.5em;
+
+  & + label {
+    margin-top: 1em;
+  }
+}
+
 #nav {
   background: $brand-color;
   background-size: auto 40px;
@@ -133,7 +152,7 @@ ul {
         text-indent: -3000em;
         transition: background-color 0.2s;
         width: 30px;
-        height: 28px;
+        height: 26px;
 
         &:hover {
           background-color: #eee;
@@ -152,6 +171,11 @@ ul {
 
       #session-pause {
         background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-pause.png');
+
+        &.paused {
+          background-color: $brand-color;
+          background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-pause-white.png');
+        }
       }
 
       #session-delete {
@@ -161,6 +185,21 @@ ul {
       #session-new {
         background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-new.png');
       }
+
+    #session-new-actions {
+      margin-top: 1em;
+    }
+
+    .session-action {
+      background-color: #fff;
+      border: 1px solid $brand-color;
+      border-radius: 3px;
+      color: $brand-color;
+      cursor: pointer;
+      font-family: $font-stack;
+      margin-right: 1em;
+      padding: 0.25em 1em;
+    }
 
   #tab-content {
     position: relative;

@@ -24,21 +24,20 @@ angular
     .config(function($routeProvider) {
   $routeProvider
     .when('/tab1', {
-      // controller:'PopupController',
       templateUrl:'templates/popup-pinned.html'
     })
     .when('/tab2', {
-      // controller:'EditCtrl',
       templateUrl:'templates/popup-priority.html'
     })
     .when('/tab3', {
-      // controller:'CreateCtrl',
       templateUrl:'templates/popup-history.html'
     })
     .when('/new', {
+      controller:'SessionsController',
       templateUrl:'templates/session-new-form.html'
     })
     .when('/delete', {
+      controller:'SessionsController',
       templateUrl:'templates/session-delete.html'
     })
     .otherwise({
@@ -49,7 +48,7 @@ angular
 /*
  * Controllers
  */
-var PopupController = ['$scope', '$location', function ($scope, $location/*, Sessions*/) {
+var PopupController = ['$scope', function (/*$scope, Sessions*/) {
 
   // $scope.sessions = Sessions;
 
@@ -59,28 +58,27 @@ var PopupController = ['$scope', '$location', function ($scope, $location/*, Ses
     $('ul.tabs li').removeClass('active');
     $(this).addClass('active');
   });
-
-  $scope.save = function() {
-    // Projects.$add($scope.project).then(function(data) {
-    $location.path('/');
-    // });
-  };
-
-  $scope.destroy = function() {
-    // $scope.sessions.$remove($scope.session).then(function(data) {
-    $location.path('/');
-    // });
-  };
 }];
 angular
     .module('SherlockePopup')
     .controller('PopupController', PopupController);
 
-var SessionsController = ['$scope', function ($scope) {
+var SessionsController = ['$scope', '$location', function ($scope, $location) {
 
   // Some example stuff
   $scope.sessions = [{'id': '1', 'name': 'Example'}, {'id': '2', 'name': 'Lorem ipsum'}];
 
+  $scope.save = function() {
+    $scope.sessions.$add($scope.project).then(function(/*data*/) {
+      $location.path('/');
+    });
+  };
+
+  $scope.destroy = function() {
+    $scope.sessions.$remove($scope.session).then(function(/*data*/) {
+      $location.path('/');
+    });
+  };
 }];
 angular
     .module('SherlockePopup')
@@ -92,12 +90,19 @@ angular
  */
 var SessionsDirective = ['$sce', function ($sce) {
   return {
-    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/session-list.html'))
+    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/session-list.html')),
+    link: function (scope, element) {
+      // Handle pause button
+      element.find('#session-pause').click(function() {
+        angular.element(this).toggleClass('paused');
+      });
+    }
   };
 }];
 angular
     .module('SherlockePopup')
     .directive('skSession', SessionsDirective);
+
 
 // // Event listner for clicks on links in a browser action popup.
 // // Open the link in a new tab of the current window.

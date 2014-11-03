@@ -3,13 +3,17 @@
 
   <form>
     <div ng-class="{error: myForm.name.$invalid && !myForm.name.$pristine}">
+      <label>ID</label>
+      <input type="text" name="id" ng-model="session.id" required>
       <label>Name</label>
       <input type="text" name="name" ng-model="session.name" required>
-      <span ng-show="myForm.name.$error.required && !myForm.name.$pristine" class="help-inline">
-          Required {{myForm.name.$pristine}}</span>
+      <!-- <span ng-show="myForm.name.$error.required && !myForm.name.$pristine" class="help-inline">
+          Required {{myForm.name.$pristine}}</span> -->
     </div>
 
-    <a href="#/" class="btn">Cancel</a>
-    <button ng-click="save()" ng-disabled="myForm.$invalid">Save</button>
+    <div id="session-new-actions">
+      <button class="session-action" ng-click="save()" ng-disabled="myForm.$invalid">Save</button>
+      <a class="session-action" href="#/" class="btn">Cancel</a>
+    </div>
   </form>
 </article>
