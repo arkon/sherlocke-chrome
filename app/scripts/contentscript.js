@@ -1,14 +1,10 @@
 'use strict';
 /* jshint multistr: true */
 
-/*
-  TODO:
-  - confidence level bars in suggestions list
-  - fixed filter bar?
-*/
 
 /* Declare AngularJS app */
 angular.module('Sherlocke', ['BakerStreet']);
+
 
 /*
  * Controllers
@@ -78,6 +74,7 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
 angular
     .module('Sherlocke')
     .controller('SidePanelController', SidePanelController);
+
 
 /*
  * Directives

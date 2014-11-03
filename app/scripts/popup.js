@@ -19,57 +19,38 @@
 /* Declare AngularJS app */
 angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
 
-// angular.config(function($routeProvider) {
-//   $routeProvider
-//     .when('/tab1', {
-//       // controller:'PopupController',
-//       templateUrl:'popup-pinned.html'
-//     })
-//     .when('/tab2', {
-//       // controller:'EditCtrl',
-//       templateUrl:'popup-priority.html'
-//     })
-//     .when('/tab3', {
-//       // controller:'CreateCtrl',
-//       templateUrl:'popup-history.html'
-//     })
-//     .otherwise({
-//       redirectTo:'/tab1'
-//     });
-// });
+angular
+    .module('SherlockePopup')
+    .config(function($routeProvider) {
+  $routeProvider
+    .when('/tab1', {
+      // controller:'PopupController',
+      templateUrl:'templates/popup-pinned.html'
+    })
+    .when('/tab2', {
+      // controller:'EditCtrl',
+      templateUrl:'templates/popup-priority.html'
+    })
+    .when('/tab3', {
+      // controller:'CreateCtrl',
+      templateUrl:'templates/popup-history.html'
+    })
+    .otherwise({
+      redirectTo:'/tab1'
+    });
+});
 
 /*
  * Controllers
  */
 var PopupController = ['$scope', function ($scope) {
-  $('ul.tabs li:first').addClass('active');
-  $('.block article').hide();
-  $('.block article:first').show();
 
+  // Handle active tab's styling
+  $('ul.tabs li:first').addClass('active');
   $('ul.tabs li').on('click', function(){
     $('ul.tabs li').removeClass('active');
     $(this).addClass('active');
-    $('.block article').hide();
-    $($(this).find('a').attr('href')).show();
-    return false;
   });
-
-  // Settings
-  // chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
-  //   if ('opt-hide-sidebar' in items) {
-  //     $scope.isSidebarHidden = items['opt-hide-sidebar'];
-  //   } else {
-  //     chrome.storage.sync.set({ 'opt-hide-sidebar': false });
-  //     $scope.isSidebarHidden = false;
-  //   }
-
-  //   if ('opt-show-menu' in items) {
-  //     $scope.showMenu = items['opt-show-menu'];
-  //   } else {
-  //     chrome.storage.sync.set({ 'opt-show-menu': true });
-  //     $scope.showMenu = true;
-  //   }
-  // });
 
 }];
 angular
@@ -86,6 +67,10 @@ angular
     .module('SherlockePopup')
     .controller('SessionsController', SessionsController);
 
+
+/*
+ * Directives
+ */
 var SessionsDirective = ['$sce', function ($sce) {
   return {
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/session-list.html')),
