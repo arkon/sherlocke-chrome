@@ -26,7 +26,7 @@ function menuItemClicked(/*info, tab*/) {
 
 // Create the context menu item
 chrome.contextMenus.create({
-  title: 'Sherlocke: Prioritize this',
+  title: 'Prioritize this',
   contexts: ['selection', 'link', 'editable'],
   onclick: menuItemClicked
 });

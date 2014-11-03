@@ -38,12 +38,10 @@
   top: 0;
   right: 0;
   overflow-y: auto;
-  transform: translate(0, 0);
   transition: transform 0.2s;
   width: 250px;
 
   // Scrollbar
-
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -58,7 +56,6 @@
   }
 
   // Core elements
-
   a {
     color: #333;
     text-decoration: none;
@@ -121,6 +118,7 @@
 
   #sherlocke-content {
     position: absolute;
+    width: 100%;
     z-index: 10000;
   }
 
@@ -204,6 +202,7 @@
   ul#sherlocke-suggestions {
     background-color: #fff;
     transition: background-color 0.3s, opacity 0.3s;
+    width: 100%;
     z-index: 10;
 
     li {

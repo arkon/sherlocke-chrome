@@ -35,6 +35,12 @@ angular
       // controller:'CreateCtrl',
       templateUrl:'templates/popup-history.html'
     })
+    .when('/new', {
+      templateUrl:'templates/session-new-form.html'
+    })
+    .when('/delete', {
+      templateUrl:'templates/session-delete.html'
+    })
     .otherwise({
       redirectTo:'/tab1'
     });
@@ -43,7 +49,9 @@ angular
 /*
  * Controllers
  */
-var PopupController = ['$scope', function ($scope) {
+var PopupController = ['$scope', '$location', function ($scope, $location/*, Sessions*/) {
+
+  // $scope.sessions = Sessions;
 
   // Handle active tab's styling
   $('ul.tabs li:first').addClass('active');
@@ -52,6 +60,17 @@ var PopupController = ['$scope', function ($scope) {
     $(this).addClass('active');
   });
 
+  $scope.save = function() {
+    // Projects.$add($scope.project).then(function(data) {
+    $location.path('/');
+    // });
+  };
+
+  $scope.destroy = function() {
+    // $scope.sessions.$remove($scope.session).then(function(data) {
+    $location.path('/');
+    // });
+  };
 }];
 angular
     .module('SherlockePopup')
@@ -73,21 +92,7 @@ angular
  */
 var SessionsDirective = ['$sce', function ($sce) {
   return {
-    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/session-list.html')),
-    link: function (scope, element) {
-      // Handle sidebar toggle
-      // element.find('#sherlocke-toggle').click(function () {
-      //   var body = angular.element('body');
-      //   body.toggleClass('hide-sidebar');
-
-      //   scope.isSidebarHidden = body.hasClass('hide-sidebar');
-
-      //   // Sync setting
-      //   chrome.storage.sync.set({
-      //     'opt-hide-sidebar': scope.isSidebarHidden
-      //   });
-      // });
-    }
+    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/session-list.html'))
   };
 }];
 angular
