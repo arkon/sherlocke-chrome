@@ -11,7 +11,8 @@ package
 .idea
 
 # Generated CSS
-*.css
+app/styles/*.css
 
-# OS things
+# OS files
 Thumbs.db
+.DS_Store
