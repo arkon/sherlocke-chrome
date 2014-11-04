@@ -1,5 +1,10 @@
 <article>
   <h1>Pinned documents</h1>
-  <ul id="session-pinned"></ul>
+  <ul id="session-pinned">
+    <li ng-repeat="pinned in session.pinned" ng-href="{{ pinned.id }}">
+      <a href="{{ pinned.url }}">{{ pinned.url }}</a>
+    </li>
+  </ul>
+
   <p>You can view your pinned documents here.</p>
 </article>

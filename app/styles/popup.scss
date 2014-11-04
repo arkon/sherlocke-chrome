@@ -201,6 +201,12 @@ input {
       padding: 0.25em 1em;
     }
 
+      .session-action-primary {
+        @extend .session-action;
+        background-color: $brand-color;
+        color: #fff;
+      }
+
   #tab-content {
     position: relative;
     height: 380px;

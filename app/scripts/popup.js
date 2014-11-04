@@ -1,20 +1,5 @@
 'use strict';
 
-// Handles tabs
-// $(function() {
-//   $('ul.tabs li:first').addClass('active');
-//   $('.block article').hide();
-//   $('.block article:first').show();
-
-//   $('ul.tabs li').on('click', function(){
-//     $('ul.tabs li').removeClass('active');
-//     $(this).addClass('active');
-//     $('.block article').hide();
-//     $($(this).find('a').attr('href')).show();
-//     return false;
-//   });
-// });
-
 
 /* Declare AngularJS app */
 angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
@@ -45,6 +30,7 @@ angular
     });
 });
 
+
 /*
  * Controllers
  */
@@ -69,15 +55,15 @@ var SessionsController = ['$scope', '$location', function ($scope, $location) {
   $scope.sessions = [{'id': '1', 'name': 'Example'}, {'id': '2', 'name': 'Lorem ipsum'}];
 
   $scope.save = function() {
-    $scope.sessions.$add($scope.project).then(function(/*data*/) {
-      $location.path('/');
-    });
+    // $scope.sessions.$add($scope.session).then(function (data) {
+    $location.path('/');
+    // });
   };
 
   $scope.destroy = function() {
-    $scope.sessions.$remove($scope.session).then(function(/*data*/) {
-      $location.path('/');
-    });
+    // $scope.sessions.$remove($scope.session).then(function (data) {
+    $location.path('/');
+    // });
   };
 }];
 angular
