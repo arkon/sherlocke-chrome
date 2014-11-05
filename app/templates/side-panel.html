@@ -1,5 +1,5 @@
 <div id="sherlocke-header">Sherlocke</div>
-<div id="sherlocke-content" ng-if="isLoading === false">
+<div id="sherlocke-content" ng-hide="isLoading">
   <div sk-select id="sherlocke-filters">
     <span id="sherlocke-filter">All related documents</span>
     <ul id="sherlocke-filters-list">
@@ -20,7 +20,7 @@
   </ul>
 </div>
 
-<div id="sherlocke-loading" ng-if="isLoading === true">
+<div id="sherlocke-loading" ng-show="isLoading">
   <h1>Crunching data...</h1>
   <p id="sherlocke-loading-message">Analyzed {{ progress }} documents</p>
 </div>
