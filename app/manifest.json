@@ -16,6 +16,9 @@
       "bower_components/jquery/dist/jquery.js",
       "bower_components/lodash/dist/lodash.js",
       "bower_components/angular/angular.js",
+      "bower_components/angular-restmod/dist/angular-restmod-bundle.js",
+      "bower_components/angular-django-auth/lib/django-auth.js",
+      "scripts/angular-baker-street.js",
       "scripts/background.js"
     ]
   },
