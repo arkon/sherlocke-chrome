@@ -63,5 +63,6 @@
     "history",
     "*://www.canlii.org/*",
     "https://watson-wdc01.ihost.com/*"
-  ]
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
