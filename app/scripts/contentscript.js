@@ -3,7 +3,7 @@
 
 
 /* Declare AngularJS app */
-angular.module('Sherlocke', ['BakerStreet']);
+angular.module('SherlockeContent', ['BakerStreet']);
 
 
 /*
@@ -29,7 +29,7 @@ var MainController = ['$scope', function ($scope) {
 
 }];
 angular
-    .module('Sherlocke')
+    .module('SherlockeContent')
     .controller('MainController', MainController);
 
 var SidePanelController = ['$scope', '$window', 'QuestionService', function ($scope, $window, QuestionService) {
@@ -72,7 +72,7 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
   });
 }];
 angular
-    .module('Sherlocke')
+    .module('SherlockeContent')
     .controller('SidePanelController', SidePanelController);
 
 
@@ -89,7 +89,7 @@ var MainDirective = [function () {
   };
 }];
 angular
-    .module('Sherlocke')
+    .module('SherlockeContent')
     .directive('skMain', MainDirective);
 
 var SidePanelDirective = ['$sce', function ($sce) {
@@ -112,7 +112,7 @@ var SidePanelDirective = ['$sce', function ($sce) {
   };
 }];
 angular
-    .module('Sherlocke')
+    .module('SherlockeContent')
     .directive('skSidePanel', SidePanelDirective);
 
 var SelectDirective = [function () {
@@ -153,7 +153,7 @@ var SelectDirective = [function () {
   };
 }];
 angular
-    .module('Sherlocke')
+    .module('SherlockeContent')
     .directive('skSelect', SelectDirective);
 
 
@@ -174,7 +174,7 @@ angular.element(document).ready(function () {
         .attr('sk-main', true)
         .append('<div ng-controller="MainController" id="sherlocke"><div sk-side-panel ng-controller="SidePanelController"></div></div>');
 
-    angular.bootstrap(document, ['Sherlocke']);
+    angular.bootstrap(document, ['SherlockeContent']);
 
   }
 });
