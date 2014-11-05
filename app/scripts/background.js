@@ -88,12 +88,6 @@ chrome.runtime.onInstalled.addListener(function (details) {
 
 
 /* Context menu item */
-chrome.contextMenus.create({
-  title: 'Prioritize this',
-  contexts: ['selection', 'link', 'editable'],
-  onclick: menuItemClicked
-});
-
 function menuItemClicked(/*info, tab*/) {
   // launchPopup(function (newWindow) {
   //   // called once newWindow is created
@@ -105,6 +99,12 @@ function menuItemClicked(/*info, tab*/) {
   //   }, 200);
   // });
 }
+
+chrome.contextMenus.create({
+  title: 'Prioritize this',
+  contexts: ['selection', 'link', 'editable'],
+  onclick: menuItemClicked
+});
 
 
 /* Bootstrap the app onto the generated background page */

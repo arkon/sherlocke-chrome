@@ -2,11 +2,9 @@
 
 
 /* Declare AngularJS app */
-angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
+var popup = angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
 
-angular
-    .module('SherlockePopup')
-    .config(function($routeProvider) {
+popup.config(function($routeProvider) {
   $routeProvider
     .when('/tab1', {
       controller:'PinnedController',
@@ -37,54 +35,37 @@ angular
 /*
  * Controllers
  */
-var PopupController = ['$scope', function (/*$scope*/) {
+popup.controller('PopupController', function (/*$scope*/) {
   // Handle active tab's styling
   $('ul.tabs li:first').addClass('active');
   $('ul.tabs li').on('click', function(){
     $('ul.tabs li').removeClass('active');
     $(this).addClass('active');
   });
-}];
-angular
-    .module('SherlockePopup')
-    .controller('PopupController', PopupController);
+});
 
-
-var PinnedController = ['$scope', function ($scope) {
+popup.controller('PinnedController', function ($scope) {
   $scope.documents = [{'id': 0, 'url': 'www.example.com'},
                       {'id': 1, 'url': 'Lorem ipsum'}];
 
   $scope.noPinned = $scope.documents.length === 0;
-}];
-angular
-    .module('SherlockePopup')
-    .controller('PinnedController', PinnedController);
+});
 
-
-var PriorityController = ['$scope', function ($scope) {
+popup.controller('PriorityController', function ($scope) {
   $scope.prioritized = [{'id': 0, 'name': 'Something'},
                         {'id': 1, 'name': 'Lorem ipsum'}];
 
   $scope.noPriority = $scope.prioritized.length === 0;
-}];
-angular
-    .module('SherlockePopup')
-    .controller('PriorityController', PriorityController);
+});
 
-
-var HistoryController = ['$scope', function ($scope) {
+popup.controller('HistoryController', function ($scope) {
   $scope.pages = [{'id': 0, 'url': 'www.example.com'},
                   {'id': 1, 'url': 'Lorem ipsum'}];
 
   $scope.noHistory = $scope.pages.length === 0;
-}];
-angular
-    .module('SherlockePopup')
-    .controller('HistoryController', HistoryController);
+});
 
-
-var SessionsController = ['$scope', '$location', 'ResearchSession',
-    function ($scope, $location, ResearchSession) {
+popup.controller('SessionsController', function ($scope, $location, ResearchSession) {
 
   // Some example stuff
   $scope.sessions = [{'id': 0, 'user': 1, 'name': 'Example'},
@@ -108,16 +89,13 @@ var SessionsController = ['$scope', '$location', 'ResearchSession',
     $location.path('/');
     // });
   };
-}];
-angular
-    .module('SherlockePopup')
-    .controller('SessionsController', SessionsController);
+});
 
 
 /*
  * Directives
  */
-var SessionsDirective = ['$sce', function ($sce) {
+popup.directive('skSession', function ($sce) {
   return {
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/session-list.html')),
     link: function (scope, element) {
@@ -127,10 +105,7 @@ var SessionsDirective = ['$sce', function ($sce) {
       });
     }
   };
-}];
-angular
-    .module('SherlockePopup')
-    .directive('skSession', SessionsDirective);
+});
 
 
 // // Event listner for clicks on links in a browser action popup.

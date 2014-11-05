@@ -9,7 +9,7 @@ angular.module('SherlockeContent', ['BakerStreet']);
 /*
  * Controllers
  */
-var MainController = ['$scope', function ($scope) {
+angular.module('SherlockeContent').controller('MainController', function ($scope) {
   // Settings
   chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
     if ('opt-hide-sidebar' in items) {
@@ -26,14 +26,9 @@ var MainController = ['$scope', function ($scope) {
       $scope.showMenu = true;
     }
   });
+});
 
-}];
-angular
-    .module('SherlockeContent')
-    .controller('MainController', MainController);
-
-var SidePanelController = ['$scope', '$window', 'ResearchSession',
-      function ($scope, $window, ResearchSession) {
+angular.module('SherlockeContent').controller('SidePanelController', function ($scope, $window, ResearchSession) {
   $scope.isLoading = false;
 
   // Dummy loading
@@ -71,16 +66,13 @@ var SidePanelController = ['$scope', '$window', 'ResearchSession',
 
     $scope.isLoading = false;
   });
-}];
-angular
-    .module('SherlockeContent')
-    .controller('SidePanelController', SidePanelController);
+});
 
 
 /*
  * Directives
  */
-var MainDirective = [function () {
+angular.module('SherlockeContent').directive('skMain', function () {
   return {
     link: function (scope) {
       scope.$watch('isSidebarHidden', function (value) {
@@ -88,12 +80,9 @@ var MainDirective = [function () {
       });
     }
   };
-}];
-angular
-    .module('SherlockeContent')
-    .directive('skMain', MainDirective);
+});
 
-var SidePanelDirective = ['$sce', function ($sce) {
+angular.module('SherlockeContent').directive('skSidePanel', function ($sce) {
   return {
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html')),
     link: function (scope, element) {
@@ -111,12 +100,9 @@ var SidePanelDirective = ['$sce', function ($sce) {
       });
     }
   };
-}];
-angular
-    .module('SherlockeContent')
-    .directive('skSidePanel', SidePanelDirective);
+});
 
-var SelectDirective = [function () {
+angular.module('SherlockeContent').directive('skSelect', function () {
   return {
     link: function (scope, element) {
       // Handle showing/hiding of filters menu
@@ -145,17 +131,13 @@ var SelectDirective = [function () {
         }
       });
 
-
       // Handle the filters
       $('#sherlocke-filters li').click(function() {
         $('#sherlocke-filter').html(this.innerHTML);
       });
     }
   };
-}];
-angular
-    .module('SherlockeContent')
-    .directive('skSelect', SelectDirective);
+});
 
 
 /*

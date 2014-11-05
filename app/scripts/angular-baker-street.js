@@ -4,53 +4,33 @@ var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
-angular.module('BakerStreet', ['restmod']);
+var bakerStreet = angular.module('BakerStreet', ['restmod']);
 
 
 /* Define restmod models */
-
-var User = ['restmod', function (restmod) {
+bakerStreet.factory('User', function (restmod) {
   return restmod.model(BAKERSTREET_API + '/users').mix({
     researchSessions: { hasMany : 'ResearchSession'}
   });
-}];
-angular
-   .module('BakerStreet')
-   .factory('User', User);
+});
 
-
-var ResearchSession = ['restmod', function (restmod) {
+bakerStreet.factory('ResearchSession', function (restmod) {
   return restmod.model('/research_session').mix({
     user:      { hasOne: 'User' },
     questions: { hasMany: 'Question' },
     pages:     { hasMany: 'Pages' },
     documents: { hasMany: 'Documents' }
   });
-}];
-angular
-   .module('BakerStreet')
-   .factory('ResearchSession', ResearchSession);
+});
 
-
-var Questions = ['restmod', function (restmod) {
+bakerStreet.factory('Questions', function (restmod) {
   return restmod.model('/questions');
-}];
-angular
-   .module('BakerStreet')
-   .factory('Questions', Questions);
+});
 
-
-var Pages = ['restmod', function (restmod) {
+bakerStreet.factory('Pages', function (restmod) {
   return restmod.model('/pages');
-}];
-angular
-   .module('BakerStreet')
-   .factory('Pages', Pages);
+});
 
-
-var Documents = ['restmod', function (restmod) {
+bakerStreet.factory('Documents', function (restmod) {
   return restmod.model('/documents');
-}];
-angular
-   .module('BakerStreet')
-   .factory('Documents', Documents);
+});
