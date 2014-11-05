@@ -52,7 +52,8 @@ angular
 var SessionsController = ['$scope', '$location', 'ResearchSession', function ($scope, $location, ResearchSession) {
 
   // Some example stuff
-  $scope.sessions = [{'id': 0, 'user': 1, 'name': 'Example'}, {'id': 2, 'user': 1, 'name': 'Lorem ipsum'}];
+  $scope.sessions = [{'id': 0, 'user': 1, 'name': 'Example'},
+                     {'id': 1, 'user': 1, 'name': 'Lorem ipsum'}];
 
   $scope.save = function() {
     var session = ResearchSession.$create({ name: 'Wat' });
@@ -64,7 +65,6 @@ var SessionsController = ['$scope', '$location', 'ResearchSession', function ($s
         $location.path('/');
       });
     });
-
   };
 
   $scope.destroy = function() {
