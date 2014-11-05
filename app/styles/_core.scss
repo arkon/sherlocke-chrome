@@ -52,3 +52,18 @@ h2 {
   font-weight: 400;
   margin: 0;
 }
+
+label {
+  display: block;
+}
+
+input {
+  border: 1px solid $brand-color;
+  border-radius: 3px;
+  font-family: $font-stack;
+  padding: 0.25em 0.5em;
+
+  & + label {
+    margin-top: 1em;
+  }
+}

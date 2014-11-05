@@ -29,3 +29,8 @@ header {
   #username {
     font-weight: 600;
   }
+
+  input[type='submit'] {
+    display: block;
+    margin-top: 1em;
+  }
