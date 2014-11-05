@@ -2,10 +2,13 @@
 
 var BAKERSTREET_API = 'http://api.sherlocke.me/api/research_session';
 
+
 /* Declare AngularJS app */
 angular.module('BakerStreet', ['restmod']);
 
+
 /* Define restmod models */
+
 var User = ['restmod', function (restmod) {
   return restmod.model(BAKERSTREET_API + '/users').mix({
     researchSessions: { hasMany : 'ResearchSession'}
@@ -14,6 +17,7 @@ var User = ['restmod', function (restmod) {
 angular
    .module('BakerStreet')
    .factory('User', User);
+
 
 var ResearchSession = ['restmod', function (restmod) {
   return restmod.model('/research_session').mix({
@@ -26,6 +30,7 @@ var ResearchSession = ['restmod', function (restmod) {
 angular
    .module('BakerStreet')
    .factory('ResearchSession', ResearchSession);
+
 
 var Questions = ['restmod', function (restmod) {
   return restmod.model('/questions');
@@ -41,6 +46,7 @@ var Pages = ['restmod', function (restmod) {
 angular
    .module('BakerStreet')
    .factory('Pages', Pages);
+
 
 var Documents = ['restmod', function (restmod) {
   return restmod.model('/documents');

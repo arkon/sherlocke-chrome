@@ -34,9 +34,11 @@ angular
 
 var SidePanelController = ['$scope', '$window', 'ResearchSession',
       function ($scope, $window, ResearchSession) {
-  // Dummy loading
   $scope.isLoading = false;
+
+  // Dummy loading
   // $scope.isLoading = true;
+
   // var i = 1;
   // var crunch = $window.setInterval(function () {
   //   $scope.progress = i++;
@@ -55,35 +57,22 @@ var SidePanelController = ['$scope', '$window', 'ResearchSession',
 
   // Post sample question
   var researchSession = ResearchSession.$new($scope.sessionId);
-  var documents = researchSession.documents.$find(questions[$window.location.href] || 'What is the Labour Code?');
-  documents.$then(function() {
+  var evidence = researchSession.documents.$find(questions[$window.location.href] || 'What is the Labour Code?');
+  evidence.$then(function() {
     // expect(bike.brand).toBeDefined();
 
-  //   $scope.evidence = _.map(data.data.question.evidencelist, function (document) {
-  //     document.link = links[document.id] || '#';
-  //     return document;
-  //   });
+    var links = {
+      'PB_74093ED8A37A20A251ED45580874251': 'https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-l-2/latest/rsc-1985-c-l-2.html',
+      'T_E52D6070706DC1A240C9266A18A26365': 'https://www.canlii.org/en/nu/laws/stat/rsnwt-nu-1988-c-l-1/latest/rsnwt-nu-1988-c-l-1.html'
+    };
+
+    $scope.evidence = _.map(evidence.data.question.evidencelist, function (document) {
+      document.link = links[document.id] || '#';
+      return document;
+    });
 
     $scope.isLoading = false;
   });
-
-  // QuestionService.postQuestion({
-  //   questionText: questions[$window.location.href] || 'What is the Labour Code?'
-  // }).then(function success(data/*, status, headers, config*/) {
-  //   var links = {
-  //     'PB_74093ED8A37A20A251ED45580874251': 'https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-l-2/latest/rsc-1985-c-l-2.html',
-  //     'T_E52D6070706DC1A240C9266A18A26365': 'https://www.canlii.org/en/nu/laws/stat/rsnwt-nu-1988-c-l-1/latest/rsnwt-nu-1988-c-l-1.html'
-  //   };
-
-  //   $scope.evidence = _.map(data.data.question.evidencelist, function (document) {
-  //     document.link = links[document.id] || '#';
-  //     return document;
-  //   });
-
-  //   $scope.isLoading = false;
-  // }, function failure(/*data, status, headers, config*/) {
-
-  // });
 }];
 angular
     .module('SherlockeContent')
@@ -189,6 +178,5 @@ angular.element(document).ready(function () {
         .append('<div ng-controller="MainController" id="sherlocke"><div sk-side-panel ng-controller="SidePanelController"></div></div>');
 
     angular.bootstrap(document, ['SherlockeContent']);
-
   }
 });

@@ -13,8 +13,8 @@
     <li ng-repeat="document in evidence | limitTo:10">
       <a ng-href="{{ document.link }}">
         <h1>{{ document.title }}</h1>
-        <p>Confidence: {{ document.value * 100 | number: 2 }}%</p>
-        <p>CanLII</p>
+        <!-- <p>Confidence: {{ document.value * 100 | number: 2 }}%</p> -->
+        <p>{{ document.source }}</p>
       </a>
     </li>
   </ul>
