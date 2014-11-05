@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="SherlockeOptions">
   <head>
     <title>Sherlocke options</title>
     <!-- build:css styles/vendor.css -->
@@ -15,8 +15,17 @@
       <h1>Options</h1>
     </header>
 
-    <section id="user">
-      <h2>Logged in as <span id="username">arkon</span></h2>
+    <section id="user" ng-controller="AuthController as auth">
+      <form ng-if="!auth.isAuthenticated" ng-submit="auth.authenticate()">
+        <label for="email">Email address</label>
+        <input id="email" type="email" ng-model="auth.email">
+
+        <label for="password">Password</label>
+        <input id="password" type="password" ng-model="auth.password">
+
+        <input type="submit" value="Sign in">
+      </form>
+      <h2 ng-if="auth.isAuthenticated">Logged in as <span id="username">{{currentUser}}</span></h2>
     </section>
 
     <!-- build:js scripts/vendor.js -->
@@ -24,6 +33,7 @@
     <script src="bower_components/lodash/dist/lodash.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-restmod/dist/angular-restmod-bundle.js"></script>
+    <script src="bower_components/angular-django-auth/lib/django-auth.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/angular-baker-street.js -->
