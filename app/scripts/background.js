@@ -2,8 +2,9 @@
 
 var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 
+
 /* Declare AngularJS app */
-angular.module('SherlockeApp', ['DjangoAuth']);
+var app = angular.module('SherlockeApp', ['DjangoAuth']);
 
 /* Eagerly instantiate services once modules are loaded */
 function run($log, SherlockeService) {
@@ -12,9 +13,7 @@ function run($log, SherlockeService) {
   }
 }
 run.$inject = ['$log', 'SherlockeService'];
-angular
-    .module('SherlockeApp')
-    .run(run);
+app.run(run);
 
 /*
  * Provider configuration
@@ -26,9 +25,7 @@ function config(AuthProvider) {
   AuthProvider.resourceName(false);
 }
 config.$inject = ['AuthProvider'];
-angular
-    .module('SherlockeApp')
-    .config(config);
+app.config(config);
 
 /*
  * Services
@@ -46,9 +43,7 @@ function SherlockeService($q, Auth) {
   };
 }
 SherlockeService.$inject = ['$q', 'Auth'];
-angular
-    .module('SherlockeApp')
-    .service('SherlockeService', SherlockeService);
+app.service('SherlockeService', SherlockeService);
 
 
 /*

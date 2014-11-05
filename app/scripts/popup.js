@@ -45,10 +45,19 @@ popup.controller('PopupController', function (/*$scope*/) {
 });
 
 popup.controller('PinnedController', function ($scope) {
+  $scope.noPinned = true;
+
   $scope.documents = [{'id': 0, 'url': 'www.example.com'},
                       {'id': 1, 'url': 'Lorem ipsum'}];
 
   $scope.noPinned = $scope.documents.length === 0;
+
+  // var researchSession = ResearchSession.$new($scope.sessionId);
+  // var pinned = researchSession.documents.$find();
+  // pinned.$then(function() {
+  //   $scope.documents = pinned.data;
+  //   $scope.noPinned = $scope.documents.length === 0;
+  // });
 });
 
 popup.controller('PriorityController', function ($scope) {

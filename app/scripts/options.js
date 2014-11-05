@@ -1,7 +1,7 @@
 'use strict';
 
 /* Declare AngularJS app */
-angular.module('SherlockeOptions', []);
+var options = angular.module('SherlockeOptions', []);
 
 /*
  * Controllers
@@ -34,6 +34,4 @@ function AuthController($log) {
   };
 }
 AuthController.$inject = ['$log'];
-angular
-    .module('SherlockeOptions')
-    .controller('AuthController', AuthController);
+options.controller('AuthController', AuthController);
