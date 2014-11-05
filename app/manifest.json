@@ -65,7 +65,8 @@
     "storage",
     "history",
     "*://www.canlii.org/*",
-    "https://watson-wdc01.ihost.com/*"
+    "https://watson-wdc01.ihost.com/*",
+    "*://api.sherlocke.me/api/*"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

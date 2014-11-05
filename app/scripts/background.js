@@ -23,6 +23,7 @@ function config(AuthProvider) {
   // Configure Auth service with AuthProvider
   AuthProvider.loginPath(BAKERSTREET_API + '/users/sign_in.json');
   AuthProvider.logoutPath(BAKERSTREET_API + '/users/sign_out.json');
+  AuthProvider.resourceName(false);
 }
 config.$inject = ['AuthProvider'];
 angular
@@ -33,12 +34,14 @@ angular
  * Services
  */
 function SherlockeService($q, Auth) {
-  this.authenticate = function (email, password) {
+  var vm = this;
+
+  vm.authenticate = function (email, password) {
     return Auth.login({
       email: email,
       password: password
-    }).then(function (token) {
-      debugger;
+    }).then(function (response) {
+      vm.authToken = response.token;
     });
   };
 }
