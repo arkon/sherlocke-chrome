@@ -8,7 +8,7 @@ angular.module('BakerStreet', ['restmod']);
 /* Define restmod models */
 var User = ['restmod', function (restmod) {
   return restmod.model(BAKERSTREET_API + '/users').mix({
-    research_sessions: { hasMany : 'ResearchSession'}
+    researchSessions: { hasMany : 'ResearchSession'}
   });
 }];
 angular

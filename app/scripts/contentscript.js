@@ -32,7 +32,8 @@ angular
     .module('SherlockeContent')
     .controller('MainController', MainController);
 
-var SidePanelController = ['$scope', '$window', 'Documents', function ($scope, $window, Documents) {
+var SidePanelController = ['$scope', '$window', 'ResearchSession',
+      function ($scope, $window, ResearchSession) {
   // Dummy loading
   $scope.isLoading = false;
   // $scope.isLoading = true;
@@ -53,9 +54,15 @@ var SidePanelController = ['$scope', '$window', 'Documents', function ($scope, $
   };
 
   // Post sample question
-  var documents = Documents.$find(questions[$window.location.href] || 'What is the Labour Code?');
+  var researchSession = ResearchSession.$new($scope.sessionId);
+  var documents = researchSession.documents.$find(questions[$window.location.href] || 'What is the Labour Code?');
   documents.$then(function() {
     // expect(bike.brand).toBeDefined();
+
+  //   $scope.evidence = _.map(data.data.question.evidencelist, function (document) {
+  //     document.link = links[document.id] || '#';
+  //     return document;
+  //   });
 
     $scope.isLoading = false;
   });

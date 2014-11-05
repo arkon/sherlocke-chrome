@@ -2,10 +2,10 @@
   <h1>Prioritized items</h1>
 
   <ul id="session-priority">
-    <li ng-repeat="priority in session.priority" ng-href="{{ priority.id }}">
+    <li ng-repeat="priority in prioritized" ng-href="{{ priority.id }}">
       {{ priority.name }}
     </li>
   </ul>
 
-  <p id="priority-list-none">No items prioritized yet</p>
+  <p ng-if="noPriority === true">No items prioritized yet</p>
 </article>

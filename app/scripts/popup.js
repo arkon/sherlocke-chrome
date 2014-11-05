@@ -9,12 +9,15 @@ angular
     .config(function($routeProvider) {
   $routeProvider
     .when('/tab1', {
+      controller:'PinnedController',
       templateUrl:'templates/popup-pinned.html'
     })
     .when('/tab2', {
+      controller:'PriorityController',
       templateUrl:'templates/popup-priority.html'
     })
     .when('/tab3', {
+      controller:'HistoryController',
       templateUrl:'templates/popup-history.html'
     })
     .when('/new', {
@@ -34,10 +37,7 @@ angular
 /*
  * Controllers
  */
-var PopupController = ['$scope', function (/*$scope, Sessions*/) {
-
-  // $scope.sessions = Sessions;
-
+var PopupController = ['$scope', function (/*$scope*/) {
   // Handle active tab's styling
   $('ul.tabs li:first').addClass('active');
   $('ul.tabs li').on('click', function(){
@@ -49,7 +49,38 @@ angular
     .module('SherlockePopup')
     .controller('PopupController', PopupController);
 
-var SessionsController = ['$scope', '$location', 'ResearchSession', function ($scope, $location, ResearchSession) {
+var PinnedController = ['$scope', function ($scope) {
+  $scope.documents = [{'id': 0, 'url': 'www.example.com'},
+                      {'id': 1, 'url': 'Lorem ipsum'}];
+
+  $scope.noPinned = $scope.documents.length === 0;
+}];
+angular
+    .module('SherlockePopup')
+    .controller('PinnedController', PinnedController);
+
+var PriorityController = ['$scope', function ($scope) {
+  $scope.prioritized = [{'id': 0, 'name': 'Something'},
+                        {'id': 1, 'name': 'Lorem ipsum'}];
+
+  $scope.noPriority = $scope.prioritized.length === 0;
+}];
+angular
+    .module('SherlockePopup')
+    .controller('PriorityController', PriorityController);
+
+var HistoryController = ['$scope', function ($scope) {
+  $scope.pages = [{'id': 0, 'url': 'www.example.com'},
+                  {'id': 1, 'url': 'Lorem ipsum'}];
+
+  $scope.noHistory = $scope.pages.length === 0;
+}];
+angular
+    .module('SherlockePopup')
+    .controller('HistoryController', HistoryController);
+
+var SessionsController = ['$scope', '$location', 'ResearchSession',
+    function ($scope, $location, ResearchSession) {
 
   // Some example stuff
   $scope.sessions = [{'id': 0, 'user': 1, 'name': 'Example'},
@@ -61,14 +92,14 @@ var SessionsController = ['$scope', '$location', 'ResearchSession', function ($s
       $scope.session = _session;
       $scope.sessionId = _session.id;
 
-      $scope.sessions.$add(_session).then(function () {
-        $location.path('/');
-      });
+      // $scope.sessions.$add(_session).then(function () {
+      //   $location.path('/');
+      // });
     });
   };
 
   $scope.destroy = function() {
-    $scope.sessions.$remove($scope.session).then(function (data) {
+    $scope.sessions.$remove($scope.session).then(function () {
       $location.path('/');
     });
   };
