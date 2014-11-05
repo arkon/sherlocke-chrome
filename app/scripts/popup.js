@@ -49,6 +49,7 @@ angular
     .module('SherlockePopup')
     .controller('PopupController', PopupController);
 
+
 var PinnedController = ['$scope', function ($scope) {
   $scope.documents = [{'id': 0, 'url': 'www.example.com'},
                       {'id': 1, 'url': 'Lorem ipsum'}];
@@ -58,6 +59,7 @@ var PinnedController = ['$scope', function ($scope) {
 angular
     .module('SherlockePopup')
     .controller('PinnedController', PinnedController);
+
 
 var PriorityController = ['$scope', function ($scope) {
   $scope.prioritized = [{'id': 0, 'name': 'Something'},
@@ -69,6 +71,7 @@ angular
     .module('SherlockePopup')
     .controller('PriorityController', PriorityController);
 
+
 var HistoryController = ['$scope', function ($scope) {
   $scope.pages = [{'id': 0, 'url': 'www.example.com'},
                   {'id': 1, 'url': 'Lorem ipsum'}];
@@ -78,6 +81,7 @@ var HistoryController = ['$scope', function ($scope) {
 angular
     .module('SherlockePopup')
     .controller('HistoryController', HistoryController);
+
 
 var SessionsController = ['$scope', '$location', 'ResearchSession',
     function ($scope, $location, ResearchSession) {
@@ -92,16 +96,17 @@ var SessionsController = ['$scope', '$location', 'ResearchSession',
       $scope.session = _session;
       $scope.sessionId = _session.id;
 
-      // $scope.sessions.$add(_session).then(function () {
-      //   $location.path('/');
-      // });
+      $scope.sessions.$add(_session).then(function () {
+        $location.path('/');
+      });
     });
   };
 
   $scope.destroy = function() {
-    $scope.sessions.$remove($scope.session).then(function () {
-      $location.path('/');
-    });
+    // session.$destroy();
+    // $scope.sessions.$remove($scope.session).then(function () {
+    $location.path('/');
+    // });
   };
 }];
 angular

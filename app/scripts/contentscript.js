@@ -59,8 +59,6 @@ var SidePanelController = ['$scope', '$window', 'ResearchSession',
   var researchSession = ResearchSession.$new($scope.sessionId);
   var evidence = researchSession.documents.$find(questions[$window.location.href] || 'What is the Labour Code?');
   evidence.$then(function() {
-    // expect(bike.brand).toBeDefined();
-
     var links = {
       'PB_74093ED8A37A20A251ED45580874251': 'https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-l-2/latest/rsc-1985-c-l-2.html',
       'T_E52D6070706DC1A240C9266A18A26365': 'https://www.canlii.org/en/nu/laws/stat/rsnwt-nu-1988-c-l-1/latest/rsnwt-nu-1988-c-l-1.html'
