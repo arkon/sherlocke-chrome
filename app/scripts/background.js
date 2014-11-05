@@ -1,18 +1,36 @@
 'use strict';
 
 var BAKERSTREET_API = 'http://api.sherlocke.me/api';
+// var BAKERSTREET_API = 'http://15cc08bf.ngrok.com/api';
 
 
 /* Declare AngularJS app */
-var app = angular.module('SherlockeApp', ['DjangoAuth']);
+var app = angular.module('SherlockeApp', ['DjangoAuth', 'ngCookies']);
+
+// app.config(['$httpProvider', function ($httpProvider) {
+//   $httpProvider.defaults.useXDomain = true;
+//   delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
+//   Reset headers to avoid OPTIONS request (aka preflight)
+//   $httpProvider.defaults.headers.common = {};
+//   $httpProvider.defaults.headers.post = {};
+//   $httpProvider.defaults.headers.put = {};
+//   $httpProvider.defaults.headers.patch = {};
+
+  // $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+  // $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+// }]);
+
 
 /* Eagerly instantiate services once modules are loaded */
-function run($log, SherlockeService) {
+function run($http, $cookies, $log, SherlockeService) {
   if (!SherlockeService) {
     $log.warn('SherlockService not instantiated');
   }
+
+  $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
 }
-run.$inject = ['$log', 'SherlockeService'];
+run.$inject = ['$http', '$cookies', '$log', 'SherlockeService'];
 app.run(run);
 
 /*
@@ -77,9 +95,10 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
 });
 
-chrome.runtime.onInstalled.addListener(function (details) {
-  console.log('previousVersion', details.previousVersion);
-});
+
+// chrome.runtime.onInstalled.addListener(function (details) {
+//   console.log('previousVersion', details.previousVersion);
+// });
 
 
 /* Context menu item */

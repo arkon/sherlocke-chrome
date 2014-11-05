@@ -35,16 +35,18 @@ popup.config(function($routeProvider) {
 /*
  * Controllers
  */
-popup.controller('PopupController', function (/*$scope*/) {
+function PopupController() {
   // Handle active tab's styling
   $('ul.tabs li:first').addClass('active');
   $('ul.tabs li').on('click', function(){
     $('ul.tabs li').removeClass('active');
     $(this).addClass('active');
   });
-});
+}
+PopupController.$inject = [];
+popup.controller('PopupController', PopupController);
 
-popup.controller('PinnedController', function ($scope) {
+function PinnedController($scope) {
   $scope.noPinned = true;
 
   $scope.documents = [{'id': 0, 'url': 'www.example.com'},
@@ -58,27 +60,41 @@ popup.controller('PinnedController', function ($scope) {
   //   $scope.documents = pinned.data;
   //   $scope.noPinned = $scope.documents.length === 0;
   // });
-});
+}
+PinnedController.$inject = ['$scope'];
+popup.controller('PinnedController', PinnedController);
 
-popup.controller('PriorityController', function ($scope) {
+
+function PriorityController($scope) {
   $scope.prioritized = [{'id': 0, 'name': 'Something'},
                         {'id': 1, 'name': 'Lorem ipsum'}];
 
   $scope.noPriority = $scope.prioritized.length === 0;
-});
+}
+PriorityController.$inject = ['$scope'];
+popup.controller('PriorityController', PriorityController);
 
-popup.controller('HistoryController', function ($scope) {
+
+function HistoryController($scope) {
   $scope.pages = [{'id': 0, 'url': 'www.example.com'},
                   {'id': 1, 'url': 'Lorem ipsum'}];
 
   $scope.noHistory = $scope.pages.length === 0;
-});
+}
+HistoryController.$inject = ['$scope'];
+popup.controller('HistoryController', HistoryController);
 
-popup.controller('SessionsController', function ($scope, $location, ResearchSession) {
 
+function SessionsController($scope, $location, ResearchSession) {
   // Some example stuff
-  $scope.sessions = [{'id': 0, 'user': 1, 'name': 'Example'},
-                     {'id': 1, 'user': 1, 'name': 'Lorem ipsum'}];
+  $scope.sessions = [];
+  // $scope.sessions = [{'id': 0, 'user': 1, 'name': 'Example'},
+  //                    {'id': 1, 'user': 1, 'name': 'Lorem ipsum'}];
+
+  var researchSessions = ResearchSession.$build({});
+  researchSessions.$then(function() {
+    $scope.sessions = researchSessions.data;
+  });
 
   $scope.save = function() {
     var session = ResearchSession.$create({ name: 'Wat' });
@@ -86,9 +102,9 @@ popup.controller('SessionsController', function ($scope, $location, ResearchSess
       $scope.session = _session;
       $scope.sessionId = _session.id;
 
-      $scope.sessions.$add(_session).then(function () {
-        $location.path('/');
-      });
+    });
+    $scope.sessions.$add($scope.session).then(function() {
+      $location.path('/');
     });
   };
 
@@ -98,13 +114,15 @@ popup.controller('SessionsController', function ($scope, $location, ResearchSess
     $location.path('/');
     // });
   };
-});
+}
+SessionsController.$inject = ['$scope', '$location', 'ResearchSession'];
+popup.controller('SessionsController', SessionsController);
 
 
 /*
  * Directives
  */
-popup.directive('skSession', function ($sce) {
+function skSession($sce) {
   return {
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/session-list.html')),
     link: function (scope, element) {
@@ -114,7 +132,10 @@ popup.directive('skSession', function ($sce) {
       });
     }
   };
-});
+}
+skSession.$inject= ['$sce'];
+popup.directive('skSession', skSession);
+
 
 
 // // Event listner for clicks on links in a browser action popup.

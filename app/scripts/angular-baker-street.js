@@ -1,35 +1,53 @@
 'use strict';
 
-var BAKERSTREET_RESEARCH_API = 'http://api.sherlocke.me/api/research_session';
+var BAKERSTREET_RESEARCH_API = 'http://api.sherlocke.me/api';
+// var BAKERSTREET_RESEARCH_API = 'http://15cc08bf.ngrok.com/api';
 
 
 /* Declare AngularJS app */
 var bakerStreet = angular.module('BakerStreet', ['restmod']);
 
+// bakerStreet.config(['$httpProvider', function ($httpProvider) {
+//   $httpProvider.defaults.useXDomain = true;
+//   delete $httpProvider.defaults.headers.common['X-Requested-With'];
+
+//   // Reset headers to avoid OPTIONS request (aka preflight)
+//   $httpProvider.defaults.headers.common = {};
+//   $httpProvider.defaults.headers.post = {};
+//   $httpProvider.defaults.headers.put = {};
+//   $httpProvider.defaults.headers.patch = {};
+// }]);
+
+bakerStreet.config(function(restmodProvider) {
+  restmodProvider.rebase({
+    $config: {
+      urlPrefix: BAKERSTREET_RESEARCH_API
+    }
+  });
+});
+
 
 /* Define restmod models */
-bakerStreet.factory('ResearchSession', function (restmod) {
-  return restmod.model(BAKERSTREET_RESEARCH_API).mix({
-    questions: { hasMany: 'Questions' },
-    pages:     { hasMany: 'Pages' },
-    documents: { hasMany: 'Documents' }
-  });
-});
+var ResearchSession = ['restmod', function (restmod) {
+  return restmod.model('/research_session');
+}];
+bakerStreet.factory('ResearchSession', ResearchSession);
 
-bakerStreet.factory('Questions', function (restmod) {
-  return restmod.model('/questions').mix({
-    researchSession: { hasOne: 'ResearchSession' }
-  });
-});
+// POST to make a new one (name) -> response with name/id
+// POST with parameter id
+// GET: all research sessions
 
-bakerStreet.factory('Pages', function (restmod) {
-  return restmod.model('/pages').mix({
-    researchSession: { hasOne: 'ResearchSession' }
-  });
-});
+var Questions = ['restmod', function (restmod) {
+  return restmod.model('/questions');
+}];
+bakerStreet.factory('Questions', Questions);
 
-bakerStreet.factory('Documents', function (restmod) {
-  return restmod.model('/documents').mix({
-    researchSession: { hasOne: 'ResearchSession' }
-  });
-});
+var Pages = ['restmod', function (restmod) {
+  return restmod.model('/pages');
+}];
+bakerStreet.factory('Pages', Pages);
+
+var Documents = ['restmod', function (restmod) {
+  return restmod.model('/documents');
+}];
+bakerStreet.factory('Documents', Documents);

@@ -3,13 +3,13 @@
 
 
 /* Declare AngularJS app */
-angular.module('SherlockeContent', ['BakerStreet']);
+var contentModule = angular.module('SherlockeContent', ['BakerStreet']);
 
 
 /*
  * Controllers
  */
-angular.module('SherlockeContent').controller('MainController', function ($scope) {
+var MainController = ['$scope', function ($scope) {
   // Settings
   chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
     if ('opt-hide-sidebar' in items) {
@@ -26,9 +26,11 @@ angular.module('SherlockeContent').controller('MainController', function ($scope
       $scope.showMenu = true;
     }
   });
-});
+}];
+contentModule.controller('MainController', MainController);
 
-angular.module('SherlockeContent').controller('SidePanelController', function ($scope, $window, ResearchSession) {
+var SidePanelController = ['$scope', '$window', 'Pages', 'Documents',
+      function ($scope, $window, Pages, Documents) {
   $scope.isLoading = false;
 
   // Dummy loading
@@ -39,40 +41,34 @@ angular.module('SherlockeContent').controller('SidePanelController', function ($
   //   $scope.progress = i++;
   // }, 10);
   // $window.setTimeout(function() {
-  //   $window.clearInterval(crunch);
+    // $window.clearInterval(crunch);
   //   $scope.isLoading = false;
   // }, 2000);
 
-  var questions = {
-    'https://www.canlii.org/en/qc/laws/stat/cqlr-c-c-27/latest/cqlr-c-c-27.html': 'What is the Labour Code?',
-    'https://www.canlii.org/en/sk/laws/stat/rss-1978-c-l-1/latest/rss-1978-c-l-1.html': 'What is the Labour Standards Act?',
-    'https://www.canlii.org/en/on/laws/stat/so-2000-c-41/latest/so-2000-c-41.html': 'What does the "Employment Standards Act" say about minimum wage?',
-    'https://www.canlii.org/en/on/onlrb/doc/2000/2000canlii7807/2000canlii7807.html?searchUrlHash=AAAAAQAMbWluaW11bSB3YWdlAAAAAAE': 'What is minimum wage?'
-  };
+  // POST the current page
+  var page = Pages.$build({
+    /* jshint camelcase: false */
+    page_url: $window.location.href,
+    title: document.title,
+    content: ''
+  });
+  page.$save();
 
-  // Post sample question
-  var researchSession = ResearchSession.$new($scope.sessionId);
-  var evidence = researchSession.documents.$find(questions[$window.location.href] || 'What is the Labour Code?');
+  // GET the evidence document list
+  var evidence = Documents.$find(1);
   evidence.$then(function() {
-    var links = {
-      'PB_74093ED8A37A20A251ED45580874251': 'https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-l-2/latest/rsc-1985-c-l-2.html',
-      'T_E52D6070706DC1A240C9266A18A26365': 'https://www.canlii.org/en/nu/laws/stat/rsnwt-nu-1988-c-l-1/latest/rsnwt-nu-1988-c-l-1.html'
-    };
-
-    $scope.evidence = _.map(evidence.data.question.evidencelist, function (document) {
-      document.link = links[document.id] || '#';
-      return document;
-    });
+    $scope.evidence = evidence.data;
 
     $scope.isLoading = false;
   });
-});
+}];
+contentModule.controller('SidePanelController', SidePanelController);
 
 
 /*
  * Directives
  */
-angular.module('SherlockeContent').directive('skMain', function () {
+var MainDirective = [function () {
   return {
     link: function (scope) {
       scope.$watch('isSidebarHidden', function (value) {
@@ -80,9 +76,10 @@ angular.module('SherlockeContent').directive('skMain', function () {
       });
     }
   };
-});
+}];
+contentModule.directive('skMain', MainDirective);
 
-angular.module('SherlockeContent').directive('skSidePanel', function ($sce) {
+var SidePanelDirective = ['$sce', function ($sce) {
   return {
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html')),
     link: function (scope, element) {
@@ -100,9 +97,10 @@ angular.module('SherlockeContent').directive('skSidePanel', function ($sce) {
       });
     }
   };
-});
+}];
+contentModule.directive('skSidePanel', SidePanelDirective);
 
-angular.module('SherlockeContent').directive('skSelect', function () {
+var SelectDirective = [function () {
   return {
     link: function (scope, element) {
       // Handle showing/hiding of filters menu
@@ -137,7 +135,8 @@ angular.module('SherlockeContent').directive('skSelect', function () {
       });
     }
   };
-});
+}];
+contentModule.directive('skSelect', SelectDirective);
 
 
 /*
