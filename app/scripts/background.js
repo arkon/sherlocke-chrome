@@ -30,3 +30,6 @@ chrome.contextMenus.create({
   contexts: ['selection', 'link', 'editable'],
   onclick: menuItemClicked
 });
+
+/* Declare AngularJS app */
+angular.module('SherlockeApp', []);
