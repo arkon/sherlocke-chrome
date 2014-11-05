@@ -33,27 +33,3 @@ var Documents = ['restmod', function (restmod) {
 angular
    .module('BakerStreet')
    .factory('Documents', Documents);
-
-
-
-// var QuestionService = ['$http', function ($http) {
-//   var QuestionService = {};
-
-//   QuestionService.postQuestion = function (question) {
-//     return $http.post(QUESTION_API, {
-//       'question': question
-//     }, {
-//       headers: {
-//         'Authorization': 'Basic dXRfc3R1ZGVudDU6OUp3WGFjUEg=',
-//         'Content-Type': 'application/json',
-//         'Accept': 'application/json',
-//         'X-SyncTimeout': '30'
-//       }
-//     });
-//   };
-
-//   return QuestionService;
-// }];
-// angular
-//     .module('BakerStreet')
-//     .factory('QuestionService', QuestionService);
