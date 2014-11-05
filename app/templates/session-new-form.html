@@ -1,10 +1,8 @@
 <article>
   <h1>New session</h1>
 
-  <form>
+  <form name="session-new">
     <div ng-class="{error: myForm.name.$invalid && !myForm.name.$pristine}">
-      <label>ID</label>
-      <input type="text" name="id" ng-model="session.id" required>
       <label>Name</label>
       <input type="text" name="name" ng-model="session.name" required>
       <!-- <span ng-show="myForm.name.$error.required && !myForm.name.$pristine" class="help-inline">

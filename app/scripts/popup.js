@@ -49,29 +49,28 @@ angular
     .module('SherlockePopup')
     .controller('PopupController', PopupController);
 
-var SessionsController = ['$scope', '$location', function ($scope, $location) {
+var SessionsController = ['$scope', '$location', 'ResearchSession', function ($scope, $location, ResearchSession) {
 
   // Some example stuff
-  $scope.sessions = [{'id': '1', 'name': 'Example'}, {'id': '2', 'name': 'Lorem ipsum'}];
+  $scope.sessions = [{'id': 0, 'user': 1, 'name': 'Example'}, {'id': 2, 'user': 1, 'name': 'Lorem ipsum'}];
 
   $scope.save = function() {
-    $.post("/research_session", function(data) {
-      // {
-      //     "id": 4,
-      //     "user": 1
-      // }
-      var response = jQuery.parseJSON(data);
-      $scope.sessionId = response.id;
+    var session = ResearchSession.$create({ name: 'Wat' });
+    session.$then(function(_session) {
+      $scope.session = _session;
+      $scope.sessionId = _session.id;
+
+      $scope.sessions.$add(_session).then(function () {
+        $location.path('/');
+      });
     });
-    // $scope.sessions.$add($scope.session).then(function (data) {
-    $location.path('/');
-    // });
+
   };
 
   $scope.destroy = function() {
-    // $scope.sessions.$remove($scope.session).then(function (data) {
-    $location.path('/');
-    // });
+    $scope.sessions.$remove($scope.session).then(function (data) {
+      $location.path('/');
+    });
   };
 }];
 angular

@@ -32,7 +32,7 @@ angular
     .module('SherlockeContent')
     .controller('MainController', MainController);
 
-var SidePanelController = ['$scope', '$window', 'QuestionService', function ($scope, $window, QuestionService) {
+var SidePanelController = ['$scope', '$window', 'Documents', function ($scope, $window, Documents) {
   // Dummy loading
   $scope.isLoading = false;
   // $scope.isLoading = true;
@@ -53,23 +53,30 @@ var SidePanelController = ['$scope', '$window', 'QuestionService', function ($sc
   };
 
   // Post sample question
-  QuestionService.postQuestion({
-    questionText: questions[$window.location.href] || 'What is the Labour Code?'
-  }).then(function success(data/*, status, headers, config*/) {
-    var links = {
-      'PB_74093ED8A37A20A251ED45580874251': 'https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-l-2/latest/rsc-1985-c-l-2.html',
-      'T_E52D6070706DC1A240C9266A18A26365': 'https://www.canlii.org/en/nu/laws/stat/rsnwt-nu-1988-c-l-1/latest/rsnwt-nu-1988-c-l-1.html'
-    };
-
-    $scope.evidence = _.map(data.data.question.evidencelist, function (document) {
-      document.link = links[document.id] || '#';
-      return document;
-    });
+  var documents = Documents.$find(questions[$window.location.href] || 'What is the Labour Code?');
+  documents.$then(function() {
+    // expect(bike.brand).toBeDefined();
 
     $scope.isLoading = false;
-  }, function failure(/*data, status, headers, config*/) {
-
   });
+
+  // QuestionService.postQuestion({
+  //   questionText: questions[$window.location.href] || 'What is the Labour Code?'
+  // }).then(function success(data/*, status, headers, config*/) {
+  //   var links = {
+  //     'PB_74093ED8A37A20A251ED45580874251': 'https://www.canlii.org/en/ca/laws/stat/rsc-1985-c-l-2/latest/rsc-1985-c-l-2.html',
+  //     'T_E52D6070706DC1A240C9266A18A26365': 'https://www.canlii.org/en/nu/laws/stat/rsnwt-nu-1988-c-l-1/latest/rsnwt-nu-1988-c-l-1.html'
+  //   };
+
+  //   $scope.evidence = _.map(data.data.question.evidencelist, function (document) {
+  //     document.link = links[document.id] || '#';
+  //     return document;
+  //   });
+
+  //   $scope.isLoading = false;
+  // }, function failure(/*data, status, headers, config*/) {
+
+  // });
 }];
 angular
     .module('SherlockeContent')
