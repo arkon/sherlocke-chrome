@@ -55,6 +55,14 @@ var SessionsController = ['$scope', '$location', function ($scope, $location) {
   $scope.sessions = [{'id': '1', 'name': 'Example'}, {'id': '2', 'name': 'Lorem ipsum'}];
 
   $scope.save = function() {
+    $.post("/research_session", function(data) {
+      // {
+      //     "id": 4,
+      //     "user": 1
+      // }
+      var response = jQuery.parseJSON(data);
+      $scope.sessionId = response.id;
+    });
     // $scope.sessions.$add($scope.session).then(function (data) {
     $location.path('/');
     // });
