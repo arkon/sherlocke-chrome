@@ -1,6 +1,6 @@
 'use strict';
 
-var BAKERSTREET_API = 'http://api.sherlocke.me/api/research_session';
+var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
