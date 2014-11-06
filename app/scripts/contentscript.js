@@ -55,7 +55,7 @@ var SidePanelController = ['$scope', '$window', 'Pages', 'Documents',
   page.$save();
 
   // GET the evidence document list
-  var evidence = Documents.$find(1);
+  var evidence = Documents.$find();
   evidence.$then(function() {
     $scope.evidence = evidence.data;
 

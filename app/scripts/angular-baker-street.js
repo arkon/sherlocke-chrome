@@ -8,24 +8,22 @@ var bakerStreet = angular.module('BakerStreet', ['restmod']);
 
 bakerStreet.config(function (restmodProvider) {
   restmodProvider.rebase({
-    $hooks: {
-      'before-request': function(_req) {
-        /*jshint sub:true*/
-        _req.headers['Authorization'] = 'Token 123';
-
-        // chrome.storage.sync.get(['sherlocke-token'], function (items) {
-        //   if ('sherlocke-token' in items) {
-        //     _req.headers.Authorization = 'Token ' + items['sherlocke-token'];
-        //   }
-        // });
-      }
-    },
     $config: {
       urlPrefix: BAKERSTREET_RESEARCH_API,
       style: 'MyStyle'
     }
   });
 });
+
+function run($http) {
+  chrome.storage.sync.get(['sherlocke-token'], function (items) {
+    if ('sherlocke-token' in items) {
+      $http.defaults.headers.common.Authorization = 'Token ' + items['sherlocke-token'];
+    }
+  });
+}
+run.$inject = ['$http'];
+bakerStreet.run(run);
 
 
 /* Define restmod models */
