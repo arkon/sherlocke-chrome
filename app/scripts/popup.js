@@ -103,9 +103,12 @@ angular
 function SessionsController($scope, $http, $location, ResearchSession) {
   $scope.noSessions = true;
 
-  // $scope.$watch('sessionId', function(newVal, oldVal) {
-  //   $scope.sessionId = newVal;
-  // }, true);
+  $scope.$watch('sessionId', function (_sessionId) {
+    // POST the current session
+    ResearchSession.$new(_sessionId).$save();
+
+    $scope.sessionId = _sessionId;
+  }, true);
 
   $http
     .get(BAKERSTREET_API + '/research_session')

@@ -10,7 +10,8 @@ angular.module('BakerStreet', ['restmod']);
 function config(restmodProvider) {
   restmodProvider.rebase({
     $config: {
-      urlPrefix: BAKERSTREET_RESEARCH_API
+      urlPrefix: BAKERSTREET_RESEARCH_API,
+      style: 'Style'  // Gets rid of a warning
     }
   });
 }
@@ -18,6 +19,16 @@ config.$inject = ['restmodProvider'];
 angular
     .module('BakerStreet')
     .config(config);
+
+function run($http, BakerStreetService) {
+  if (BakerStreetService.userToken) {
+    $http.defaults.headers.common.Authorization = 'Token ' + BakerStreetService.userToken;
+  }
+}
+run.$inject = ['$http', 'BakerStreetService'];
+angular
+    .module('BakerStreet')
+    .run(run);
 
 /*
  * Services
@@ -32,24 +43,25 @@ angular
     .service('BakerStreetService', BakerStreetService);
 
 /* Define restmod models */
-function BaseModel(restmod, BakerStreetService) {
-  return restmod.mixin({
-    $hooks: {
-      'before-request': function(_req) {
-        if (BakerStreetService.userToken !== null) {
-          _req.headers = angular.extend(_req.headers, {'Authorization': 'Token ' + BakerStreetService.userToken});
-        }
-      }
-    }
-  });
-}
-BaseModel.$inject = ['restmod', 'BakerStreetService'];
-angular
-    .module('BakerStreet')
-    .factory('BaseModel', BaseModel);
+// function BaseModel(restmod/*, BakerStreetService*/) {
+//   return restmod.mixin({
+//     $hooks: {
+//       'before-request': function(_req) {
+//         if (BakerStreetService.userToken !== null) {
+//           _req.headers = angular.extend(_req.headers, {'Authorization': 'Token ' + BakerStreetService.userToken});
+//         }
+//       }
+//     }
+//   });
+// }
+// BaseModel.$inject = ['restmod', 'BakerStreetService'];
+// angular
+//     .module('BakerStreet')
+//     .factory('BaseModel', BaseModel);
 
 var ResearchSession = ['restmod', function (restmod) {
-  return restmod.model('/research_session').mix('BaseModel');
+  return restmod.model('/research_session');
+  // return restmod.model('/research_session').mix('BaseModel');
 }];
 angular
     .module('BakerStreet')

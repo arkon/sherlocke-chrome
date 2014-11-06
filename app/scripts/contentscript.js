@@ -20,7 +20,7 @@ function SidePanelController($window, $http, $log, ChromeMessaging) {
    * If the user has an active research session, then send the current page
    * and fetch relevant documents.
    */
-  ChromeMessaging.callMethod('SherlockeApp', 'getActiveResearchSession').then(function success(/*researchSession*/) {
+  ChromeMessaging.callMethod('SherlockeApp', 'getActiveResearchSession').then(function success(researchSession) {
     vm.activeResearchSession = researchSession;
 
     // GET the evidence document list given the current page
