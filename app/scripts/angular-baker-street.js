@@ -10,11 +10,14 @@ bakerStreet.config(function (restmodProvider) {
   restmodProvider.rebase({
     $hooks: {
       'before-request': function(_req) {
-        chrome.storage.sync.get(['sherlocke-token'], function (items) {
-          if ('sherlocke-token' in items) {
-            _req.headers = angular.extend(_req.headers, { 'Authorization': 'Token ' + items['sherlocke-token'] });
-          }
-        });
+        /*jshint sub:true*/
+        _req.headers['Authorization'] = 'Token 123';
+
+        // chrome.storage.sync.get(['sherlocke-token'], function (items) {
+        //   if ('sherlocke-token' in items) {
+        //     _req.headers.Authorization = 'Token ' + items['sherlocke-token'];
+        //   }
+        // });
       }
     },
     $config: {
