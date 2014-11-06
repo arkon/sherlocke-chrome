@@ -4,31 +4,35 @@
 /* Declare AngularJS app */
 angular.module('SherlockeContent', ['ChromeMessaging']);
 
+/*
+ * Controllers
+ */
 function SidePanelController($window, $http, $log, ChromeMessaging) {
   var vm = this;
 
-  // Loading
+  // Whether sidebar is loading
   vm.isLoading = true;
+
+  // The active research session
+  vm.activeResearchSession = null;
 
   /*
    * If the user has an active research session, then send the current page
    * and fetch relevant documents.
    */
   ChromeMessaging.callMethod('SherlockeApp', 'getActiveResearchSession').then(function success(/*researchSession*/) {
+    vm.activeResearchSession = researchSession;
+
     // GET the evidence document list given the current page
     ChromeMessaging.callMethod('SherlockeApp', 'getDocuments', {
       'page_url': $window.location.href,
       'title': document.title,
       'content': ''
     }).then(function success(documents) {
-      // debugger;
       vm.documents = documents;
-
       vm.loading = false;
     }, function failure(reason) {
-      // debugger;
       $log.warn(reason);
-
       vm.loading = false;
     });
   }, function failure(reason) {
@@ -166,7 +170,7 @@ angular.element(document).ready(function () {
   var documentHeader = angular.element('#documentHeader');
   if (documentHeader && documentHeader.length) {
 
-    // Wrap the actial page contents within a div for manipulating width
+    // Wrap the actual page contents within a div for manipulating width
     $('body').wrapInner('<div class="sherlocke-original-page" />');
 
     // Inject the main directive & controller onto CanLII's #wrap div and insert the side panel
