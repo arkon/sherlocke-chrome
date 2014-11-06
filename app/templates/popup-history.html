@@ -1,8 +1,8 @@
 <article>
   <h1>Browsing history</h1>
   <ul id="session-history">
-    <li ng-repeat="history in pages" ng-href="{{ history.id }}">
-      <a href="{{ history.url }}">{{ history.url }}</a>
+    <li ng-repeat="history in historyPages">
+      <a href="{{ history.page_url }}">{{ history.title }}</a>
     </li>
   </ul>
 

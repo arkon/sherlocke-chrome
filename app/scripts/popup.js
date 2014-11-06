@@ -47,52 +47,51 @@ function PopupController() {
 }
 popup.controller('PopupController', PopupController);
 
-function PinnedController($scope) {
+function PinnedController($scope, $http) {
   $scope.noPinned = true;
 
-  $scope.documents = [{'id': 0, 'url': 'www.example.com'},
-                      {'id': 1, 'url': 'Lorem ipsum'}];
+  $http.get(BAKERSTREET_API + '/documents/pin')
+  .success(function(data) {
+    $scope.pinned = data;
 
-  $scope.noPinned = $scope.documents.length === 0;
-
-  // var researchSession = ResearchSession.$new($scope.sessionId);
-  // var pinned = researchSession.documents.$find();
-  // pinned.$then(function() {
-  //   $scope.documents = pinned.data;
-  //   $scope.noPinned = $scope.documents.length === 0;
-  // });
+    $scope.noPinned = $scope.documents.length === 0;
+  });
 }
-PinnedController.$inject = ['$scope'];
+PinnedController.$inject = ['$scope', '$http'];
 popup.controller('PinnedController', PinnedController);
 
 
 function PriorityController($scope) {
+  $scope.noPriority = true;
+
   $scope.prioritized = [{'id': 0, 'name': 'Something'},
                         {'id': 1, 'name': 'Lorem ipsum'}];
 
   $scope.noPriority = $scope.prioritized.length === 0;
 }
-PriorityController.$inject = ['$scope'];
+PriorityController.$inject = ['$scope', '$http'];
 popup.controller('PriorityController', PriorityController);
 
 
-function HistoryController($scope) {
-  $scope.pages = [{'id': 0, 'url': 'www.example.com'},
-                  {'id': 1, 'url': 'Lorem ipsum'}];
+function HistoryController($scope, $http) {
+  $scope.noHistory = true;
 
-  $scope.noHistory = $scope.pages.length === 0;
+  $http.get(BAKERSTREET_API + '/pages/current').success(function(data) {
+    $scope.historyPages = data;
+    $scope.noHistory = $scope.historyPages.length === 0;
+  });
 }
-HistoryController.$inject = ['$scope'];
+HistoryController.$inject = ['$scope', '$http'];
 popup.controller('HistoryController', HistoryController);
 
 
 function SessionsController($scope, $http, $location, ResearchSession) {
   $scope.noSessions = true;
 
-  // Some example stuff
   $scope.sessions = [];
 
-  $http.get(BAKERSTREET_API + '/research_session').success(function(data) {
+  $http.get(BAKERSTREET_API + '/research_session')
+  .success(function(data) {
     $scope.sessions = data;
 
     $scope.noSessions = $scope.sessions.length === 0;
@@ -115,10 +114,18 @@ function SessionsController($scope, $http, $location, ResearchSession) {
   };
 
   $scope.destroy = function() {
-    // session.$destroy();
-    // $scope.sessions.$remove($scope.session).then(function () {
-    $location.path('/');
-    // });
+    $http.delete(BAKERSTREET_API + '/research_session/' + $scope.sessionID)
+    .success(function(data) {
+      $scope.sessions.$remove($scope.session).then(function () {
+        $location.path('/');
+      });
+
+      $scope.noSessions = $scope.sessions.length === 0;
+
+      if (!$scope.noSessions) {
+        $scope.sessionId = data[0].id;
+      }
+    });
   };
 }
 SessionsController.$inject = ['$scope', '$http', '$location', 'ResearchSession'];
@@ -144,31 +151,13 @@ popup.directive('skSession', skSession);
 
 
 
-// // Event listner for clicks on links in a browser action popup.
+// // Event listener for clicks on links in a browser action popup.
 // // Open the link in a new tab of the current window.
 // function onAnchorClick(event) {
-//  // chrome.tabs.create({
-//  //   selected: true,
-//  //   url: event.srcElement.href
-//  // });
-
-//  var none = document.getElementById('priority-list-none');
-
-//  if (none) {
-//    none.parentElement.removeChild(none);
-//  }
-
-//  var newItem = '<li>' + event.srcElement.href + '</li>';
-
-//  var inList = document.getElementById('priority-list').innerHTML.indexOf(newItem) > -1;
-
-//  if (!inList) {
-//    document.getElementById('priority-list').innerHTML += newItem;
-
-//    chrome.storage.sync.set({ 'priority-list': document.getElementById('priority-list').innerHTML });
-//  }
-
-//  return false;
+//   chrome.tabs.create({
+//     selected: true,
+//     url: event.srcElement.href
+//   });
 // }
 
 // // Given an array of URLs, build a DOM list of those URLs in the
@@ -187,6 +176,25 @@ popup.directive('skSession', skSession);
 
 //     ul.appendChild(li);
 //   }
+// }
+
+//  var none = document.getElementById('priority-list-none');
+
+//  if (none) {
+//    none.parentElement.removeChild(none);
+//  }
+
+//  var newItem = '<li>' + event.srcElement.href + '</li>';
+
+//  var inList = document.getElementById('priority-list').innerHTML.indexOf(newItem) > -1;
+
+//  if (!inList) {
+//    document.getElementById('priority-list').innerHTML += newItem;
+
+//    chrome.storage.sync.set({ 'priority-list': document.getElementById('priority-list').innerHTML });
+//  }
+
+//  return false;
 // }
 
 // // // Search history to find up to ten links that a user has typed in,

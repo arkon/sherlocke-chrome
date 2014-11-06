@@ -1,8 +1,8 @@
 <article>
   <h1>Pinned documents</h1>
   <ul id="session-pinned">
-    <li ng-repeat="pinned in documents" ng-href="{{ pinned.id }}">
-      <a href="{{ pinned.url }}">{{ pinned.url }}</a>
+    <li ng-repeat="pin in pinned">
+      <a href="{{ pin.page_url }}">{{ pin.page_url }}</a>
     </li>
   </ul>
 
