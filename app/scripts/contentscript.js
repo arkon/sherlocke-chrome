@@ -52,9 +52,10 @@ var SidePanelController = ['$scope', '$window', '$http', 'Pages',
     title: document.title,
     content: ''
   }).$save();
+
   // GET the evidence document list
-  $http.get('http://api.sherlocke.me/api/documents').success(function(data) {
-    $scope.evidence = data.data;
+  $http.get('http://api.sherlocke.me/api/research_session/1/documents').success(function(data) {
+    $scope.evidence = data;
     $scope.isLoading = false;
   });
 }];
