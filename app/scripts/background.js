@@ -64,7 +64,7 @@ angular
 /*
  * Services
  */
-function SherlockeService(Auth, BakerStreetService) {
+function SherlockeService($log, Auth, BakerStreetService) {
   var vm = this;
 
   vm.currentResearchSession = null;
@@ -74,12 +74,14 @@ function SherlockeService(Auth, BakerStreetService) {
   };
   vm.getDocuments = BakerStreetService.getDocuments;
   vm.authenticate = function (creds) {
-    return Auth.login(creds).then(function (user) {
+    return Auth.login(creds).then(function success(user) {
       BakerStreetService.userToken = user.token;
+    }, function failure(reason) {
+      $log.warn('Failed to authenticate: ', reason);
     });
   };
 }
-SherlockeService.$inject = ['Auth', 'BakerStreetService'];
+SherlockeService.$inject = ['$log', 'Auth', 'BakerStreetService'];
 angular
     .module('SherlockeApp')
     .service('SherlockeService', SherlockeService);
