@@ -25,9 +25,9 @@ function SidePanelController($window, $http, $log, ChromeMessaging) {
 
     // GET the evidence document list given the current page
     ChromeMessaging.callMethod('SherlockeApp', 'getDocuments', {
-      // 'page_url': $window.location.href,
-      // 'title': document.title,
-      // 'content': ''
+      'page_url': $window.location.href,
+      'title': document.title,
+      'content': ''
     }).then(function success(evidence) {
       vm.evidence = evidence;
       vm.isLoading = false;

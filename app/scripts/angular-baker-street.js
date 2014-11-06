@@ -34,17 +34,27 @@ angular
  * Services
  */
 
-function BakerStreetService($http) {
+function BakerStreetService($http, Pages) {
   this.userToken = null;
 
-  this.getDocuments = function () {
+  this.getDocuments = function (data) {
+    // Send current page first
+    Pages.$build({
+      /* jshint camelcase: false */
+      page_url: data.page_url,
+      title: data.title,
+      content: data.content
+    })
+    .$save();
+
+    // Fetch relevant documents
     $http.get(BAKERSTREET_API + '/documents')
       .success(function(data) {
         return data;
       });
   };
 }
-BakerStreetService.$inject = ['$http'];
+BakerStreetService.$inject = ['$http', 'Pages'];
 angular
     .module('BakerStreet')
     .service('BakerStreetService', BakerStreetService);
