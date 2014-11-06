@@ -103,11 +103,20 @@ angular
 function SessionsController($scope, $http, $location, ResearchSession) {
   $scope.noSessions = true;
 
+  // $scope.$watch('sessionId', function(newVal, oldVal) {
+  //   $scope.sessionId = newVal;
+  // }, true);
+
   $http
     .get(BAKERSTREET_API + '/research_session')
     .success(function (data) {
     $scope.sessions = data.results;
     $scope.noSessions = $scope.sessions.length === 0;
+
+    // $scope.sessionId = $scope.sessions[5];
+
+    // var list = document.getElementById('session-list');
+    // list.options[$scope.sessionId].selected = true;
 
     // if (!$scope.noSessions) {
     //   $scope.sessionId = data[0].id;

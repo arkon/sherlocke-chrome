@@ -1,8 +1,7 @@
-<select id="session-list" ng-hide="noSessions">
-  <option ng-repeat="session in sessions" value="{{ session.id }}" ng-model="sessionId">
-    {{ session.name }}
-  </option>
-</select>
+<select id="session-list"
+        ng-hide="noSessions"
+        ng-options="session.name for session in sessions"
+        ng-model="sessionId"></select>
 <span id="no-sessions" ng-show="noSessions">No sessions</span>
 
 <div id="session-controls">
