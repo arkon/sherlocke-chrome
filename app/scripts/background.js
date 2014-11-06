@@ -77,6 +77,7 @@ function SherlockeService($log, $q, Auth, BakerStreetService) {
   vm.authenticate = function (creds) {
     return Auth.login(creds).then(function success(user) {
       BakerStreetService.userToken = user.token;
+      return user;
     }, function failure(reason) {
       $log.warn('Failed to authenticate: ', reason);
       return $q.reject(reason);
