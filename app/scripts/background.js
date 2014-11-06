@@ -4,20 +4,40 @@ var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
-angular.module('SherlockeApp', ['DjangoAuth', 'ChromeMessaging']);
+angular.module('SherlockeApp', ['DjangoAuth', 'ChromeMessaging', 'BakerStreet']);
 
 /* Callback for when all modules are loaded */
-function run($log, ChromeMessaging) {
-  // Subscribe to and handle messages sent to 'SherlockeApp'
-  ChromeMessaging.publishMethod('SherlockeApp', 'getActiveResearchSession', function () {
-    return 'rs';
-  });
+function run(Auth, ChromeMessaging, SherlockeService) {
+  // Publish and handle messages sent to 'SherlockeApp'
+  ChromeMessaging.publish(
+      'SherlockeApp',
+      'getActiveResearchSession',
+      SherlockeService.getActiveResearchSession
+  );
 
-  ChromeMessaging.publishMethod('SherlockeApp', 'getDocuments', function () {
-    return ['some', 'documents'];
-  });
+  ChromeMessaging.publish(
+      'SherlockeApp',
+      'getDocuments',
+      SherlockeService.getDocuments
+  );
+
+  /*
+   * Usage:
+   *   ChromeMessaging.callMethod(
+   *       'SherlockeApp',
+   *       'authenticate',
+   *       {email: 'test@example.com', password: 'hunter2'}
+   *   ).then(function (user) {
+   *     var token = user.token;
+   *   });
+   */
+  ChromeMessaging.publish(
+      'SherlockeApp',
+      'authenticate',
+      SherlockeService.authenticate
+  );
 }
-run.$inject = ['$log', 'ChromeMessaging'];
+run.$inject = ['Auth', 'ChromeMessaging', 'SherlockeService'];
 angular
     .module('SherlockeApp')
     .run(run);
@@ -40,63 +60,68 @@ angular
 /*
  * Services
  */
-function SherlockeService($q, Auth) {
+function SherlockeService(Auth, BakerStreetService) {
   var vm = this;
 
-  vm.authenticate = function (email, password) {
-    return Auth.login({
-      email: email,
-      password: password
-    }).then(function (response) {
-      vm.authToken = response.token;
+  vm.currentResearchSession = null;
 
-      chrome.storage.sync.set({
-        'sherlocke-token': response.token
-      });
+  vm.getActiveResearchSession = function () {
+    return vm.currentResearchSession;
+  };
+  vm.getDocuments = BakerStreetService.getDocuments;
+  vm.authenticate = function (creds) {
+    return Auth.login(creds).then(function (user) {
+      BakerStreetService.userToken = user.token;
     });
   };
 }
-SherlockeService.$inject = ['$q', 'Auth'];
+SherlockeService.$inject = ['Auth', 'BakerStreetService'];
 angular
     .module('SherlockeApp')
     .service('SherlockeService', SherlockeService);
 
-/*
- * Listen for incoming messages using ChromeMessaging
+/**
+ * Service to store and persist preferences.
+ *
+ * @constructor
  */
+function PreferencesService() {
 
-
+}
+angular
+    .module('SherlockeApp')
+    .service('PreferencesService', PreferencesService);
 
 /*
  * Listen for incoming messages
  */
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  if (!('origin' in message) || !('type' in message)) {
-    sendResponse({error: 'Must specify \'origin\' and \'type\''});
-    return;
-  }
-
-  if (message.origin === 'options') {
-    // Message from options.html
-    if (message.type === 'authenticate') {
-      // User is logging in
-      if (!('data' in message)) {
-        sendResponse({error: 'Expected \'data\', but none provided'});
-        return;
-      }
-
-      // Get email and password
-      var email = message.data.email;
-      var password = message.data.password;
-
-      // Authenticate using SherlockeService
-      var SherlockeService = angular.element(document.body).injector().get('SherlockeService');
-      SherlockeService.authenticate(email, password);
-    }
-  } else {
-    sendResponse({error: 'Invalid origin \'' + message.origin + '\''});
-  }
-});
+//chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+//  if (!('origin' in message) || !('type' in message)) {
+//    sendResponse({error: 'Must specify \'origin\' and \'type\''});
+//    return;
+//  }
+//
+//  if (message.origin === 'options') {
+//    // Message from options.html
+//    if (message.type === 'authenticate') {
+//      // User is logging in
+//      if (!('data' in message)) {
+//        sendResponse({error: 'Expected \'data\', but none provided'});
+//        return;
+//      }
+//
+//      // Get email and password
+//      var email = message.data.email;
+//      var password = message.data.password;
+//
+//      // Authenticate using SherlockeService
+//      var SherlockeService = angular.element(document.body).injector().get('SherlockeService');
+//      SherlockeService.authenticate(email, password);
+//    }
+//  } else {
+//    sendResponse({error: 'Invalid origin \'' + message.origin + '\''});
+//  }
+//});
 
 
 /* Context menu item */
