@@ -1,4 +1,5 @@
 'use strict';
+/* jshint sub:true */
 
 /* Declare AngularJS app */
 angular.module('SherlockeOptions', ['ChromeMessaging']);
@@ -19,7 +20,11 @@ function AuthController($log, ChromeMessaging) {
       email: vm.email,
       password: vm.password
     }).then(function (result) {
+
       $log.info('Auth result: ', result);
+    }, function failure(reason) {
+      vm.alerts = reason.data['non_field_errors'];
+      $log.warn('Auth failure: ', reason);
     });
   };
 }
