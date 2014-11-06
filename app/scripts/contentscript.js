@@ -29,8 +29,8 @@ var MainController = ['$scope', function ($scope) {
 }];
 contentModule.controller('MainController', MainController);
 
-var SidePanelController = ['$scope', '$window', 'Pages', 'Documents',
-      function ($scope, $window, Pages, Documents) {
+var SidePanelController = ['$scope', '$window', '$http', 'Pages',
+      function ($scope, $window, $http, Pages) {
   $scope.isLoading = false;
 
   // Dummy loading
@@ -46,19 +46,15 @@ var SidePanelController = ['$scope', '$window', 'Pages', 'Documents',
   // }, 2000);
 
   // POST the current page
-  var page = Pages.$build({
+  Pages.$build({
     /* jshint camelcase: false */
     page_url: $window.location.href,
     title: document.title,
     content: ''
-  });
-  page.$save();
-
+  }).$save();
   // GET the evidence document list
-  var evidence = Documents.$find();
-  evidence.$then(function() {
-    $scope.evidence = evidence.data;
-
+  $http.get('http://api.sherlocke.me/api/documents').success(function(data) {
+    $scope.evidence = data.data;
     $scope.isLoading = false;
   });
 }];

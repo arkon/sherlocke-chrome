@@ -43,7 +43,6 @@ function PopupController() {
     $(this).addClass('active');
   });
 }
-PopupController.$inject = [];
 popup.controller('PopupController', PopupController);
 
 function PinnedController($scope) {
@@ -86,25 +85,35 @@ popup.controller('HistoryController', HistoryController);
 
 
 function SessionsController($scope, $location, ResearchSession) {
+  $scope.noSessions = true;
+
   // Some example stuff
   $scope.sessions = [];
   // $scope.sessions = [{'id': 0, 'user': 1, 'name': 'Example'},
   //                    {'id': 1, 'user': 1, 'name': 'Lorem ipsum'}];
 
-  var researchSessions = ResearchSession.$build({});
-  researchSessions.$then(function() {
-    $scope.sessions = researchSessions.data;
-  });
+  // ResearchSession.$send({ method: 'GET', url: '/research_session' }, function(_response) {
+  //   $scope.sessions = _response.data;
+
+  //   $scope.noSessions = $scope.sessions.length === 0;
+  // });
+
+  // var researchSessions = ResearchSession.$build({});
+  // researchSessions.$then(function() {
+  //   $scope.sessions = researchSessions.data;
+
+  //   $scope.noSessions = false;
+  // });
 
   $scope.save = function() {
-    var session = ResearchSession.$create({ name: 'Wat' });
+    var session = ResearchSession.$create({ name: $scope.session.name });
     session.$then(function(_session) {
       $scope.session = _session;
       $scope.sessionId = _session.id;
 
-    });
-    $scope.sessions.$add($scope.session).then(function() {
-      $location.path('/');
+      $scope.sessions.$add($scope.session).then(function() {
+        $location.path('/');
+      });
     });
   };
 

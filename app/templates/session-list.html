@@ -2,6 +2,7 @@
   <option ng-repeat="session in sessions" ng-href="{{ session.id }}">
     {{ session.name }}
   </option>
+  <option ng-show="noSessions">No sessions</option>
 </select>
 
 <div id="session-controls">
