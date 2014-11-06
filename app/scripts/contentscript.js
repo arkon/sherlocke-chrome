@@ -1,6 +1,8 @@
 'use strict';
 /* jshint multistr: true */
 
+var BAKERSTREET_API = 'http://api.sherlocke.me/api';
+
 
 /* Declare AngularJS app */
 var contentModule = angular.module('SherlockeContent', ['BakerStreet']);
@@ -31,19 +33,13 @@ contentModule.controller('MainController', MainController);
 
 var SidePanelController = ['$scope', '$window', '$http', 'Pages',
       function ($scope, $window, $http, Pages) {
-  $scope.isLoading = false;
-
   // Dummy loading
-  // $scope.isLoading = true;
+  $scope.isLoading = true;
 
-  // var i = 1;
-  // var crunch = $window.setInterval(function () {
-  //   $scope.progress = i++;
-  // }, 10);
-  // $window.setTimeout(function() {
-    // $window.clearInterval(crunch);
-  //   $scope.isLoading = false;
-  // }, 2000);
+  var i = 1;
+  var crunch = $window.setInterval(function () {
+    $scope.progress = i++;
+  }, 10);
 
   // POST the current page
   Pages.$build({
@@ -51,11 +47,15 @@ var SidePanelController = ['$scope', '$window', '$http', 'Pages',
     page_url: $window.location.href,
     title: document.title,
     content: ''
-  }).$save();
+  })
+  .$save();
 
   // GET the evidence document list
-  $http.get('http://api.sherlocke.me/api/research_session/1/documents').success(function(data) {
+  $http.get(BAKERSTREET_API + '/documents')
+  .success(function(data) {
     $scope.evidence = data;
+
+    $window.clearInterval(crunch);
     $scope.isLoading = false;
   });
 }];

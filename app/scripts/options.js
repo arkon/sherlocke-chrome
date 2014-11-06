@@ -32,10 +32,7 @@ function AuthController($log) {
       vm.isAuthenticated = success;
 
       // if (vm.isAuthenticated === true) {
-      //   var SherlockeService = angular.element(document.body).injector().get('SherlockeService');
-      //   vm.authToken = SherlockeService.authToken;
-
-      //   $scope.currentUser = 'wow';
+      //   vm.currentUser = vm.email;
       // }
     });
   };

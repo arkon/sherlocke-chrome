@@ -1,5 +1,7 @@
 'use strict';
 
+var BAKERSTREET_API = 'http://api.sherlocke.me/api';
+
 
 /* Declare AngularJS app */
 var popup = angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
@@ -84,34 +86,29 @@ HistoryController.$inject = ['$scope'];
 popup.controller('HistoryController', HistoryController);
 
 
-function SessionsController($scope, $location, ResearchSession) {
+function SessionsController($scope, $http, $location, ResearchSession) {
   $scope.noSessions = true;
 
   // Some example stuff
   $scope.sessions = [];
-  // $scope.sessions = [{'id': 0, 'user': 1, 'name': 'Example'},
-  //                    {'id': 1, 'user': 1, 'name': 'Lorem ipsum'}];
 
-  // ResearchSession.$send({ method: 'GET', url: '/research_session' }, function(_response) {
-  //   $scope.sessions = _response.data;
+  $http.get(BAKERSTREET_API + '/research_session').success(function(data) {
+    $scope.sessions = data;
 
-  //   $scope.noSessions = $scope.sessions.length === 0;
-  // });
+    $scope.noSessions = $scope.sessions.length === 0;
 
-  // var researchSessions = ResearchSession.$build({});
-  // researchSessions.$then(function() {
-  //   $scope.sessions = researchSessions.data;
-
-  //   $scope.noSessions = false;
-  // });
+    if (!$scope.noSessions) {
+      $scope.sessionId = data[0].id;
+    }
+  });
 
   $scope.save = function() {
-    var session = ResearchSession.$create({ name: $scope.session.name });
-    session.$then(function(_session) {
+    ResearchSession.$create({ name: $scope.session.name })
+    .$then(function(_session) {
       $scope.session = _session;
       $scope.sessionId = _session.id;
 
-      $scope.sessions.$add($scope.session).then(function() {
+      $scope.sessions.$add(_session).then(function() {
         $location.path('/');
       });
     });
@@ -124,7 +121,7 @@ function SessionsController($scope, $location, ResearchSession) {
     // });
   };
 }
-SessionsController.$inject = ['$scope', '$location', 'ResearchSession'];
+SessionsController.$inject = ['$scope', '$http', '$location', 'ResearchSession'];
 popup.controller('SessionsController', SessionsController);
 
 
