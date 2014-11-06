@@ -4,17 +4,24 @@ var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
-var app = angular.module('SherlockeApp', ['DjangoAuth']);
+angular.module('SherlockeApp', ['DjangoAuth', 'ChromeMessaging']);
 
+/* Callback for when all modules are loaded */
+function run($log, ChromeMessaging) {
+  // Subscribe to and handle messages sent to 'SherlockeApp'
+  ChromeMessaging.publishMethod('SherlockeApp', 'getActiveResearchSession', function () {
+    return 'rs';
+  });
 
-/* Eagerly instantiate services once modules are loaded */
-function run($log, SherlockeService) {
-  if (!SherlockeService) {
-    $log.warn('SherlockService not instantiated');
-  }
+  ChromeMessaging.publishMethod('SherlockeApp', 'getDocuments', function () {
+    return ['some', 'documents'];
+  });
 }
-run.$inject = ['$log', 'SherlockeService'];
-app.run(run);
+run.$inject = ['$log', 'ChromeMessaging'];
+angular
+    .module('SherlockeApp')
+    .run(run);
+
 
 /*
  * Provider configuration
@@ -26,7 +33,9 @@ function config(AuthProvider) {
   AuthProvider.resourceName(false);
 }
 config.$inject = ['AuthProvider'];
-app.config(config);
+angular
+    .module('SherlockeApp')
+    .config(config);
 
 /*
  * Services
@@ -48,7 +57,14 @@ function SherlockeService($q, Auth) {
   };
 }
 SherlockeService.$inject = ['$q', 'Auth'];
-app.service('SherlockeService', SherlockeService);
+angular
+    .module('SherlockeApp')
+    .service('SherlockeService', SherlockeService);
+
+/*
+ * Listen for incoming messages using ChromeMessaging
+ */
+
 
 
 /*
