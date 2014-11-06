@@ -19,6 +19,7 @@
       "bower_components/angular-restmod/dist/angular-restmod-bundle.js",
       "bower_components/angular-django-auth/lib/django-auth.js",
       "scripts/angular-baker-street.js",
+      "scripts/angular-chrome-messaging.js",
       "scripts/background.js"
     ]
   },
@@ -47,6 +48,7 @@
         "bower_components/jquery/dist/jquery.js",
         "bower_components/lodash/dist/lodash.js",
         "bower_components/angular/angular.js",
+        "scripts/angular-chrome-messaging.js",
         "scripts/contentscript.js"
       ]
     }
