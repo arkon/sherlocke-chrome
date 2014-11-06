@@ -149,20 +149,12 @@ form {
         &:hover {
           background-color: #eee;
         }
-
-        &:first-child {
-          border-radius: 3px 0 0 3px;
-          border-right: none;
-        }
-
-        &:last-child {
-          border-radius: 0 3px 3px 0;
-          border-left: none;
-        }
       }
 
       #session-pause {
         background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-pause.png');
+        border-radius: 3px 0 0 3px;
+        border-right: none;
 
         &.paused {
           background-color: $brand-color;
@@ -176,6 +168,14 @@ form {
 
       #session-new {
         background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-new.png');
+        border-radius: 0 3px 3px 0;
+        border-left: none;
+      }
+
+      #session-new-first {
+        background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-new.png');
+        border-radius: 3px;
+        border: 1px solid $brand-color;
       }
 
     #session-new-actions {

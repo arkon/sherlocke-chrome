@@ -7,7 +7,11 @@ var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 angular.module('SherlockeApp', ['DjangoAuth', 'ChromeMessaging', 'BakerStreet']);
 
 /* Callback for when all modules are loaded */
-function run(Auth, ChromeMessaging, SherlockeService) {
+function run(Auth, ChromeMessaging, SherlockeService, $http, BakerStreetService) {
+  if (BakerStreetService.userToken) {
+    $http.defaults.headers.common.Authorization = 'Token ' + BakerStreetService.userToken;
+  }
+
   // Publish and handle messages sent to 'SherlockeApp'
   ChromeMessaging.publish(
       'SherlockeApp',
@@ -37,7 +41,7 @@ function run(Auth, ChromeMessaging, SherlockeService) {
       SherlockeService.authenticate
   );
 }
-run.$inject = ['Auth', 'ChromeMessaging', 'SherlockeService'];
+run.$inject = ['Auth', 'ChromeMessaging', 'SherlockeService', '$http', 'BakerStreetService'];
 angular
     .module('SherlockeApp')
     .run(run);

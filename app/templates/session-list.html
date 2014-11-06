@@ -2,10 +2,11 @@
         ng-hide="noSessions"
         ng-options="session.name for session in sessions"
         ng-model="sessionId"></select>
-<span id="no-sessions" ng-show="noSessions">No sessions</span>
+<span id="no-sessions" ng-show="noSessions">No existing sessions</span>
 
 <div id="session-controls">
-  <a href="#/pause" id="session-pause" class="session-btn" title="Pause session">Pause</a>
-  <a href="#/delete" id="session-delete" class="session-btn" title="Delete session">Delete</a>
-  <a href="#/new" id="session-new" class="session-btn" title="New session">New</a>
+  <a href="#/pause" id="session-pause" class="session-btn" title="Pause session" ng-hide="noSessions">Pause</a>
+  <a href="#/delete" id="session-delete" class="session-btn" title="Delete session" ng-hide="noSessions">Delete</a>
+  <a href="#/new" id="session-new" class="session-btn" title="New session" ng-hide="noSessions">New</a>
+  <a href="#/new" id="session-new-first" class="session-btn" title="New session" ng-show="noSessions">New</a>
 </div>
