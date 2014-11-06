@@ -25,29 +25,20 @@ function SidePanelController($window, $http, $log, ChromeMessaging) {
 
     // GET the evidence document list given the current page
     ChromeMessaging.callMethod('SherlockeApp', 'getDocuments', {
-      'page_url': $window.location.href,
-      'title': document.title,
-      'content': ''
-    }).then(function success(documents) {
-      vm.documents = documents;
-      vm.loading = false;
+      // 'page_url': $window.location.href,
+      // 'title': document.title,
+      // 'content': ''
+    }).then(function success(evidence) {
+      vm.evidence = evidence;
+      vm.isLoading = false;
     }, function failure(reason) {
       $log.warn(reason);
-      vm.loading = false;
+      vm.isLoading = false;
     });
   }, function failure(reason) {
     // Failed to get research session; mostly likely none is active
     $log.warn('Failed to get active research session', reason);
   });
-
-
-//  $http.get(BAKERSTREET_API + '/documents')
-//      .success(function(data) {
-//        $scope.evidence = data;
-//
-//        $window.clearInterval(crunch);
-//        $scope.isLoading = false;
-//      });
 }
 SidePanelController.$inject = ['$window', '$http', '$log', 'ChromeMessaging'];
 angular

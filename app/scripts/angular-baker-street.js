@@ -1,6 +1,6 @@
 'use strict';
 
-var BAKERSTREET_RESEARCH_API = 'http://api.sherlocke.me/api';
+var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
@@ -10,7 +10,7 @@ angular.module('BakerStreet', ['restmod']);
 function config(restmodProvider) {
   restmodProvider.rebase({
     $config: {
-      urlPrefix: BAKERSTREET_RESEARCH_API,
+      urlPrefix: BAKERSTREET_API,
       style: 'Style'  // Gets rid of a warning
     }
   });
@@ -34,34 +34,24 @@ angular
  * Services
  */
 
-function BakerStreetService() {
+function BakerStreetService($http) {
   this.userToken = null;
-  this.getDocuments = function () {};
+
+  this.getDocuments = function () {
+    $http.get(BAKERSTREET_API + '/documents')
+      .success(function(data) {
+        return data;
+      });
+  };
 }
+BakerStreetService.$inject = ['$http'];
 angular
     .module('BakerStreet')
     .service('BakerStreetService', BakerStreetService);
 
-/* Define restmod models */
-// function BaseModel(restmod/*, BakerStreetService*/) {
-//   return restmod.mixin({
-//     $hooks: {
-//       'before-request': function(_req) {
-//         if (BakerStreetService.userToken !== null) {
-//           _req.headers = angular.extend(_req.headers, {'Authorization': 'Token ' + BakerStreetService.userToken});
-//         }
-//       }
-//     }
-//   });
-// }
-// BaseModel.$inject = ['restmod', 'BakerStreetService'];
-// angular
-//     .module('BakerStreet')
-//     .factory('BaseModel', BaseModel);
 
 var ResearchSession = ['restmod', function (restmod) {
   return restmod.model('/research_session');
-  // return restmod.model('/research_session').mix('BaseModel');
 }];
 angular
     .module('BakerStreet')
