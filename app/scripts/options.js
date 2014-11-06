@@ -1,12 +1,12 @@
 'use strict';
 
 /* Declare AngularJS app */
-angular.module('SherlockeOptions', []);
+angular.module('SherlockeOptions', ['ChromeMessaging']);
 
 /*
  * Controllers
  */
-function AuthController($log) {
+function AuthController($log, ChromeMessaging) {
   var vm = this;
 
   vm.isAuthenticated = false;
@@ -15,29 +15,15 @@ function AuthController($log) {
 
   vm.authenticate = function () {
     // Send a message to background.js with the email and password
-    chrome.runtime.sendMessage({
-      origin: 'options',
-      type: 'authenticate',
-      data: {
-        email: this.email,
-        password: this.password
-      }
-    }, function (success) {
-      if (success === undefined) {
-        // Messaging error
-        $log.error(chrome.runtime.lastError);
-      }
-
-      // `success` indicates whether authentication was successful
-      vm.isAuthenticated = success;
-
-      // if (vm.isAuthenticated === true) {
-      //   vm.currentUser = vm.email;
-      // }
+    ChromeMessaging.callMethod('SherlockeApp', 'authenticate', {
+      email: vm.email,
+      password: vm.password
+    }).then(function (result) {
+      $log.info('Auth result: ', result);
     });
   };
 }
-AuthController.$inject = ['$log'];
+AuthController.$inject = ['$log', 'ChromeMessaging'];
 angular
-  .module('SherlockeOptions')
-  .controller('AuthController', AuthController);
+    .module('SherlockeOptions')
+    .controller('AuthController', AuthController);
