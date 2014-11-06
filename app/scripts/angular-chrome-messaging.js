@@ -13,45 +13,64 @@ angular.module('ChromeMessaging', []);
  */
 
 /**
+ * A method published by a sandboxed Chrome script.
+ *
+ * @constructor
+ */
+function Publication(appName, methodName, method) {
+  // Keep model reference
+  var m = this;
+
+  m.appName = appName;
+  m.methodName = methodName;
+  m.method = method;
+
+  chrome.runtime.onConnect.addListener(function (port) {
+    // Client is connecting through `port`
+    if (port.name !== appName + '.' + methodName) {
+      // Client isn't trying to subscribe to this method; abort
+      return;
+    }
+
+    // Keep a port reference
+    m.port = port;
+
+    // When client calls the method, return the method result
+    port.onMessage.addListener(function (params) {
+      m.params = params;
+      m.result = method(m.params);
+      m.notifySubscribers(m.result);
+    });
+  });
+}
+Publication.prototype.updateResult = function () {
+  this.result = this.method(this.params);
+};
+Publication.prototype.notifySubscribers = function (result) {
+  this.port.postMessage(result || this.result);
+};
+Publication.prototype.updateAndNotify = function () {
+  this.updateResult();
+  this.notifySubscribers(this.result);
+};
+
+/**
  * Service that allows sandboxed Chrome scripts to publish and call each others
  * methods
  *
  * @constructor
  */
 function ChromeMessaging($log, $q) {
-  // Methods published in the app-local instance of ChromeMessaging
-  var localPublished = {};
-
   /**
-   * Publish a method to be accessible from any extension component
+   * Publish a method to be accessible from any extension component.
+   * Subscribers are updated when the result changes
    *
-   * @param appName    App identifier of the publisher
-   * @param methodName Method identifier
-   * @param callback   Callback to execute when a client calls the method.
-   *                   May only take JSON-serializable parameters and return JSON-serializable responses
+   * @param appName
+   * @param methodName
+   * @param method
    */
-  this.publishMethod = function (appName, methodName, callback) {
-    if (appName && methodName && callback) {
-      if (!(appName in localPublished)) {
-        localPublished[appName] = {};
-      }
-
-      localPublished[appName][methodName] = callback;
-    }
-
-    chrome.runtime.onConnect.addListener(function (port) {
-      // Client is connecting through `port`
-      if (port.name !== appName + '.' + methodName) {
-        // Client isn't trying to subscribe to this method; abort
-        return;
-      }
-
-      // When client calls the method, return the callback result
-      port.onMessage.addListener(function (message) {
-        var result = callback(message);
-        port.postMessage(result);
-      });
-    });
+  this.publish = function (appName, methodName, method) {
+    return new Publication(appName, methodName, method);
   };
 
   /**
@@ -68,13 +87,17 @@ function ChromeMessaging($log, $q) {
         name: appName + '.' + methodName
       });
 
-      // Ping the port to ensure it's published
+      // Send the method parameters
       port.postMessage(params);
       port.onMessage.addListener(function (result) {
         resolve(result);
       });
     });
   };
+
+//  this.subscribe = function (appName, methodName, params, callback) {
+//    return;
+//  }
 }
 ChromeMessaging.$inject = ['$log', '$q'];
 angular
