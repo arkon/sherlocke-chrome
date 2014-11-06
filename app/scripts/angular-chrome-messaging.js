@@ -4,13 +4,7 @@
  * angular-chrome-messaging uses `chrome.runtime.connect` to allow
  * content scripts, options pages, and popups to interface with a background script.
  */
-
-/* Declare AngularJS app */
 angular.module('ChromeMessaging', []);
-
-/*
- * Services
- */
 
 /**
  * A method published by a sandboxed Chrome script.
@@ -60,7 +54,7 @@ Publication.prototype.updateAndNotify = function () {
  *
  * @constructor
  */
-function ChromeMessaging($log, $q) {
+function ChromeMessaging($q) {
   /**
    * Publish a method to be accessible from any extension component.
    * Subscribers are updated when the result changes
@@ -99,7 +93,7 @@ function ChromeMessaging($log, $q) {
 //    return;
 //  }
 }
-ChromeMessaging.$inject = ['$log', '$q'];
+ChromeMessaging.$inject = ['$q'];
 angular
     .module('ChromeMessaging')
     .service('ChromeMessaging', ChromeMessaging);
