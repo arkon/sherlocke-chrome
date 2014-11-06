@@ -11,7 +11,7 @@ angular.module('ChromeMessaging', []);
  *
  * @constructor
  */
-function Publication(appName, methodName, method) {
+function Publication($q, appName, methodName, method) {
   // Keep model reference
   var m = this;
 
@@ -32,25 +32,66 @@ function Publication(appName, methodName, method) {
     // When client calls the method, return the method result
     port.onMessage.addListener(function (params) {
       m.params = params;
-      m.result = method(m.params);
-      m.notifySubscribers(m.result);
+      m.updateResultAndNotify($q);
     });
   });
 }
-Publication.prototype.updateResult = function () {
-  this.result = this.method(this.params);
+/**
+ * Compute a new result by re-calling the supplied method and notify subscribers.
+ *
+ * @param $q AngularJS promise service
+ */
+Publication.prototype.updateResultAndNotify = function ($q) {
+  var m = this;
+  function notify(internalResult) {
+    m.notifySubscribers(internalResult);
+  }
+
+  m.result = m.method(m.params);
+  if (m.result.then) {
+    // Promise
+    m.result.then(function (result) {
+      m.notifySubscribers({
+        type: 'promise',
+        status: 'resolved',
+        data: result
+      });
+    }, function (reason) {
+      m.notifySubscribers({
+        type: 'promise',
+        status: 'rejected',
+        data: reason
+      });
+    });
+
+  } else {
+    // Data
+    m.notifySubscribers({
+      type: 'data',
+      data: m.result
+    });
+  }
+  $q.when(m.result).then(notify, notify);
 };
-Publication.prototype.notifySubscribers = function (result) {
-  this.port.postMessage(result || this.result);
+Publication.prototype.notifySubscribers = function (internalResult) {
+  this.port.postMessage(internalResult);
 };
 Publication.prototype.updateAndNotify = function () {
-  this.updateResult();
+  this.updateResultAndNotify();
   this.notifySubscribers(this.result);
 };
 
 /**
  * Service that allows sandboxed Chrome scripts to publish and call each others
  * methods
+ *
+ * Internal message schema:
+ *
+ * {
+ *   type: "data"/"promise"
+ *   status: null/"resolved"/"rejected"
+ *   data: any
+ * }
  *
  * @constructor
  */
@@ -64,7 +105,7 @@ function ChromeMessaging($q) {
    * @param method
    */
   this.publish = function (appName, methodName, method) {
-    return new Publication(appName, methodName, method);
+    return new Publication($q, appName, methodName, method);
   };
 
   /**
@@ -76,15 +117,24 @@ function ChromeMessaging($q) {
    * @returns {Promise} Resolves with the result
    */
   this.callMethod = function (appName, methodName, params) {
-    return $q(function (resolve/*, reject*/) {
+    return $q(function (resolve, reject) {
       var port = chrome.runtime.connect({
         name: appName + '.' + methodName
       });
 
       // Send the method parameters
       port.postMessage(params);
-      port.onMessage.addListener(function (result) {
-        resolve(result);
+      port.onMessage.addListener(function (internalResult) {
+        if (internalResult.type === 'data') {
+          resolve(internalResult.data);
+        } else if (internalResult.type === 'promise') {
+          if (internalResult.status === 'resolved') {
+            resolve(internalResult.data);
+          } else {
+            reject(internalResult.data);
+          }
+        }
+
       });
     });
   };
