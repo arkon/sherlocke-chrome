@@ -5,7 +5,7 @@ var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
-var contentModule = angular.module('SherlockeContent', ['BakerStreet']);
+angular.module('SherlockeContent', ['BakerStreet']);
 
 
 /*
@@ -29,37 +29,41 @@ var MainController = ['$scope', function ($scope) {
     }
   });
 }];
-contentModule.controller('MainController', MainController);
+angular
+    .module('SherlockeContent')
+    .controller('MainController', MainController);
 
-var SidePanelController = ['$scope', '$window', '$http', 'Pages',
-      function ($scope, $window, $http, Pages) {
+function SidePanelController($window, $http, Pages) {
+  var vm = this;
+
   // Dummy loading
-  $scope.isLoading = true;
+  vm.isLoading = true;
 
   var i = 1;
   var crunch = $window.setInterval(function () {
-    $scope.progress = i++;
+    vm.progress = i++;
   }, 10);
 
   // POST the current page
   Pages.$build({
-    /* jshint camelcase: false */
-    page_url: $window.location.href,
-    title: document.title,
-    content: ''
-  })
-  .$save();
+    'page_url': $window.location.href,
+    'title': document.title,
+    'content': ''
+  }).$save();
 
   // GET the evidence document list
   $http.get(BAKERSTREET_API + '/documents')
-  .success(function(data) {
-    $scope.evidence = data;
+      .success(function(data) {
+        $scope.evidence = data;
 
-    $window.clearInterval(crunch);
-    $scope.isLoading = false;
-  });
-}];
-contentModule.controller('SidePanelController', SidePanelController);
+        $window.clearInterval(crunch);
+        $scope.isLoading = false;
+      });
+}
+SidePanelController.$inject = ['$window', '$http', 'Pages'];
+angular
+    .module('SherlockeContent')
+    .controller('SidePanelController', SidePanelController);
 
 
 /*
@@ -67,6 +71,10 @@ contentModule.controller('SidePanelController', SidePanelController);
  */
 var MainDirective = [function () {
   return {
+    restrict: 'A',
+    scope: {
+      isSidebarHidden: '=isSidebarHidden'
+    },
     link: function (scope) {
       scope.$watch('isSidebarHidden', function (value) {
         angular.element('body').toggleClass('hide-sidebar', value);
@@ -74,7 +82,9 @@ var MainDirective = [function () {
     }
   };
 }];
-contentModule.directive('skMain', MainDirective);
+angular
+    .module('SherlockeContent')
+    .directive('skMain', MainDirective);
 
 var SidePanelDirective = ['$sce', function ($sce) {
   return {
@@ -95,7 +105,9 @@ var SidePanelDirective = ['$sce', function ($sce) {
     }
   };
 }];
-contentModule.directive('skSidePanel', SidePanelDirective);
+angular
+    .module('SherlockeContent')
+    .directive('skSidePanel', SidePanelDirective);
 
 var SelectDirective = [function () {
   return {
@@ -133,7 +145,9 @@ var SelectDirective = [function () {
     }
   };
 }];
-contentModule.directive('skSelect', SelectDirective);
+angular
+    .module('SherlockeContent')
+    .directive('skSelect', SelectDirective);
 
 
 /*
@@ -152,7 +166,7 @@ angular.element(document).ready(function () {
     angular.element('body')
         .attr('sk-main', true)
         .attr('ng-controller', 'MainController')
-        .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController"></div></div>');
+        .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController as side"></div></div>');
 
     angular.bootstrap(document, ['SherlockeContent']);
   }
