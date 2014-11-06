@@ -151,7 +151,8 @@ angular.element(document).ready(function () {
     // angular.element('#wrap')
     angular.element('body')
         .attr('sk-main', true)
-        .append('<div ng-controller="MainController" id="sherlocke"><div sk-side-panel ng-controller="SidePanelController"></div></div>');
+        .attr('ng-controller', 'MainController')
+        .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController"></div></div>');
 
     angular.bootstrap(document, ['SherlockeContent']);
   }

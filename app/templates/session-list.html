@@ -1,9 +1,9 @@
-<select id="session-list">
+<select id="session-list" ng-hide="noSessions">
   <option ng-repeat="session in sessions" value="{{ session.id }}" ng-model="sessionId">
     {{ session.name }}
   </option>
-  <option ng-show="noSessions">No sessions</option>
 </select>
+<span id="no-sessions" ng-show="noSessions">No sessions</span>
 
 <div id="session-controls">
   <a href="#/pause" id="session-pause" class="session-btn" title="Pause session">Pause</a>

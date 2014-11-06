@@ -50,7 +50,7 @@ popup.controller('PopupController', PopupController);
 function PinnedController($scope, $http) {
   $scope.noPinned = true;
 
-  $http.get(BAKERSTREET_API + '/documents/pin')
+  $http.get(BAKERSTREET_API + '/documents/pinned')
   .success(function(data) {
     $scope.pinned = data;
 
@@ -88,8 +88,6 @@ popup.controller('HistoryController', HistoryController);
 function SessionsController($scope, $http, $location, ResearchSession) {
   $scope.noSessions = true;
 
-  $scope.sessions = [];
-
   $http.get(BAKERSTREET_API + '/research_session')
   .success(function(data) {
     $scope.sessions = data;
@@ -104,8 +102,8 @@ function SessionsController($scope, $http, $location, ResearchSession) {
   $scope.save = function() {
     ResearchSession.$create({ name: $scope.session.name })
     .$then(function(_session) {
-      $scope.session = _session;
-      $scope.sessionId = _session.id;
+      $scope.session = _session.data;
+      $scope.sessionId = _session.data.id;
 
       $scope.sessions.$add(_session).then(function() {
         $location.path('/');
