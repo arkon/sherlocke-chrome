@@ -4,9 +4,11 @@ var BAKERSTREET_RESEARCH_API = 'http://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
-var bakerStreet = angular.module('BakerStreet', ['restmod']);
+angular.module('BakerStreet', ['restmod']);
 
-bakerStreet.config(function (restmodProvider) {
+angular
+  .module('BakerStreet')
+  .config(function (restmodProvider) {
   restmodProvider.rebase({
     $config: {
       urlPrefix: BAKERSTREET_RESEARCH_API,
@@ -23,30 +25,44 @@ function run($http) {
   });
 }
 run.$inject = ['$http'];
-bakerStreet.run(run);
+angular
+  .module('BakerStreet')
+  .run(run);
 
 
 /* Define restmod models */
+
 var ResearchSession = ['restmod', function (restmod) {
   return restmod.model('/research_session');
 }];
-bakerStreet.factory('ResearchSession', ResearchSession);
+angular
+  .module('BakerStreet')
+  .factory('ResearchSession', ResearchSession);
 
 // POST to make a new one (name) -> response with name/id
 // POST with parameter id
 // GET: all research sessions
 
+
 var Questions = ['restmod', function (restmod) {
   return restmod.model('/questions');
 }];
-bakerStreet.factory('Questions', Questions);
+angular
+  .module('BakerStreet')
+  .factory('Questions', Questions);
+
 
 var Pages = ['restmod', function (restmod) {
   return restmod.model('/pages');
 }];
-bakerStreet.factory('Pages', Pages);
+angular
+  .module('BakerStreet')
+  .factory('Pages', Pages);
+
 
 var Documents = ['restmod', function (restmod) {
   return restmod.model('/documents');
 }];
-bakerStreet.factory('Documents', Documents);
+angular
+  .module('BakerStreet')
+  .factory('Documents', Documents);

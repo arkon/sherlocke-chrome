@@ -4,9 +4,10 @@ var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
-var popup = angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
+angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
 
-popup.config(function($routeProvider) {
+angular.module('SherlockePopup')
+  .config(function($routeProvider) {
   $routeProvider
     .when('/tab1', {
       controller:'PinnedController',
@@ -45,7 +46,9 @@ function PopupController() {
     $(this).addClass('active');
   });
 }
-popup.controller('PopupController', PopupController);
+angular
+  .module('SherlockePopup')
+  .controller('PopupController', PopupController);
 
 function PinnedController($scope, $http) {
   $scope.noPinned = true;
@@ -58,7 +61,9 @@ function PinnedController($scope, $http) {
   });
 }
 PinnedController.$inject = ['$scope', '$http'];
-popup.controller('PinnedController', PinnedController);
+angular
+  .module('SherlockePopup')
+  .controller('PinnedController', PinnedController);
 
 
 function PriorityController($scope) {
@@ -70,7 +75,9 @@ function PriorityController($scope) {
   $scope.noPriority = $scope.prioritized.length === 0;
 }
 PriorityController.$inject = ['$scope', '$http'];
-popup.controller('PriorityController', PriorityController);
+angular
+  .module('SherlockePopup')
+  .controller('PriorityController', PriorityController);
 
 
 function HistoryController($scope, $http) {
@@ -82,7 +89,9 @@ function HistoryController($scope, $http) {
   });
 }
 HistoryController.$inject = ['$scope', '$http'];
-popup.controller('HistoryController', HistoryController);
+angular
+  .module('SherlockePopup')
+  .controller('HistoryController', HistoryController);
 
 
 function SessionsController($scope, $http, $location, ResearchSession) {
@@ -127,7 +136,9 @@ function SessionsController($scope, $http, $location, ResearchSession) {
   };
 }
 SessionsController.$inject = ['$scope', '$http', '$location', 'ResearchSession'];
-popup.controller('SessionsController', SessionsController);
+angular
+  .module('SherlockePopup')
+  .controller('SessionsController', SessionsController);
 
 
 /*
@@ -145,7 +156,9 @@ function skSession($sce) {
   };
 }
 skSession.$inject= ['$sce'];
-popup.directive('skSession', skSession);
+angular
+  .module('SherlockePopup')
+  .directive('skSession', skSession);
 
 
 

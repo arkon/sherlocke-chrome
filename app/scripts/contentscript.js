@@ -14,19 +14,19 @@ function SidePanelController($window, $http, $log, ChromeMessaging) {
    * If the user has an active research session, then send the current page
    * and fetch relevant documents.
    */
-  ChromeMessaging.callMethod('SherlockeApp', 'getActiveResearchSession').then(function success(researchSession) {
+  ChromeMessaging.callMethod('SherlockeApp', 'getActiveResearchSession').then(function success(/*researchSession*/) {
     // GET the evidence document list given the current page
     ChromeMessaging.callMethod('SherlockeApp', 'getDocuments', {
       'page_url': $window.location.href,
       'title': document.title,
       'content': ''
     }).then(function success(documents) {
-      debugger;
+      // debugger;
       vm.documents = documents;
 
       vm.loading = false;
     }, function failure(reason) {
-      debugger;
+      // debugger;
       $log.warn(reason);
 
       vm.loading = false;
@@ -37,10 +37,6 @@ function SidePanelController($window, $http, $log, ChromeMessaging) {
   });
 
 
-//
-//
-//
-//
 //  $http.get(BAKERSTREET_API + '/documents')
 //      .success(function(data) {
 //        $scope.evidence = data;
