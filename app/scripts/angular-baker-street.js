@@ -6,16 +6,19 @@ var BAKERSTREET_RESEARCH_API = 'http://api.sherlocke.me/api';
 /* Declare AngularJS app */
 angular.module('BakerStreet', ['restmod']);
 
-angular
-  .module('BakerStreet')
-  .config(function (restmodProvider) {
+
+function config(restmodProvider) {
   restmodProvider.rebase({
     $config: {
       urlPrefix: BAKERSTREET_RESEARCH_API,
       style: 'MyStyle'
     }
   });
-});
+}
+angular
+  .module('BakerStreet')
+  .config(config);
+
 
 function run($http) {
   chrome.storage.sync.get(['sherlocke-token'], function (items) {

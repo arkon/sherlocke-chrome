@@ -6,8 +6,8 @@ var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 /* Declare AngularJS app */
 angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
 
-angular.module('SherlockePopup')
-  .config(function($routeProvider) {
+
+function config($routeProvider) {
   $routeProvider
     .when('/tab1', {
       controller:'PinnedController',
@@ -32,7 +32,10 @@ angular.module('SherlockePopup')
     .otherwise({
       redirectTo:'/tab1'
     });
-});
+}
+angular
+  .module('SherlockePopup')
+  .config(config);
 
 
 /*
@@ -53,11 +56,12 @@ angular
 function PinnedController($scope, $http) {
   $scope.noPinned = true;
 
-  $http.get(BAKERSTREET_API + '/documents/pinned')
-  .success(function(data) {
+  $http
+    .get(BAKERSTREET_API + '/documents/pinned')
+    .success(function (data) {
     $scope.pinned = data;
 
-    $scope.noPinned = $scope.documents.length === 0;
+    $scope.noPinned = $scope.pinned.length === 0;
   });
 }
 PinnedController.$inject = ['$scope', '$http'];
@@ -83,7 +87,9 @@ angular
 function HistoryController($scope, $http) {
   $scope.noHistory = true;
 
-  $http.get(BAKERSTREET_API + '/pages/current').success(function(data) {
+  $http
+    .get(BAKERSTREET_API + '/pages/current')
+    .success(function (data) {
     $scope.historyPages = data;
     $scope.noHistory = $scope.historyPages.length === 0;
   });
@@ -97,20 +103,21 @@ angular
 function SessionsController($scope, $http, $location, ResearchSession) {
   $scope.noSessions = true;
 
-  $http.get(BAKERSTREET_API + '/research_session')
-  .success(function(data) {
-    $scope.sessions = data;
-
+  $http
+    .get(BAKERSTREET_API + '/research_session')
+    .success(function (data) {
+    $scope.sessions = data.results;
     $scope.noSessions = $scope.sessions.length === 0;
 
-    if (!$scope.noSessions) {
-      $scope.sessionId = data[0].id;
-    }
+    // if (!$scope.noSessions) {
+    //   $scope.sessionId = data[0].id;
+    // }
   });
 
   $scope.save = function() {
-    ResearchSession.$create({ name: $scope.session.name })
-    .$then(function(_session) {
+    ResearchSession
+      .$create({ name: $scope.session.name })
+      .$then(function (_session) {
       $scope.session = _session.data;
       $scope.sessionId = _session.data.id;
 
