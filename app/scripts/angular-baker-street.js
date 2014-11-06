@@ -1,28 +1,28 @@
 'use strict';
 
 var BAKERSTREET_RESEARCH_API = 'http://api.sherlocke.me/api';
-// var BAKERSTREET_RESEARCH_API = 'http://15cc08bf.ngrok.com/api';
 
 
 /* Declare AngularJS app */
-var bakerStreet = angular.module('BakerStreet', ['restmod', 'ngCookies']);
-
-// var SherlockeService = angular.element(document.body).injector().get('SherlockeService');
-
+var bakerStreet = angular.module('BakerStreet', ['restmod']);
 
 bakerStreet.config(function (restmodProvider) {
   restmodProvider.rebase({
+    $hooks: {
+      'before-request': function(_req) {
+        chrome.storage.sync.get(['sherlocke-token'], function (items) {
+          if ('sherlocke-token' in items) {
+            _req.headers = angular.extend(_req.headers, { 'Authorization': 'Token ' + items['sherlocke-token'] });
+          }
+        });
+      }
+    },
     $config: {
-      urlPrefix: BAKERSTREET_RESEARCH_API
+      urlPrefix: BAKERSTREET_RESEARCH_API,
+      style: 'MyStyle'
     }
   });
 });
-
-// function run($http, $cookies) {
-//   $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
-// }
-// run.$inject = ['$http', '$cookies'];
-// bakerStreet.run(run);
 
 
 /* Define restmod models */

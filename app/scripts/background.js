@@ -1,36 +1,19 @@
 'use strict';
 
 var BAKERSTREET_API = 'http://api.sherlocke.me/api';
-// var BAKERSTREET_API = 'http://15cc08bf.ngrok.com/api';
 
 
 /* Declare AngularJS app */
-var app = angular.module('SherlockeApp', ['DjangoAuth', 'ngCookies']);
-
-app.config(['$httpProvider', function ($httpProvider) {
-//   $httpProvider.defaults.useXDomain = true;
-//   delete $httpProvider.defaults.headers.common['X-Requested-With'];
-
-//   Reset headers to avoid OPTIONS request (aka preflight)
-//   $httpProvider.defaults.headers.common = {};
-//   $httpProvider.defaults.headers.post = {};
-//   $httpProvider.defaults.headers.put = {};
-//   $httpProvider.defaults.headers.patch = {};
-
-  $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-  $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-}]);
+var app = angular.module('SherlockeApp', ['DjangoAuth']);
 
 
 /* Eagerly instantiate services once modules are loaded */
-function run(/*$http, $cookies, */$log, SherlockeService) {
+function run($log, SherlockeService) {
   if (!SherlockeService) {
     $log.warn('SherlockService not instantiated');
   }
-
-  // $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
 }
-run.$inject = ['$http', '$cookies', '$log', 'SherlockeService'];
+run.$inject = ['$log', 'SherlockeService'];
 app.run(run);
 
 /*
@@ -57,6 +40,10 @@ function SherlockeService($q, Auth) {
       password: password
     }).then(function (response) {
       vm.authToken = response.token;
+
+      chrome.storage.sync.set({
+        'sherlocke-token': response.token
+      });
     });
   };
 }
@@ -94,11 +81,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     sendResponse({error: 'Invalid origin \'' + message.origin + '\''});
   }
 });
-
-
-// chrome.runtime.onInstalled.addListener(function (details) {
-//   console.log('previousVersion', details.previousVersion);
-// });
 
 
 /* Context menu item */
