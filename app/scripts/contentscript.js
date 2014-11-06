@@ -1,66 +1,55 @@
 'use strict';
 /* jshint multistr: true */
 
-var BAKERSTREET_API = 'http://api.sherlocke.me/api';
-
-
 /* Declare AngularJS app */
-angular.module('SherlockeContent', ['BakerStreet']);
+angular.module('SherlockeContent', ['ChromeMessaging']);
 
-
-/*
- * Controllers
- */
-var MainController = ['$scope', function ($scope) {
-  // Settings
-  chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
-    if ('opt-hide-sidebar' in items) {
-      $scope.isSidebarHidden = items['opt-hide-sidebar'];
-    } else {
-      chrome.storage.sync.set({ 'opt-hide-sidebar': false });
-      $scope.isSidebarHidden = false;
-    }
-
-    if ('opt-show-menu' in items) {
-      $scope.showMenu = items['opt-show-menu'];
-    } else {
-      chrome.storage.sync.set({ 'opt-show-menu': true });
-      $scope.showMenu = true;
-    }
-  });
-}];
-angular
-    .module('SherlockeContent')
-    .controller('MainController', MainController);
-
-function SidePanelController($window, $http, Pages) {
+function SidePanelController($window, $http, $log, ChromeMessaging) {
   var vm = this;
 
-  // Dummy loading
+  // Loading
   vm.isLoading = true;
 
-  var i = 1;
-  var crunch = $window.setInterval(function () {
-    vm.progress = i++;
-  }, 10);
+  /*
+   * If the user has an active research session, then send the current page
+   * and fetch relevant documents.
+   */
+  ChromeMessaging.callMethod('SherlockeApp', 'getActiveResearchSession').then(function success(researchSession) {
+    // GET the evidence document list given the current page
+    ChromeMessaging.callMethod('SherlockeApp', 'getDocuments', {
+      'page_url': $window.location.href,
+      'title': document.title,
+      'content': ''
+    }).then(function success(documents) {
+      debugger;
+      vm.documents = documents;
 
-  // POST the current page
-  Pages.$build({
-    'page_url': $window.location.href,
-    'title': document.title,
-    'content': ''
-  }).$save();
+      vm.loading = false;
+    }, function failure(reason) {
+      debugger;
+      $log.warn(reason);
 
-  // GET the evidence document list
-  $http.get(BAKERSTREET_API + '/documents')
-      .success(function(data) {
-        $scope.evidence = data;
+      vm.loading = false;
+    });
+  }, function failure(reason) {
+    // Failed to get research session; mostly likely none is active
+    $log.warn('Failed to get active research session', reason);
+  });
 
-        $window.clearInterval(crunch);
-        $scope.isLoading = false;
-      });
+
+//
+//
+//
+//
+//  $http.get(BAKERSTREET_API + '/documents')
+//      .success(function(data) {
+//        $scope.evidence = data;
+//
+//        $window.clearInterval(crunch);
+//        $scope.isLoading = false;
+//      });
 }
-SidePanelController.$inject = ['$window', '$http', 'Pages'];
+SidePanelController.$inject = ['$window', '$http', '$log', 'ChromeMessaging'];
 angular
     .module('SherlockeContent')
     .controller('SidePanelController', SidePanelController);
@@ -79,6 +68,27 @@ var MainDirective = [function () {
       scope.$watch('isSidebarHidden', function (value) {
         angular.element('body').toggleClass('hide-sidebar', value);
       });
+    },
+    controllerAs: 'main',
+    controller: function () {
+      var vm = this;
+
+      // Settings
+      chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
+        if ('opt-hide-sidebar' in items) {
+          vm.isSidebarHidden = items['opt-hide-sidebar'];
+        } else {
+          chrome.storage.sync.set({ 'opt-hide-sidebar': false });
+          vm.isSidebarHidden = false;
+        }
+
+        if ('opt-show-menu' in items) {
+          vm.showMenu = items['opt-show-menu'];
+        } else {
+          chrome.storage.sync.set({ 'opt-show-menu': true });
+          vm.showMenu = true;
+        }
+      });
     }
   };
 }];
@@ -88,6 +98,8 @@ angular
 
 var SidePanelDirective = ['$sce', function ($sce) {
   return {
+    restrict: 'A',
+    scope: {},
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html')),
     link: function (scope, element) {
       // Handle sidebar toggle
@@ -165,7 +177,6 @@ angular.element(document).ready(function () {
     // angular.element('#wrap')
     angular.element('body')
         .attr('sk-main', true)
-        .attr('ng-controller', 'MainController')
         .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController as side"></div></div>');
 
     angular.bootstrap(document, ['SherlockeContent']);
