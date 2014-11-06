@@ -17,6 +17,9 @@
 
     <section id="user" ng-controller="AuthController as auth">
       <form ng-if="!auth.isAuthenticated" ng-submit="auth.authenticate()">
+        <div class="alert" ng-if="auth.alerts">
+          <span ng-repeat="alert in auth.alerts">{{alert}}</span>
+        </div>
         <label for="email">Email address</label>
         <input id="email" type="email" ng-model="auth.email">
 
