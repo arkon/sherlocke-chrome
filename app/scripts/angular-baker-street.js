@@ -44,14 +44,12 @@ function BakerStreetService($http, Pages) {
       page_url: data.page_url,
       title: data.title,
       content: data.content
-    })
-    .$save();
+    }).$save();
 
     // Fetch relevant documents
-    $http.get(BAKERSTREET_API + '/documents')
-      .success(function(data) {
-        return data;
-      });
+    $http.get(BAKERSTREET_API + '/documents').success(function (evidence) {
+      return evidence;
+    });
   };
 }
 BakerStreetService.$inject = ['$http', 'Pages'];

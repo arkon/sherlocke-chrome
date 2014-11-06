@@ -7,7 +7,7 @@ angular.module('SherlockeContent', ['ChromeMessaging']);
 /*
  * Controllers
  */
-function SidePanelController($window, $http, $log, ChromeMessaging) {
+function SidePanelController($window, $log, ChromeMessaging) {
   var vm = this;
 
   // Whether sidebar is loading
@@ -40,7 +40,7 @@ function SidePanelController($window, $http, $log, ChromeMessaging) {
     $log.warn('Failed to get active research session', reason);
   });
 }
-SidePanelController.$inject = ['$window', '$http', '$log', 'ChromeMessaging'];
+SidePanelController.$inject = ['$window', '$log', 'ChromeMessaging'];
 angular
     .module('SherlockeContent')
     .controller('SidePanelController', SidePanelController);
