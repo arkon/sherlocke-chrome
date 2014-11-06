@@ -5,26 +5,24 @@ var BAKERSTREET_RESEARCH_API = 'http://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
-var bakerStreet = angular.module('BakerStreet', ['restmod']);
+var bakerStreet = angular.module('BakerStreet', ['restmod', 'ngCookies']);
 
-// bakerStreet.config(['$httpProvider', function ($httpProvider) {
-//   $httpProvider.defaults.useXDomain = true;
-//   delete $httpProvider.defaults.headers.common['X-Requested-With'];
+// var SherlockeService = angular.element(document.body).injector().get('SherlockeService');
 
-//   // Reset headers to avoid OPTIONS request (aka preflight)
-//   $httpProvider.defaults.headers.common = {};
-//   $httpProvider.defaults.headers.post = {};
-//   $httpProvider.defaults.headers.put = {};
-//   $httpProvider.defaults.headers.patch = {};
-// }]);
 
-bakerStreet.config(function(restmodProvider) {
+bakerStreet.config(function (restmodProvider) {
   restmodProvider.rebase({
     $config: {
       urlPrefix: BAKERSTREET_RESEARCH_API
     }
   });
 });
+
+// function run($http, $cookies) {
+//   $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
+// }
+// run.$inject = ['$http', '$cookies'];
+// bakerStreet.run(run);
 
 
 /* Define restmod models */

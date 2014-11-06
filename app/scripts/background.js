@@ -7,7 +7,7 @@ var BAKERSTREET_API = 'http://api.sherlocke.me/api';
 /* Declare AngularJS app */
 var app = angular.module('SherlockeApp', ['DjangoAuth', 'ngCookies']);
 
-// app.config(['$httpProvider', function ($httpProvider) {
+app.config(['$httpProvider', function ($httpProvider) {
 //   $httpProvider.defaults.useXDomain = true;
 //   delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
@@ -17,18 +17,18 @@ var app = angular.module('SherlockeApp', ['DjangoAuth', 'ngCookies']);
 //   $httpProvider.defaults.headers.put = {};
 //   $httpProvider.defaults.headers.patch = {};
 
-  // $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-  // $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-// }]);
+  $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+  $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+}]);
 
 
 /* Eagerly instantiate services once modules are loaded */
-function run($http, $cookies, $log, SherlockeService) {
+function run(/*$http, $cookies, */$log, SherlockeService) {
   if (!SherlockeService) {
     $log.warn('SherlockService not instantiated');
   }
 
-  $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
+  // $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
 }
 run.$inject = ['$http', '$cookies', '$log', 'SherlockeService'];
 app.run(run);
