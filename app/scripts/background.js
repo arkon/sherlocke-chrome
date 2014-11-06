@@ -55,6 +55,7 @@ function config(AuthProvider) {
   AuthProvider.loginPath(BAKERSTREET_API + '/users/sign_in.json');
   AuthProvider.logoutPath(BAKERSTREET_API + '/users/sign_out.json');
   AuthProvider.resourceName(false);
+  AuthProvider.ignoreAuth(true);
 }
 config.$inject = ['AuthProvider'];
 angular
@@ -64,7 +65,7 @@ angular
 /*
  * Services
  */
-function SherlockeService($log, Auth, BakerStreetService) {
+function SherlockeService($log, $q, Auth, BakerStreetService) {
   var vm = this;
 
   vm.currentResearchSession = null;
@@ -78,10 +79,11 @@ function SherlockeService($log, Auth, BakerStreetService) {
       BakerStreetService.userToken = user.token;
     }, function failure(reason) {
       $log.warn('Failed to authenticate: ', reason);
+      return $q.reject(reason);
     });
   };
 }
-SherlockeService.$inject = ['$log', 'Auth', 'BakerStreetService'];
+SherlockeService.$inject = ['$log', '$q', 'Auth', 'BakerStreetService'];
 angular
     .module('SherlockeApp')
     .service('SherlockeService', SherlockeService);
