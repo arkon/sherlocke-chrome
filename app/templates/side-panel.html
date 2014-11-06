@@ -12,6 +12,9 @@
   <ul id="sherlocke-suggestions">
     <li ng-repeat="document in side.evidence | limitTo:10">
       <a ng-href="{{ document.url }}">
+        <!-- Pin -->
+        <a class="suggestion-pin" href="#">Pin</a>
+
         <h1>{{ document.title }}</h1>
         <!-- <p>Confidence: {{ document.value * 100 | number: 2 }}%</p> -->
         <!-- <p>{{ document.source }}</p> -->
