@@ -1,7 +1,7 @@
 <select id="session-list"
         ng-hide="sessionsCtrl.sessions.length === 0"
-        ng-change="changeSession(sessionsCtrl.sessionId)"
-        ng-model="sessionsCtrl.sessionId">
+        ng-change="sessionsCtrl.changeSession(sessionsCtrl.currentSession)"
+        ng-model="sessionsCtrl.currentSession">
   <option ng-repeat="session in sessionsCtrl.sessions"
           value="{{ session.id }}"
           ng-selected="session.current">

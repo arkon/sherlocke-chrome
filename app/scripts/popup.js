@@ -118,26 +118,23 @@ function SessionsController($scope, $http, $location, ResearchSession) {
 
   vm.sessions = [];
 
-  // $scope.$watch(function () {
-  //   return vm.sessionId;
-  // }, function (_sessionId) {
-  //   // POST the current session
-  //   ResearchSession.$new(_sessionId).$save();
+  vm.changeSession = function(session) {
+    // POST the current session
+    // ResearchSession.$new(session.name).$save();
+    $http.post(BAKERSTREET_API + '/research_session?id=' + session);
 
-  //   vm.sessionId = _sessionId;
-  // }, true);
-
-  $scope.changeSession = function(_sessionId) {
-    ResearchSession.$new(_sessionId).$save();
-
-    vm.sessionId = _sessionId;
+    vm.currentSession = session;
   };
 
   $http
     .get(BAKERSTREET_API + '/research_session')
     .success(function (data) {
     vm.sessions = data.results;
-    // $scope.sessionId = $scope.sessions[5];
+
+    // Select a valid item so that Angular doesn't show an empty option
+    vm.currentSession = vm.sessions[0].id;
+
+    vm.noSessions = vm.sessions.length === 0;
   });
 
   vm.save = function() {
@@ -145,7 +142,7 @@ function SessionsController($scope, $http, $location, ResearchSession) {
       .$create({ name: vm.session.name })
       .$then(function (_session) {
       vm.session = _session.$response.data;
-      vm.sessionId = _session.$response.data.id;
+      vm.currentSession = _session.$response.data.id;
 
       vm.sessions.$add(_session).then(function() {
         $location.path('/');
