@@ -22,11 +22,11 @@ function SidePanelController($window, $document, $log, ChromeMessaging) {
    *
    * For now, just send the current page
    */
-  var url = $window.location.href;
+  var url   = $window.location.href;
   var title = $document[0].title.replace(/^CanLII - /, '');
 
   ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', {
-    url: url,
+    url:   url,
     title: title
   }).then(function success(/*_page*/) {
     // var page = _page.$response.data;
