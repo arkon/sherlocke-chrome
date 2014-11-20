@@ -32,12 +32,12 @@ angular
  * Services
  */
 
-function BakerStreetService($http, Pages) {
+function BakerStreetService($http, Page) {
   this.userToken = null;
 
   this.getDocuments = function (data) {
     // Send current page first
-    Pages.$build({
+    Page.$build({
       /* jshint camelcase: false */
       page_url: data.page_url,
       title: data.title,
@@ -50,7 +50,7 @@ function BakerStreetService($http, Pages) {
     });
   };
 }
-BakerStreetService.$inject = ['$http', 'Pages'];
+BakerStreetService.$inject = ['$http', 'Page'];
 angular
     .module('BakerStreet')
     .service('BakerStreetService', BakerStreetService);
@@ -80,25 +80,25 @@ angular
 // POST with parameter id
 // GET: all research sessions
 
-var Questions = ['restmod', function (restmod) {
+var Question = ['restmod', function (restmod) {
   return restmod.model('/questions');
 }];
 angular
     .module('BakerStreet')
-    .factory('Questions', Questions);
+    .factory('Question', Question);
 
 
-var Pages = ['restmod', function (restmod) {
+var Page = ['restmod', function (restmod) {
   return restmod.model('/pages');
 }];
 angular
     .module('BakerStreet')
-    .factory('Pages', Pages);
+    .factory('Page', Page);
 
 
-var Documents = ['restmod', function (restmod) {
+var Document = ['restmod', function (restmod) {
   return restmod.model('/documents');
 }];
 angular
     .module('BakerStreet')
-    .factory('Documents', Documents);
+    .factory('Document', Document);

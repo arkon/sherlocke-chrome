@@ -7,7 +7,7 @@ angular.module('SherlockeContent', ['ChromeMessaging']);
 /*
  * Controllers
  */
-function SidePanelController($window, $log, ChromeMessaging) {
+function SidePanelController($window, $document, $log, ChromeMessaging) {
   var vm = this;
 
   // Whether sidebar is loading
@@ -23,24 +23,29 @@ function SidePanelController($window, $log, ChromeMessaging) {
   ChromeMessaging.callMethod('SherlockeApp', 'getActiveResearchSession').then(function success(researchSession) {
     vm.activeResearchSession = researchSession;
 
-    // GET the evidence document list given the current page
-    ChromeMessaging.callMethod('SherlockeApp', 'getDocuments', {
-      'page_url': $window.location.href,
-      'title': document.title,
-      'content': ''
-    }).then(function success(evidence) {
-      vm.evidence = evidence;
-      vm.isLoading = false;
-    }, function failure(reason) {
-      $log.warn(reason);
-      vm.isLoading = false;
+    var url = $window.location.href;
+    var title = $document[0].title.replace(/^CanLII - /, '');
+
+    return ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', {
+      url: url,
+      title: title
     });
   }, function failure(reason) {
     // Failed to get research session; mostly likely none is active
     $log.warn('Failed to get active research session', reason);
+  }).then(function success(/*_page*/) {
+    // var page = _page.$response.data;
+
+    return ChromeMessaging.callMethod('SherlockeApp', 'getDocuments');
+  }).then(function success(documents) {
+    vm.evidence = documents;
+    vm.isLoading = false;
+  }, function failure(reason) {
+    $log.warn(reason);
+    vm.isLoading = false;
   });
 }
-SidePanelController.$inject = ['$window', '$log', 'ChromeMessaging'];
+SidePanelController.$inject = ['$window', '$document', '$log', 'ChromeMessaging'];
 angular
     .module('SherlockeContent')
     .controller('SidePanelController', SidePanelController);

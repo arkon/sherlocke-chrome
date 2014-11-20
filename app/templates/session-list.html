@@ -1,5 +1,5 @@
 <select id="session-list"
-        ng-hide="sessionsCtrl.noSessions"
+        ng-hide="sessionsCtrl.sessions.length === 0"
         ng-change="changeSession(sessionsCtrl.sessionId)"
         ng-model="sessionsCtrl.sessionId">
   <option ng-repeat="session in sessionsCtrl.sessions"
@@ -11,8 +11,8 @@
 <span id="no-sessions" ng-show="sessionsCtrl.noSessions">No existing sessions</span>
 
 <div id="session-controls">
-  <a href="#/pause" id="session-pause" class="session-btn" title="Pause session" ng-hide="sessionsCtrl.noSessions">Pause</a>
-  <a href="#/delete" id="session-delete" class="session-btn" title="Delete session" ng-hide="sessionsCtrl.noSessions">Delete</a>
-  <a href="#/new" id="session-new" class="session-btn" title="New session" ng-hide="sessionsCtrl.noSessions">New</a>
-  <a href="#/new" id="session-new-first" class="session-btn" title="New session" ng-show="sessionsCtrl.noSessions">New</a>
+  <a href="#/pause" id="session-pause" class="session-btn" title="Pause session" ng-hide="sessionsCtrl.sessions.length === 0">Pause</a>
+  <a href="#/delete" id="session-delete" class="session-btn" title="Delete session" ng-hide="sessionsCtrl.sessions.length === 0">Delete</a>
+  <a href="#/new" id="session-new" class="session-btn" title="New session" ng-hide="sessionsCtrl.sessions.length === 0">New</a>
+  <a href="#/new" id="session-new-first" class="session-btn" title="New session" ng-show="sessionsCtrl.sessions.length === 0">New</a>
 </div>

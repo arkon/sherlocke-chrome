@@ -31,6 +31,12 @@ function run(Auth, ChromeMessaging, SherlockeService, $http, BakerStreetService)
       SherlockeService.getDocuments
   );
 
+  ChromeMessaging.publish(
+    'SherlockeApp',
+    'sendCurrentPage',
+    SherlockeService.sendCurrentPage
+  );
+
   /*
    * Usage:
    *   ChromeMessaging.callMethod(
@@ -71,7 +77,7 @@ angular
 /*
  * Services
  */
-function SherlockeService($log, $q, Auth, BakerStreetService) {
+function SherlockeService($log, $q, Auth, BakerStreetService, Page) {
   var vm = this;
 
   vm.currentResearchSession = null;
@@ -80,6 +86,17 @@ function SherlockeService($log, $q, Auth, BakerStreetService) {
     return vm.currentResearchSession;
   };
   vm.getDocuments = BakerStreetService.getDocuments;
+  vm.sendCurrentPage = function (page) {
+    return $q(function (resolve) {
+      Page.$create({
+        'page_url': page.url,
+        'title': page.title,
+        'content': ''
+      }).$then(function (_page) {
+        resolve(_page);
+      });
+    });
+  };
   vm.authenticate = function (creds) {
     return Auth.login(creds).then(function success(user) {
       BakerStreetService.userToken = user.token;
@@ -90,7 +107,7 @@ function SherlockeService($log, $q, Auth, BakerStreetService) {
     });
   };
 }
-SherlockeService.$inject = ['$log', '$q', 'Auth', 'BakerStreetService'];
+SherlockeService.$inject = ['$log', '$q', 'Auth', 'BakerStreetService', 'Page'];
 angular
     .module('SherlockeApp')
     .service('SherlockeService', SherlockeService);

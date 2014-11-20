@@ -116,7 +116,7 @@ angular
 function SessionsController($scope, $http, $location, ResearchSession) {
   var vm = this;
 
-  vm.noSessions = true;
+  vm.sessions = [];
 
   // $scope.$watch(function () {
   //   return vm.sessionId;
@@ -137,7 +137,7 @@ function SessionsController($scope, $http, $location, ResearchSession) {
     .get(BAKERSTREET_API + '/research_session')
     .success(function (data) {
     vm.sessions = data.results;
-    vm.noSessions = vm.sessions.length === 0;
+    // $scope.sessionId = $scope.sessions[5];
   });
 
   vm.save = function() {
@@ -159,10 +159,8 @@ function SessionsController($scope, $http, $location, ResearchSession) {
       vm.sessions.$remove(vm.session).then(function () {
         $location.path('/');
       });
+      if (vm.sessions.length) {
 
-      vm.noSessions = vm.sessions.length === 0;
-
-      if (!vm.noSessions) {
         vm.sessionId = data[0].id;
       }
     });
