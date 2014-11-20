@@ -17,25 +17,19 @@ function SidePanelController($window, $document, $log, ChromeMessaging) {
   vm.activeResearchSession = null;
 
   /*
-   * If the user has an active research session, then send the current page
+   * TODO: If the user has an active research session, then send the current page
    * and fetch relevant documents.
+   *
+   * For now, just send the current page
    */
-  ChromeMessaging.callMethod('SherlockeApp', 'getActiveResearchSession').then(function success(researchSession) {
-    vm.activeResearchSession = researchSession;
+  var url = $window.location.href;
+  var title = $document[0].title.replace(/^CanLII - /, '');
 
-    var url = $window.location.href;
-    var title = $document[0].title.replace(/^CanLII - /, '');
-
-    return ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', {
-      url: url,
-      title: title
-    });
-  }, function failure(reason) {
-    // Failed to get research session; mostly likely none is active
-    $log.warn('Failed to get active research session', reason);
+  ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', {
+    url: url,
+    title: title
   }).then(function success(/*_page*/) {
     // var page = _page.$response.data;
-
     return ChromeMessaging.callMethod('SherlockeApp', 'getDocuments');
   }).then(function success(documents) {
     vm.evidence = documents;
@@ -61,9 +55,9 @@ var MainDirective = [function () {
       isSidebarHidden: '=isSidebarHidden'
     },
     link: function (scope) {
-      scope.$watch('isSidebarHidden', function (value) {
-        angular.element('body').toggleClass('hide-sidebar', value);
-      });
+      //scope.$watch('isSidebarHidden', function (value) {
+      //  angular.element('body').toggleClass('hide-sidebar', value);
+      //});
     },
     controllerAs: 'main',
     controller: function () {

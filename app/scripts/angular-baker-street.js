@@ -32,25 +32,10 @@ angular
  * Services
  */
 
-function BakerStreetService($http, Page) {
+function BakerStreetService() {
   this.userToken = null;
-
-  this.getDocuments = function (data) {
-    // Send current page first
-    Page.$build({
-      /* jshint camelcase: false */
-      page_url: data.page_url,
-      title: data.title,
-      content: data.content
-    }).$save();
-
-    // Fetch relevant documents
-    $http.get(BAKERSTREET_API + '/documents').success(function (evidence) {
-      return evidence;
-    });
-  };
 }
-BakerStreetService.$inject = ['$http', 'Page'];
+BakerStreetService.$inject = [];
 angular
     .module('BakerStreet')
     .service('BakerStreetService', BakerStreetService);

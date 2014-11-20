@@ -77,7 +77,7 @@ angular
 /*
  * Services
  */
-function SherlockeService($log, $q, Auth, BakerStreetService, Page) {
+function SherlockeService($http, $log, $q, Auth, BakerStreetService, Page /*Document*/) {
   var vm = this;
 
   vm.currentResearchSession = null;
@@ -85,7 +85,14 @@ function SherlockeService($log, $q, Auth, BakerStreetService, Page) {
   vm.getActiveResearchSession = function () {
     return vm.currentResearchSession;
   };
-  vm.getDocuments = BakerStreetService.getDocuments;
+  vm.getDocuments = function () {
+    return $q(function (resolve) {
+      $http.get(BAKERSTREET_API + '/documents').
+        success(function(data/*, status, headers, config*/) {
+          resolve(data);
+        });
+    });
+  };
   vm.sendCurrentPage = function (page) {
     return $q(function (resolve) {
       Page.$create({
@@ -107,7 +114,7 @@ function SherlockeService($log, $q, Auth, BakerStreetService, Page) {
     });
   };
 }
-SherlockeService.$inject = ['$log', '$q', 'Auth', 'BakerStreetService', 'Page'];
+SherlockeService.$inject = ['$http', '$log', '$q', 'Auth', 'BakerStreetService', 'Page', 'Document'];
 angular
     .module('SherlockeApp')
     .service('SherlockeService', SherlockeService);
