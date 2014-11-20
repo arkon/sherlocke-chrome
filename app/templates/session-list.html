@@ -8,7 +8,7 @@
     {{ session.name }}
   </option>
 </select>
-<span id="no-sessions" ng-show="sessionsCtrl.noSessions">No existing sessions</span>
+<span id="no-sessions" ng-show="sessionsCtrl.sessions.length === 0">No existing sessions</span>
 
 <div id="session-controls">
   <a href="#/pause" id="session-pause" class="session-btn" title="Pause session" ng-hide="sessionsCtrl.sessions.length === 0">Pause</a>
