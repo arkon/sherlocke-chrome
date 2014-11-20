@@ -1,11 +1,35 @@
+/* Useful core styling */
+
 @font-face {
   font-family: 'Open Sans';
   src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenSans-Regular.ttf') format('truetype');
 }
 
+%pin {
+  background-repeat: no-repeat;
+  background-position: left center;
+  display: table-cell;
+  height: 20px;
+  width: 30px;
+  text-indent: -3000em;
+  opacity: 0.75;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.pin {
+  @extend %pin;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/action-pin.png');
+}
+
 .hidden {
   display: none;
 }
+
+
+/* Sidebar/page widths */
 
 .sherlocke-original-page {
   width: calc(100% - 250px);
@@ -15,6 +39,9 @@
     width: 100%;
   }
 }
+
+
+/* Sherlocke sidebar styling */
 
 #sherlocke {
   background: #fff;
@@ -73,7 +100,7 @@
     right: 250px;
     margin-top: -25px;
     z-index: 100000;
-    -webkit-backface-visibility: hidden;
+    // -webkit-backface-visibility: hidden;
 
     &::after {
       color: #fff;
