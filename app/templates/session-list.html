@@ -1,7 +1,13 @@
 <select id="session-list"
         ng-hide="sessionsCtrl.noSessions"
-        ng-options="session.name for session in sessionsCtrl.sessions"
-        ng-model="sessionsCtrl.sessionId"></select>
+        ng-change="changeSession(sessionsCtrl.sessionId)"
+        ng-model="sessionsCtrl.sessionId">
+  <option ng-repeat="session in sessionsCtrl.sessions"
+          value="{{ session.id }}"
+          ng-selected="session.current">
+    {{ session.name }}
+  </option>
+</select>
 <span id="no-sessions" ng-show="sessionsCtrl.noSessions">No existing sessions</span>
 
 <div id="session-controls">

@@ -118,29 +118,26 @@ function SessionsController($scope, $http, $location, ResearchSession) {
 
   vm.noSessions = true;
 
-  $scope.$watch(function () {
-    return vm.sessionId;
-  }, function (_sessionId) {
-    // POST the current session
+  // $scope.$watch(function () {
+  //   return vm.sessionId;
+  // }, function (_sessionId) {
+  //   // POST the current session
+  //   ResearchSession.$new(_sessionId).$save();
+
+  //   vm.sessionId = _sessionId;
+  // }, true);
+
+  $scope.changeSession = function(_sessionId) {
     ResearchSession.$new(_sessionId).$save();
 
     vm.sessionId = _sessionId;
-  }, true);
+  };
 
   $http
     .get(BAKERSTREET_API + '/research_session')
     .success(function (data) {
     vm.sessions = data.results;
     vm.noSessions = vm.sessions.length === 0;
-
-    // $scope.sessionId = $scope.sessions[5];
-
-    // var list = document.getElementById('session-list');
-    // list.options[$scope.sessionId].selected = true;
-
-    // if (!$scope.noSessions) {
-    //   $scope.sessionId = data[0].id;
-    // }
   });
 
   vm.save = function() {
