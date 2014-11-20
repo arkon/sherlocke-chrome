@@ -67,7 +67,8 @@
     "history",
     "*://www.canlii.org/*",
     "https://watson-wdc01.ihost.com/*",
-    "*://api.sherlocke.me/api/*"
+    "*://api.sherlocke.me/api/*",
+    "*://23a0283b.ngrok.com/api/*"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
