@@ -67,3 +67,27 @@ input {
     margin-top: 1em;
   }
 }
+
+%pin {
+  background-repeat: no-repeat;
+  background-position: left center;
+  display: table-cell;
+  height: 20px;
+  width: 30px;
+  text-indent: -3000em;
+  opacity: 0.75;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.pin {
+  @extend %pin;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/action-pin.png');
+}
+
+.unpin {
+  @extend %pin;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/action-pinned.png');
+}

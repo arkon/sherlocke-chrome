@@ -88,9 +88,9 @@ function HistoryController($scope, $http) {
   $scope.noHistory = true;
 
   $http
-    .get(BAKERSTREET_API + '/pages/current')
+    .get(BAKERSTREET_API + '/pages')
     .success(function (data) {
-    $scope.historyPages = data;
+    $scope.historyPages = data.results;
     $scope.noHistory = $scope.historyPages.length === 0;
   });
 }
