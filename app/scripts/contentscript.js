@@ -54,7 +54,7 @@ var MainDirective = [function () {
     scope: {
       isSidebarHidden: '=isSidebarHidden'
     },
-    link: function (scope) {
+    link: function (/*scope*/) {
       //scope.$watch('isSidebarHidden', function (value) {
       //  angular.element('body').toggleClass('hide-sidebar', value);
       //});
@@ -89,7 +89,6 @@ angular
 var SidePanelDirective = ['$sce', function ($sce) {
   return {
     restrict: 'A',
-    scope: {},
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html')),
     link: function (scope, element) {
       // Handle sidebar toggle
