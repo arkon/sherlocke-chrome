@@ -10,9 +10,9 @@
     <link href="styles/popup.css" rel="stylesheet">
     <!-- endbuild -->
   </head>
-  <body ng-controller="PopupController">
+  <body ng-controller="PopupController as popupCtrl">
     <section class="block">
-      <section id="session" sk-session ng-controller="SessionsController"></section>
+      <section id="session" sk-session ng-controller="SessionsController as sessionsCtrl"></section>
       <section id="tab-content" ng-view></section>
     </section>
 

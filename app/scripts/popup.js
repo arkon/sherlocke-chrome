@@ -10,24 +10,29 @@ angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
 function config($routeProvider) {
   $routeProvider
     .when('/tab1', {
-      controller:'PinnedController',
-      templateUrl:'templates/popup-pinned.html'
+      controller:   'PinnedController',
+      controllerAs: 'pinnedCtrl',
+      templateUrl:  'templates/popup-pinned.html'
     })
     .when('/tab2', {
-      controller:'PriorityController',
-      templateUrl:'templates/popup-priority.html'
+      controller:   'PriorityController',
+      controllerAs: 'priorityCtrl',
+      templateUrl:  'templates/popup-priority.html'
     })
     .when('/tab3', {
-      controller:'HistoryController',
-      templateUrl:'templates/popup-history.html'
+      controller:   'HistoryController',
+      controllerAs: 'historyCtrl',
+      templateUrl:  'templates/popup-history.html'
     })
     .when('/new', {
-      controller:'SessionsController',
-      templateUrl:'templates/session-new-form.html'
+      controller:   'SessionsController',
+      controllerAs: 'sessionsCtrl',
+      templateUrl:  'templates/session-new-form.html'
     })
     .when('/delete', {
-      controller:'SessionsController',
-      templateUrl:'templates/session-delete.html'
+      controller:   'SessionsController',
+      controllerAs: 'sessionsCtrl',
+      templateUrl:  'templates/session-delete.html'
     })
     .otherwise({
       redirectTo:'/tab1'
@@ -53,68 +58,80 @@ angular
   .module('SherlockePopup')
   .controller('PopupController', PopupController);
 
-function PinnedController($scope, $http) {
-  $scope.noPinned = true;
+function PinnedController($http) {
+  var vm = this;
+
+  vm.noPinned = true;
 
   $http
     .get(BAKERSTREET_API + '/documents/pinned')
     .success(function (data) {
-    $scope.pinned = data;
+    vm.pinned = data;
 
-    $scope.noPinned = $scope.pinned.length === 0;
+    vm.noPinned = vm.pinned.length === 0;
   });
 }
-PinnedController.$inject = ['$scope', '$http'];
+PinnedController.$inject = ['$http'];
 angular
   .module('SherlockePopup')
   .controller('PinnedController', PinnedController);
 
 
-function PriorityController($scope) {
-  $scope.noPriority = true;
+function PriorityController() {
+  var vm = this;
 
-  $scope.prioritized = [{'id': 0, 'name': 'Something'},
-                        {'id': 1, 'name': 'Lorem ipsum'}];
+  vm.noPriority = true;
 
-  $scope.noPriority = $scope.prioritized.length === 0;
+  vm.prioritized = [
+    {'id': 0, 'name': 'Something'},
+    {'id': 1, 'name': 'Lorem ipsum'}
+  ];
+
+  vm.noPriority = vm.prioritized.length === 0;
 }
-PriorityController.$inject = ['$scope', '$http'];
+PriorityController.$inject = ['$http'];
 angular
   .module('SherlockePopup')
   .controller('PriorityController', PriorityController);
 
 
-function HistoryController($scope, $http) {
-  $scope.noHistory = true;
+function HistoryController($http) {
+  var vm = this;
+
+  vm.noHistory = true;
 
   $http
     .get(BAKERSTREET_API + '/pages')
     .success(function (data) {
-    $scope.historyPages = data.results;
-    $scope.noHistory = $scope.historyPages.length === 0;
+    vm.historyPages = data.results;
+    vm.noHistory = vm.historyPages.length === 0;
   });
 }
-HistoryController.$inject = ['$scope', '$http'];
+HistoryController.$inject = ['$http'];
 angular
   .module('SherlockePopup')
   .controller('HistoryController', HistoryController);
 
 
 function SessionsController($scope, $http, $location, ResearchSession) {
-  $scope.noSessions = true;
+  var vm = this;
 
-  $scope.$watch('sessionId', function (_sessionId) {
+  vm.noSessions = true;
+
+  $scope.$watch(function () {
+    return vm.sessionId;
+  }, function (_sessionId) {
     // POST the current session
     ResearchSession.$new(_sessionId).$save();
 
-    $scope.sessionId = _sessionId;
+    vm.sessionId = _sessionId;
   }, true);
 
   $http
     .get(BAKERSTREET_API + '/research_session')
     .success(function (data) {
-    $scope.sessions = data.results;
-    $scope.noSessions = $scope.sessions.length === 0;
+    vm.sessions = data.results;
+    vm.noSessions = vm.sessions.length === 0;
 
     // $scope.sessionId = $scope.sessions[5];
 
@@ -126,30 +143,30 @@ function SessionsController($scope, $http, $location, ResearchSession) {
     // }
   });
 
-  $scope.save = function() {
+  vm.save = function() {
     ResearchSession
-      .$create({ name: $scope.session.name })
+      .$create({ name: vm.session.name })
       .$then(function (_session) {
-      $scope.session = _session.data;
-      $scope.sessionId = _session.data.id;
+      vm.session = _session.data;
+      vm.sessionId = _session.data.id;
 
-      $scope.sessions.$add(_session).then(function() {
+      vm.sessions.$add(_session).then(function() {
         $location.path('/');
       });
     });
   };
 
-  $scope.destroy = function() {
-    $http.delete(BAKERSTREET_API + '/research_session/' + $scope.sessionID)
+  vm.destroy = function() {
+    $http.delete(BAKERSTREET_API + '/research_session/' + vm.sessionID)
     .success(function(data) {
-      $scope.sessions.$remove($scope.session).then(function () {
+      vm.sessions.$remove(vm.session).then(function () {
         $location.path('/');
       });
 
-      $scope.noSessions = $scope.sessions.length === 0;
+      vm.noSessions = vm.sessions.length === 0;
 
-      if (!$scope.noSessions) {
-        $scope.sessionId = data[0].id;
+      if (!vm.noSessions) {
+        vm.sessionId = data[0].id;
       }
     });
   };

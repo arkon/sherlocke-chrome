@@ -1,11 +1,11 @@
 <article>
   <h1>Pinned documents</h1>
   <ul id="session-pinned">
-    <li ng-repeat="pin in pinned">
+    <li ng-repeat="pin in pinnedCtrl.pinned">
       <a class="unpin pinned-unpin">Unpin</a>
       <a href="{{ pin.page_url }}">{{ pin.page_url }}</a>
     </li>
   </ul>
 
-  <p ng-show="noPinned">You can view your pinned documents here.</p>
+  <p ng-show="pinnedCtrl.noPinned">You can view your pinned documents here.</p>
 </article>
