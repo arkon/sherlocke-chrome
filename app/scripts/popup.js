@@ -1,6 +1,6 @@
 'use strict';
 
-var BAKERSTREET_API = 'https://api.sherlocke.me/api';
+var BAKERSTREET_API = 'https://23a0283b.ngrok.com/api';
 
 
 /* Declare AngularJS app */
@@ -147,8 +147,8 @@ function SessionsController($scope, $http, $location, ResearchSession) {
     ResearchSession
       .$create({ name: vm.session.name })
       .$then(function (_session) {
-      vm.session = _session.data;
-      vm.sessionId = _session.data.id;
+      vm.session = _session.$response.data;
+      vm.sessionId = _session.$response.data.id;
 
       vm.sessions.$add(_session).then(function() {
         $location.path('/');

@@ -1,6 +1,6 @@
 'use strict';
 
-var BAKERSTREET_API = 'https://api.sherlocke.me/api';
+var BAKERSTREET_API = 'https://23a0283b.ngrok.com/api';
 
 
 /* Declare AngularJS app */
@@ -20,10 +20,8 @@ angular
     .module('BakerStreet')
     .config(config);
 
-function run($http, BakerStreetService) {
-  if (BakerStreetService.userToken) {
-    $http.defaults.headers.common.Authorization = 'Token ' + BakerStreetService.userToken;
-  }
+function run($http) {
+  $http.defaults.headers.common.Authorization = 'Token f93a41e52a7cad34b0078c5995ba635201abccb7';
 }
 run.$inject = ['$http', 'BakerStreetService'];
 angular
@@ -57,6 +55,19 @@ angular
     .module('BakerStreet')
     .service('BakerStreetService', BakerStreetService);
 
+
+//var AuthenticatedModel = ['restmod', function (restmod) {
+//  return restmod.mixin({
+//    $hooks: {
+//      'before-request': function (/*request*/) {
+//        // authenticate
+//      }
+//    }
+//  });
+//}];
+//angular
+//    .module('BakerStreet')
+//    .factory('AuthenticatedModel', AuthenticatedModel);
 
 var ResearchSession = ['restmod', function (restmod) {
   return restmod.model('/research_session');

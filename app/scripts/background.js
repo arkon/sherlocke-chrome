@@ -1,6 +1,6 @@
 'use strict';
 
-var BAKERSTREET_API = 'https://api.sherlocke.me/api';
+var BAKERSTREET_API = 'https://23a0283b.ngrok.com/api';
 
 
 /* Declare AngularJS app */
@@ -13,6 +13,12 @@ function run(Auth, ChromeMessaging, SherlockeService, $http, BakerStreetService)
   }
 
   // Publish and handle messages sent to 'SherlockeApp'
+  ChromeMessaging.publish(
+    'SherlockeApp',
+    'createResearchSession',
+    SherlockeService.createResearchSession
+  );
+
   ChromeMessaging.publish(
       'SherlockeApp',
       'getActiveResearchSession',

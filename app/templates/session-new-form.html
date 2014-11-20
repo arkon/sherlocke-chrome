@@ -4,12 +4,12 @@
   <form name="sessionNew">
     <div>
       <label>Name</label>
-      <input type="text" name="name" ng-model="session.name" required>
+      <input type="text" name="name" ng-model="sessionsCtrl.session.name" required>
       <span ng-show="sessionNew.name.$error.required">Required</span>
     </div>
 
     <div id="session-new-actions">
-      <a class="session-action-primary" ng-click="save()" ng-disabled="sessionNew.$invalid">Save</a>
+      <a class="session-action-primary" ng-click="sessionsCtrl.save()" ng-disabled="sessionNew.$invalid">Save</a>
       <a class="session-action btn" href="#/">Cancel</a>
     </div>
   </form>
