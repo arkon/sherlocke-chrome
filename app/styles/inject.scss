@@ -1,5 +1,8 @@
 /* Useful core styling */
 
+$background-color: #f2f2f2;
+$brand-color: #4179a1;
+
 @font-face {
   font-family: 'Open Sans';
   src: url('chrome-extension://__MSG_@@extension_id__/fonts/OpenSans-Regular.ttf') format('truetype');
@@ -8,9 +11,10 @@
 %pin {
   background-repeat: no-repeat;
   background-position: left center;
+  background-size: 16px 16px;
   display: table-cell;
-  height: 20px;
-  width: 30px;
+  height: 16px;
+  width: 26px;
   text-indent: -3000em;
   opacity: 0.75;
 
@@ -19,9 +23,19 @@
   }
 }
 
-.pin {
+.suggestion-pin {
   @extend %pin;
   background-image: url('chrome-extension://__MSG_@@extension_id__/images/action-pin.png');
+}
+
+.suggestion-unpin {
+  @extend %pin;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/action-pinned.png');
+}
+
+.suggestion-hide {
+  @extend %pin;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/action-hide.png');
 }
 
 .hidden {
@@ -44,8 +58,9 @@
 /* Sherlocke sidebar styling */
 
 #sherlocke {
-  background: #fff;
+  background: $background-color;
   border-left: 1px solid #777;
+  box-shadow: 3px 0 3px #d8d8d8 inset;
   color: #333;
   font: normal 12px/16px 'Open Sans', Arial, sans-serif;
   height: 100%;
@@ -131,7 +146,8 @@
   #sherlocke-header {
     background: #f0f0f0 url('chrome-extension://__MSG_@@extension_id__/images/logo.png') no-repeat center center;
     background-size: auto 36px;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid $brand-color;
+    box-shadow: 3px 0 3px #d8d8d8 inset;
     height: 55px;
     text-indent: -3000em;
   }
@@ -143,7 +159,6 @@
   }
 
   #sherlocke-loading {
-    background-color: #fff;
     text-align: center;
     padding: 0 1em;
 
@@ -170,6 +185,7 @@
 
     #sherlocke-filter {
       background-color: #fafafa;
+      box-shadow: 3px 0 3px #d8d8d8 inset;
       display: block;
       font-size: 1.2em;
       font-weight: bold;
@@ -222,7 +238,8 @@
       }
 
   ul#sherlocke-suggestions {
-    background-color: #fff;
+    background-color: $background-color;
+    box-shadow: 3px 0 3px #d8d8d8 inset;
     transition: background-color 0.3s, opacity 0.3s;
     width: 100%;
     z-index: 10;
@@ -255,7 +272,9 @@
         background-color: #eee;
       }
 
-    a.suggestion-pin {
+    a.suggestion-pin,
+    a.suggestion-unpin,
+    a.suggestion-hide, {
       margin: 0 1em;
       padding: 0;
     }

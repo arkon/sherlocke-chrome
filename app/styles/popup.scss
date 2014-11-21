@@ -43,14 +43,18 @@ form {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 50% 50%;
-    text-indent: -3000em;
+    text-align: center;
+    color: rgba(255,255,255,0);
+    font-size: 0.8em;
+    padding-top: 46px;
     display: block;
-    height: 60px;
+    height: 14px;
     width: 60px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
 
     &:hover {
       background-color: lighten($brand-color, 10%);
+      color: #fff;
     }
   }
 
