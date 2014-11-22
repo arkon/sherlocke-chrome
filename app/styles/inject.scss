@@ -157,6 +157,8 @@ $light-grey: #f2f2f2;
 
   #sherlocke-content {
     position: absolute;
+    top: 58px;
+    bottom: 36px;
     width: 100%;
     z-index: 10000;
   }
@@ -244,6 +246,7 @@ $light-grey: #f2f2f2;
       }
 
   ul#sherlocke-suggestions {
+    height: 100%;
     transition: background-color 0.3s;
     width: 100%;
     z-index: 10;
@@ -270,6 +273,10 @@ $light-grey: #f2f2f2;
     .show-menu ul#sherlocke-suggestions {
       background-color: #888;
       opacity: 0.5;
+
+      li {
+        border-bottom-color: darken($divider, 50%);
+      }
     }
 
       #sherlocke:not(.show-menu) ul#sherlocke-suggestions li:hover {
