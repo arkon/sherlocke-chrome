@@ -1,7 +1,7 @@
 <div id="sherlocke-header">Sherlocke</div>
 <div id="sherlocke-content" ng-hide="side.isLoading">
   <div sk-select id="sherlocke-filters">
-    <span id="sherlocke-filter">All related documents</span>
+    <span id="sherlocke-filter" ng-model="documents.filter">All related documents</span>
     <ul id="sherlocke-filters-list">
       <li>All related documents</li>
       <li>Legislation</li>
@@ -11,6 +11,7 @@
   </div>
 
   <ul id="sherlocke-suggestions">
+    <!-- <li ng-repeat="document in side.evidence | limitTo:10 | filter: document.source === documents.filter:true"> -->
     <li ng-repeat="document in side.evidence | limitTo:10">
       <a ng-href="{{ document.url }}">
         <h1>{{ document.title }}</h1>

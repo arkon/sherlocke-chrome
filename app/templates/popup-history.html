@@ -1,9 +1,9 @@
 <article>
   <h1>Browsing history</h1>
   <ul id="session-history">
-    <li ng-repeat="history in historyPages">
-      <a class="pin history-pin">Pin</a>
-      <a href="{{ history.page_url }}">{{ history.title }}</a>
+    <li ng-repeat="page in historyPages">
+      <a ng-click="pinPage(page)" class="pin history-pin">Pin</a>
+      <a href="{{ page.page_url }}">{{ page.title }}</a>
     </li>
   </ul>
 

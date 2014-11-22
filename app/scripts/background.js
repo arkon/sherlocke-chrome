@@ -20,15 +20,15 @@ function run(Auth, ChromeMessaging, SherlockeService, $http, BakerStreetService)
   );
 
   ChromeMessaging.publish(
-      'SherlockeApp',
-      'getActiveResearchSession',
-      SherlockeService.getActiveResearchSession
+    'SherlockeApp',
+    'getActiveResearchSession',
+    SherlockeService.getActiveResearchSession
   );
 
   ChromeMessaging.publish(
-      'SherlockeApp',
-      'getDocuments',
-      SherlockeService.getDocuments
+    'SherlockeApp',
+    'getDocuments',
+    SherlockeService.getDocuments
   );
 
   ChromeMessaging.publish(
@@ -48,9 +48,9 @@ function run(Auth, ChromeMessaging, SherlockeService, $http, BakerStreetService)
    *   });
    */
   ChromeMessaging.publish(
-      'SherlockeApp',
-      'authenticate',
-      SherlockeService.authenticate
+    'SherlockeApp',
+    'authenticate',
+    SherlockeService.authenticate
   );
 }
 run.$inject = ['Auth', 'ChromeMessaging', 'SherlockeService', '$http', 'BakerStreetService'];
@@ -98,7 +98,20 @@ function SherlockeService($http, $log, $q, Auth, BakerStreetService, Page /*Docu
       Page.$create({
         'page_url': page.url,
         'title': page.title,
-        'content': ''
+        'content': page.content,
+        'snippet': false
+      }).$then(function (_page) {
+        resolve(_page);
+      });
+    });
+  };
+  vm.pinPage = function (page, snippet) {
+    return $q(function (resolve) {
+      Page.$create({
+        'page_url': page.url,
+        'title': page.title,
+        'content': page.content,
+        'snippet': snippet
       }).$then(function (_page) {
         resolve(_page);
       });
@@ -163,18 +176,15 @@ angular
 //});
 
 
-/* Context menu item */
-function menuItemClicked(/*info, tab*/) {
-  // launchPopup(function (newWindow) {
-  //   // called once newWindow is created
-  //   setTimeout(function () {
-  //     chrome.tabs.sendMessage(newWindow.tabs[0].id, {
-  //       type: "selectionText",
-  //       text: info.selectionText || info.linkUrl
-  //     });
-  //   }, 200);
-  // });
+/* Prioritize context menu item */
+
+function menuItemClicked(ChromeMessaging, info) {
+  ChromeMessaging.callMethod('SherlockeApp', 'pinPage', {
+    title: info.selectionText,
+    snippet: true
+  });
 }
+menuItemClicked.$inject = ['ChromeMessaging'];
 
 chrome.contextMenus.create({
   title: 'Prioritize this',

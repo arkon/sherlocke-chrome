@@ -1,6 +1,7 @@
 'use strict';
 
-var BAKERSTREET_API = 'https://23a0283b.ngrok.com/api';
+var BAKERSTREET_API = 'https://api.sherlocke.me/api';
+// var BAKERSTREET_API = 'https://23a0283b.ngrok.com/api';
 
 
 /* Declare AngularJS app */
@@ -106,6 +107,8 @@ function HistoryController($http) {
     vm.historyPages = data.results;
     vm.noHistory = vm.historyPages.length === 0;
   });
+
+  // To pin: POST to /documents with url (snippet: false)
 }
 HistoryController.$inject = ['$http'];
 angular

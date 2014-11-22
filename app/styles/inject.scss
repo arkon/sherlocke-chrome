@@ -79,6 +79,8 @@ $light-grey: #f2f2f2;
   *,
   *::before,
   *::after {
+    color: $dark-brand-color !important;
+    font-family: 'Open Sans', Arial, sans-serif !important;
     margin: 0;
     padding: 0;
   }
@@ -269,7 +271,7 @@ $light-grey: #f2f2f2;
 
       a {
         display: block;
-        padding: 2em 1em 0;
+        padding: 1.5em 1em 0;
       }
     }
 
@@ -298,7 +300,7 @@ $light-grey: #f2f2f2;
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-start;
-      margin: 1em !important;
+      margin: 1em 1em 1.5em !important;
     }
 
       .suggestion-actions {

@@ -20,6 +20,7 @@
         <div class="alert" ng-if="auth.alerts">
           <span ng-repeat="alert in auth.alerts">{{alert}}</span>
         </div>
+
         <label for="email">Email address</label>
         <input id="email" type="email" ng-model="auth.email">
 
@@ -28,11 +29,19 @@
 
         <input type="submit" value="Sign in">
       </form>
-      <h2 ng-if="auth.isAuthenticated">Logged in as <span id="username">{{ currentUser }}</span></h2>
+      <h2 ng-show="auth.isAuthenticated">Logged in as <span id="username">{{ currentUser }}</span></h2>
     </section>
 
     <section id="blacklist">
       <h2>Blacklist</h2>
+      <ul>
+        <!-- <li ng-repeat="page in historyPages">
+          <a ng-click="pinPage(page)" class="pin history-pin">Pin</a>
+          <a href="{{ page.page_url }}">{{ page.title }}</a>
+        </li> -->
+      </ul>
+
+      <!-- POST to /blacklist (domain) -->
     </section>
 
     <!-- build:js scripts/vendor.js -->
