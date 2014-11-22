@@ -9,18 +9,21 @@
       <li>Miscellaneous</li>
     </ul>
   </div>
+
   <ul id="sherlocke-suggestions">
     <li ng-repeat="document in side.evidence | limitTo:10">
       <a ng-href="{{ document.url }}">
-
         <h1>{{ document.title }}</h1>
-        <!-- <p>Confidence: {{ document.value * 100 | number: 2 }}%</p> -->
-        <!-- <p>{{ document.source }}</p> -->
-        <p>CanLII</p>
-        <a class="suggestion-pin" href="#" ng-show="document.pinned">Pin</a>
-        <a class="suggestion-unpin" href="#" ng-hide="document.pinned">Unpin</a>
-        <a class="suggestion-hide" href="#">Hide</a>
+        <p>{{ document.text | characters:110 }}</p>
       </a>
+      <div class="suggestion-info">
+        <p>{{ document.source }}</p>
+        <div class="suggestion-actions">
+          <a class="suggestion-hide" title="Don't show this document" href="#">Hide</a>
+          <a class="suggestion-pin" title="Pin document" href="#" ng-show="document.pinned">Pin</a>
+          <a class="suggestion-unpin" title="Unpin document" href="#" ng-hide="document.pinned">Unpin</a>
+        </div>
+      </div>
     </li>
   </ul>
 </div>

@@ -2,12 +2,49 @@
 /* jshint multistr: true */
 
 /* Declare AngularJS app */
-angular.module('SherlockeContent', ['ChromeMessaging']);
+angular.module('SherlockeContent', ['ChromeMessaging', 'truncate']);
+
+angular.module('truncate', []).filter('characters', function () {
+  return function (input, chars, breakOnWord) {
+    if (isNaN(chars)) { return input; }
+    if (chars <= 0) { return ''; }
+    if (input && input.length > chars) {
+      input = input.substring(0, chars);
+
+      if (!breakOnWord) {
+        var lastspace = input.lastIndexOf(' ');
+        // get last space
+        if (lastspace !== -1) {
+          input = input.substr(0, lastspace);
+        }
+      } else {
+        while (input.charAt(input.length-1) === ' '){
+          input = input.substr(0, input.length -1);
+        }
+      }
+      return input + '...';
+    }
+    return input;
+  };
+})
+.filter('words', function () {
+  return function (input, words) {
+    if (isNaN(words)) { return input; }
+    if (words <= 0) { return ''; }
+    if (input) {
+      var inputWords = input.split(/\s+/);
+      if (inputWords.length > words) {
+        input = inputWords.slice(0, words).join(' ') + '...';
+      }
+    }
+    return input;
+  };
+});
 
 /*
  * Controllers
  */
-function SidePanelController($window, $document, $log, ChromeMessaging) {
+function SidePanelController(/*$window, $document, $log, ChromeMessaging*/) {
   var vm = this;
 
   // Whether sidebar is loading
@@ -22,22 +59,26 @@ function SidePanelController($window, $document, $log, ChromeMessaging) {
    *
    * For now, just send the current page
    */
-  var url   = $window.location.href;
-  var title = $document[0].title.replace(/^CanLII - /, '');
+  // var url   = $window.location.href;
+  // var title = $document[0].title.replace(/^CanLII - /, '');
 
-  ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', {
-    url:   url,
-    title: title
-  }).then(function success(/*_page*/) {
-    // var page = _page.$response.data;
-    return ChromeMessaging.callMethod('SherlockeApp', 'getDocuments');
-  }).then(function success(documents) {
-    vm.evidence = documents;
-    vm.isLoading = false;
-  }, function failure(reason) {
-    $log.warn(reason);
-    vm.isLoading = false;
-  });
+  // ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', {
+  //   url:   url,
+  //   title: title
+  // }).then(function success(/*_page*/) {
+  //   // var page = _page.$response.data;
+  //   return ChromeMessaging.callMethod('SherlockeApp', 'getDocuments');
+  // }).then(function success(documents) {
+  //   vm.evidence = documents;
+  //   vm.isLoading = false;
+  // }, function failure(reason) {
+  //   $log.warn(reason);
+  //   vm.isLoading = false;
+  // });
+
+  vm.evidence = [{ url: 'www.google.ca', source: 'CanLII', title: 'Wow', text: 'Tonx wayfarers fashion axe, art party tofu.', pinned: false },
+                 { url: 'www.google.ca', source: 'Government of Canada', title: 'Something else with a really long title that needs multiple lines', text: 'Tonx wayfarers fashion axe, art party tofu farm-to-table meggings pop-up Etsy Shoreditch deep v sustainable small batch street art master cleanse. Twee ennui Blue Bottle Pinterest. Shoreditch gluten-free meditation, chia kogi cray banh mi XOXO hella farm-to-table Odd Future Blue Bottle Thundercats. Vice meditation viral chia, semiotics literally Pinterest. Before they sold out cliche +1 locavore, biodiesel try-hard polaroid Vice craft beer keffiyeh flexitarian. Pop-up single-origin coffee cold-pressed selfies keffiyeh artisan mumblecore health goth banjo flannel. Tattooed street art post-ironic direct trade quinoa four dollar toast, listicle artisan polaroid.', pinned: true }];
+  vm.isLoading = false;
 }
 SidePanelController.$inject = ['$window', '$document', '$log', 'ChromeMessaging'];
 angular
