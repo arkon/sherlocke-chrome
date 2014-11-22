@@ -38,8 +38,8 @@
   "content_scripts": [
     {
       "matches": [
-        "*://www.canlii.org/en/*"
-        // "<all_urls>"
+        // "*://www.canlii.org/en/*"
+        "<all_urls>"
       ],
       "css": [
         "styles/inject.css"
@@ -66,7 +66,6 @@
   "permissions": [
     "contextMenus",
     "storage",
-    "history",
     "*://www.canlii.org/*",
     "https://watson-wdc01.ihost.com/*",
     "*://api.sherlocke.me/api/*",
