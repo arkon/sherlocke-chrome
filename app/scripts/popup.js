@@ -120,8 +120,7 @@ function SessionsController($scope, $http, $location, ResearchSession) {
 
   vm.changeSession = function(session) {
     // POST the current session
-    // ResearchSession.$new(session.name).$save();
-    $http.post(BAKERSTREET_API + '/research_session?id=' + session);
+    $http.post(BAKERSTREET_API + '/research_session', { id: session });
 
     vm.currentSession = session;
   };

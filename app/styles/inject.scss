@@ -15,11 +15,11 @@ $light-grey: #f2f2f2;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 16px 16px;
-  display: table-cell;
+  display: inline-block;
   height: 16px;
   width: 26px;
   text-indent: -3000em;
-  opacity: 0.75;
+  opacity: 0.5;
 
   &:hover {
     opacity: 1;
@@ -75,6 +75,13 @@ $light-grey: #f2f2f2;
   transition: transform 0.2s;
   width: 250px;
   z-index: 1000000;
+
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+  }
 
   // Scrollbar
   &::-webkit-scrollbar {
@@ -254,8 +261,11 @@ $light-grey: #f2f2f2;
     li {
       border-bottom: 1px solid $divider;
       list-style: none;
-      padding: 0;
       transition: background-color 0.3s;
+
+      h1 {
+        margin-bottom: 0.67em;
+      }
 
       a {
         display: block;
@@ -288,11 +298,7 @@ $light-grey: #f2f2f2;
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 0 1em 2em;
-
-      p {
-        margin: 0;
-      }
+      margin: 1em !important;
     }
 
       .suggestion-actions {
