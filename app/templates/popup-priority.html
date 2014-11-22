@@ -2,9 +2,9 @@
   <h1>Prioritized items</h1>
 
   <ul id="session-priority">
-    <li ng-repeat="priority in priorityCtrl.prioritized" ng-href="{{ priorityCtrl.priority.id }}">
+    <li ng-repeat="priority in priorityCtrl.prioritized" ng-href="{{ priority.id }}">
       <a class="unpin priority-remove">Remove</a>
-      {{ priorityCtrl.priority.name }}
+      {{ priority.name }}
     </li>
   </ul>
 
