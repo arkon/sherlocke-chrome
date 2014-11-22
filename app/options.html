@@ -13,10 +13,11 @@
   <body>
     <header>
       <h1>Options</h1>
+      <h2 ng-show="auth.isAuthenticated">Logged in as <span id="username">{{ currentUser }}</span></h2>
     </header>
 
-    <section id="user" ng-controller="AuthController as auth">
-      <form ng-if="!auth.isAuthenticated" ng-submit="auth.authenticate()">
+    <section id="options-content" ng-controller="AuthController as auth">
+      <form id="user-login" ng-if="!auth.isAuthenticated" ng-submit="auth.authenticate()">
         <div class="alert" ng-if="auth.alerts">
           <span ng-repeat="alert in auth.alerts">{{alert}}</span>
         </div>
@@ -29,19 +30,26 @@
 
         <input type="submit" value="Sign in">
       </form>
-      <h2 ng-show="auth.isAuthenticated">Logged in as <span id="username">{{ currentUser }}</span></h2>
-    </section>
 
-    <section id="blacklist">
-      <h2>Blacklist</h2>
-      <ul>
-        <!-- <li ng-repeat="page in historyPages">
-          <a ng-click="pinPage(page)" class="pin history-pin">Pin</a>
-          <a href="{{ page.page_url }}">{{ page.title }}</a>
-        </li> -->
-      </ul>
+      <section id="user-settings">
+        <section id="blacklist">
+          <h2>Blacklist</h2>
+          <ul>
+            <li ng-repeat="domain in domains">
+              <a class="unpin">Remove</a>
+              {{ domain }}
+            </li>
+          </ul>
 
-      <!-- POST to /blacklist (domain) -->
+          <!-- POST to /blacklist (domain) -->
+          <form ng-submit="auth.authenticate()">
+            <label for="domain">Domain</label>
+            <input id="domain" type="domain" ng-model="blacklist.domain">
+
+            <input type="submit" value="Add">
+          </form>
+        </section>
+      </section>
     </section>
 
     <!-- build:js scripts/vendor.js -->

@@ -5,7 +5,11 @@ $side-padding: 2em;
 body {
   font-family: 'Open Sans', Arial, sans-serif;
   margin: 0;
-  padding: 0;
+}
+
+input[type='submit'] {
+  display: block;
+  margin-top: 1em;
 }
 
 header {
@@ -20,17 +24,19 @@ header {
   }
 }
 
-#user {
-  border-bottom: 1px solid $brand-color;
-  color: $brand-color;
-  padding: 1em $side-padding;
+#options-content {
+  padding: 0 $side-padding;
 }
 
-  #username {
-    font-weight: 600;
-  }
+#user-login {
+  border: 1px solid $brand-color;
+  border-radius: 5px;
+  color: $brand-color;
+  margin: 1em auto;
+  padding: $side-padding;
+  width: 200px;
+}
 
-  input[type='submit'] {
-    display: block;
-    margin-top: 1em;
-  }
+#username {
+  font-weight: 600;
+}

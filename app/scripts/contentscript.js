@@ -44,7 +44,7 @@ angular.module('truncate', []).filter('characters', function () {
 /*
  * Controllers
  */
-function SidePanelController($window, $document, $log, ChromeMessaging) {
+function SidePanelController(/*$window, $document, $log, ChromeMessaging*/) {
   var vm = this;
 
   // Whether sidebar is loading
@@ -59,22 +59,22 @@ function SidePanelController($window, $document, $log, ChromeMessaging) {
    *
    * For now, just send the current page
    */
-  var url   = $window.location.href;
-  var title = $document[0].title.replace(/^CanLII - /, '');
+  // var url   = $window.location.href;
+  // var title = $document[0].title.replace(/^CanLII - /, '');
 
-  ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', {
-    url:   url,
-    title: title
-  }).then(function success(/*_page*/) {
-    // var page = _page.$response.data;
-    return ChromeMessaging.callMethod('SherlockeApp', 'getDocuments');
-  }).then(function success(documents) {
-    vm.evidence = documents;
-    vm.isLoading = false;
-  }, function failure(reason) {
-    $log.warn(reason);
-    vm.isLoading = false;
-  });
+  // ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', {
+  //   url:   url,
+  //   title: title
+  // }).then(function success(/*_page*/) {
+  //   // var page = _page.$response.data;
+  //   return ChromeMessaging.callMethod('SherlockeApp', 'getDocuments');
+  // }).then(function success(documents) {
+  //   vm.evidence = documents;
+  //   vm.isLoading = false;
+  // }, function failure(reason) {
+  //   $log.warn(reason);
+  //   vm.isLoading = false;
+  // });
 
 
   /* Dummy data to work with for now */
