@@ -16,6 +16,7 @@
       "bower_components/jquery/dist/jquery.js",
       "bower_components/lodash/dist/lodash.js",
       "bower_components/angular/angular.js",
+      "bower_components/angular-truncate/src/truncate.js",
       "bower_components/angular-restmod/dist/angular-restmod-bundle.js",
       "bower_components/angular-django-auth/lib/django-auth.js",
       "scripts/angular-baker-street.js",
@@ -48,6 +49,7 @@
         "bower_components/jquery/dist/jquery.js",
         "bower_components/lodash/dist/lodash.js",
         "bower_components/angular/angular.js",
+        "bower_components/angular-truncate/src/truncate.js",
         "scripts/angular-chrome-messaging.js",
         "scripts/contentscript.js"
       ]
@@ -66,10 +68,8 @@
   "permissions": [
     "contextMenus",
     "storage",
-    "*://www.canlii.org/*",
-    "https://watson-wdc01.ihost.com/*",
-    "*://api.sherlocke.me/api/*",
-    "*://23a0283b.ngrok.com/api/*"
+    "*://www.canlii.org/*"
+    // , "*://sherlocke.me/*"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

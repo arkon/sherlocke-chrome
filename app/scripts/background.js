@@ -4,7 +4,7 @@ var BAKERSTREET_API = 'https://23a0283b.ngrok.com/api';
 
 
 /* Declare AngularJS app */
-angular.module('SherlockeApp', ['DjangoAuth', 'ChromeMessaging', 'BakerStreet']);
+angular.module('SherlockeApp', ['truncate', 'DjangoAuth', 'ChromeMessaging', 'BakerStreet']);
 
 /* Callback for when all modules are loaded */
 function run(Auth, ChromeMessaging, SherlockeService, $http, BakerStreetService) {

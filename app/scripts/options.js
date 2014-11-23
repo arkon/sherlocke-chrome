@@ -2,7 +2,7 @@
 /* jshint sub:true */
 
 /* Declare AngularJS app */
-angular.module('SherlockeOptions', ['ChromeMessaging']);
+angular.module('SherlockeOptions', ['truncate', 'ChromeMessaging']);
 
 /*
  * Controllers

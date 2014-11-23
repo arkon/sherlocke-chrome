@@ -5,7 +5,7 @@ var BAKERSTREET_API = 'https://api.sherlocke.me/api';
 
 
 /* Declare AngularJS app */
-angular.module('SherlockePopup', ['ngRoute', 'BakerStreet']);
+angular.module('SherlockePopup', ['ngRoute', 'truncate', 'BakerStreet']);
 
 
 function config($routeProvider) {
