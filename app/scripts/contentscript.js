@@ -164,18 +164,13 @@ angular
  * https://docs.angularjs.org/guide/bootstrap
  */
 angular.element(document).ready(function () {
-  // var documentHeader = angular.element('#documentHeader');
-  // if (documentHeader && documentHeader.length) {
-
   // Wrap the actual page contents within a div for manipulating width
   $('body').wrapInner('<div class="sherlocke-original-page" />');
 
-  // Inject the main directive & controller onto CanLII's #wrap div and insert the side panel
-  // angular.element('#wrap')
+  // Inject the main directive & controller onto the page and insert the side panel
   angular.element('body')
       .attr('sk-main', true)
       .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController as side"></div></div>');
 
   angular.bootstrap(document, ['SherlockeContent']);
-  // }
 });
