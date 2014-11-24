@@ -159,18 +159,22 @@ angular
     .directive('skSelect', SelectDirective);
 
 
+var blacklist = ['stackoverflow.com', 'youtube.com', 'facebook.com', 'css-tricks.com'];
+
 /*
  * Bootstrap AngularJS
  * https://docs.angularjs.org/guide/bootstrap
  */
 angular.element(document).ready(function () {
-  // Wrap the actual page contents within a div for manipulating width
-  $('body').wrapInner('<div class="sherlocke-original-page" />');
+  if (blacklist.indexOf(window.location.host.replace('www.', '')) === -1) {
+    // Wrap the actual page contents within a div for manipulating width
+    $('body').wrapInner('<div class="sherlocke-original-page" />');
 
-  // Inject the main directive & controller onto the page and insert the side panel
-  angular.element('body')
-      .attr('sk-main', true)
-      .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController as side"></div></div>');
+    // Inject the main directive & controller onto the page and insert the side panel
+    angular.element('body')
+        .attr('sk-main', true)
+        .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController as side"></div></div>');
 
-  angular.bootstrap(document, ['SherlockeContent']);
+    angular.bootstrap(document, ['SherlockeContent']);
+  }
 });
