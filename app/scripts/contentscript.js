@@ -59,32 +59,27 @@ angular
 var MainDirective = [function () {
   return {
     restrict: 'A',
-    scope: {
-      isSidebarHidden: '=isSidebarHidden'
-    },
-    link: function (/*scope*/) {
-      //scope.$watch('isSidebarHidden', function (value) {
-      //  angular.element('body').toggleClass('hide-sidebar', value);
-      //});
+    link: function (scope) {
+      scope.$watch('isSidebarHidden', function (value) {
+        angular.element('body').toggleClass('hide-sidebar', value);
+      });
     },
     controllerAs: 'main',
-    controller: function () {
-      var vm = this;
-
+    controller: function ($scope) {
       // Settings
       chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
         if ('opt-hide-sidebar' in items) {
-          vm.isSidebarHidden = items['opt-hide-sidebar'];
+          $scope.isSidebarHidden = items['opt-hide-sidebar'];
         } else {
           chrome.storage.sync.set({ 'opt-hide-sidebar': false });
-          vm.isSidebarHidden = false;
+          $scope.isSidebarHidden = false;
         }
 
         if ('opt-show-menu' in items) {
-          vm.showMenu = items['opt-show-menu'];
+          $scope.showMenu = items['opt-show-menu'];
         } else {
           chrome.storage.sync.set({ 'opt-show-menu': true });
-          vm.showMenu = true;
+          $scope.showMenu = true;
         }
       });
     }
@@ -159,7 +154,7 @@ angular
     .directive('skSelect', SelectDirective);
 
 
-var blacklist = ['stackoverflow.com', 'youtube.com', 'facebook.com', 'css-tricks.com'];
+var blacklist = ['stackoverflow.com', 'youtube.com', 'facebook.com', 'css-tricks.com', 'unhaltable.slack.com', 'piazza.com'];
 
 /*
  * Bootstrap AngularJS
