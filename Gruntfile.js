@@ -286,12 +286,14 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up build process
     concurrent: {
       chrome: [
-        'compass:chrome'
+        'compass:chrome',
+        'ngconstant:development'
       ],
       dist: [
         'compass:dist',
         'imagemin',
-        'svgmin'
+        'svgmin',
+        'ngconstant:production'
       ],
       test: [
         'compass:test'
@@ -330,6 +332,24 @@ module.exports = function (grunt) {
           src: ['**'],
           dest: ''
         }]
+      }
+    },
+
+    // Replace AngularJS constants per environment
+    ngconstant: {
+      options: {
+        name: 'config',
+        dest: '<%= config.app %>/scripts/config.js'
+      },
+      development: {
+        constants: {
+          'bakerstreetApi': 'http://localhost:4000'
+        }
+      },
+      production: {
+        constants: {
+          'bakerstreetApi': 'https://sherlocke.me'
+        }
       }
     }
   });
