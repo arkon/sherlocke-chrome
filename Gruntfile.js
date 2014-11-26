@@ -343,7 +343,7 @@ module.exports = function (grunt) {
       },
       development: {
         constants: {
-          'BAKERSTREET_API': 'http://localhost:4000'
+          'BAKERSTREET_API': 'http://localhost:8000'
         }
       },
       production: {
