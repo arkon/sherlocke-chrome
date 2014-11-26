@@ -1,54 +1,48 @@
 'use strict';
 
-var BAKERSTREET_API = 'https://23a0283b.ngrok.com/api';
-
-
 /* Declare AngularJS app */
-angular.module('SherlockeApp', ['truncate', 'DjangoAuth', 'ChromeMessaging', 'BakerStreet']);
+angular.module('SherlockeApp', ['truncate', 'DjangoAuth', 'ChromeMessaging', 'BakerStreet', 'SherlockeConfig']);
 
 /* Callback for when all modules are loaded */
-function run(Auth, ChromeMessaging, SherlockeService, $http, BakerStreetService) {
-  if (BakerStreetService.userToken) {
-    $http.defaults.headers.common.Authorization = 'Token ' + BakerStreetService.userToken;
-  }
-
-  // Publish and handle messages sent to 'SherlockeApp'
+function run(ChromeMessaging, SherlockeService) {
+  /* Publish and handle messages sent to 'SherlockeApp' */
   ChromeMessaging.publish(
-    'SherlockeApp',
-    'createResearchSession',
-    SherlockeService.createResearchSession
+    'getCurrentResearchSession',
+    SherlockeService.getCurrentResearchSession,
+    { canSubscribe: true }
   );
 
   ChromeMessaging.publish(
-    'SherlockeApp',
-    'getActiveResearchSession',
-    SherlockeService.getActiveResearchSession
+    'getCurrentUser',
+    SherlockeService.getCurrentUser,
+    { canSubscribe: true }
   );
 
   ChromeMessaging.publish(
-    'SherlockeApp',
     'getDocuments',
-    SherlockeService.getDocuments
+    SherlockeService.getDocuments,
+    { canSubscribe: true }
   );
 
   ChromeMessaging.publish(
-    'SherlockeApp',
     'sendCurrentPage',
     SherlockeService.sendCurrentPage
   );
 
-  /*
-   * Usage:
+  ChromeMessaging.publish(
+    'pinPage',
+    SherlockeService.pinPage
+  );
+
+  /* Usage:
    *   ChromeMessaging.callMethod(
-   *       'SherlockeApp',
    *       'authenticate',
    *       {email: 'test@example.com', password: 'hunter2'}
    *   ).then(function (user) {
-   *     var token = user.token;
+   *     console.log(user);
    *   });
    */
   ChromeMessaging.publish(
-    'SherlockeApp',
     'authenticate',
     SherlockeService.authenticate
   );
@@ -59,23 +53,25 @@ function run(Auth, ChromeMessaging, SherlockeService, $http, BakerStreetService)
     SherlockeService.authenticate
   );
 }
-run.$inject = ['Auth', 'ChromeMessaging', 'SherlockeService', '$http', 'BakerStreetService'];
+run.$inject = ['ChromeMessaging', 'SherlockeService'];
 angular
     .module('SherlockeApp')
     .run(run);
 
-
 /*
  * Provider configuration
  */
-function config(AuthProvider) {
+function config(AuthProvider, ChromeMessagingProvider, BAKERSTREET_API) {
   // Configure Auth service with AuthProvider
-  AuthProvider.loginPath(BAKERSTREET_API + '/users/sign_in.json');
-  AuthProvider.logoutPath(BAKERSTREET_API + '/users/sign_out.json');
+  AuthProvider.loginPath(BAKERSTREET_API + '/users/login.json');
+  AuthProvider.logoutPath(BAKERSTREET_API + '/users/logout.json');
   AuthProvider.resourceName(false);
-  AuthProvider.ignoreAuth(true);
+  AuthProvider.interceptAuth(false);
+
+  // Set module name used to publish methods
+  ChromeMessagingProvider.setModuleName('SherlockeApp');
 }
-config.$inject = ['AuthProvider'];
+config.$inject = ['AuthProvider', 'ChromeMessagingProvider', 'BAKERSTREET_API'];
 angular
     .module('SherlockeApp')
     .config(config);
@@ -83,23 +79,24 @@ angular
 /*
  * Services
  */
-function SherlockeService($http, $log, $q, Auth, BakerStreetService, Page /*Document*/) {
+function SherlockeService($log, $q, Auth, BakerStreetService, Page /*Document*/) {
   var vm = this;
 
-  vm.currentResearchSession = null;
+  vm.currentUser = null;
+  vm.getCurrentUser = function () {
+    return vm.currentUser;
+  };
 
-  vm.getActiveResearchSession = function () {
+  vm.currentResearchSession = null;
+  vm.getCurrentResearchSession = function () {
     return vm.currentResearchSession;
   };
+
   vm.getDocuments = function () {
-    return $q(function (resolve) {
-      $http.get(BAKERSTREET_API + '/documents').
-        success(function(data/*, status, headers, config*/) {
-          resolve(data);
-        });
-    });
+    // TODO
   };
-  vm.sendCurrentPage = function (page) {
+
+  vm.sendCurrentPage =  function (page) {
     return $q(function (resolve) {
       Page.$create({
         'page_url': page.url,
@@ -111,7 +108,8 @@ function SherlockeService($http, $log, $q, Auth, BakerStreetService, Page /*Docu
       });
     });
   };
-  vm.pinPage = function (page, snippet) {
+
+  vm.pinPage =  function (page, snippet) {
     return $q(function (resolve) {
       Page.$create({
         'page_url': page.url,
@@ -123,6 +121,7 @@ function SherlockeService($http, $log, $q, Auth, BakerStreetService, Page /*Docu
       });
     });
   };
+
   vm.authenticate = function (creds) {
     return Auth.login(creds).then(function success(user) {
       BakerStreetService.userToken = user.token;
@@ -149,7 +148,7 @@ function SherlockeService($http, $log, $q, Auth, BakerStreetService, Page /*Docu
     });
   };
 }
-SherlockeService.$inject = ['$http', '$log', '$q', 'Auth', 'BakerStreetService', 'Page', 'Document'];
+SherlockeService.$inject = ['$log', '$q', 'Auth', 'BakerStreetService', 'Page'];
 angular
     .module('SherlockeApp')
     .service('SherlockeService', SherlockeService);
@@ -160,46 +159,12 @@ angular
  * @constructor
  */
 function PreferencesService() {
-
 }
 angular
     .module('SherlockeApp')
     .service('PreferencesService', PreferencesService);
 
-/*
- * Listen for incoming messages
- */
-//chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-//  if (!('origin' in message) || !('type' in message)) {
-//    sendResponse({error: 'Must specify \'origin\' and \'type\''});
-//    return;
-//  }
-//
-//  if (message.origin === 'options') {
-//    // Message from options.html
-//    if (message.type === 'authenticate') {
-//      // User is logging in
-//      if (!('data' in message)) {
-//        sendResponse({error: 'Expected \'data\', but none provided'});
-//        return;
-//      }
-//
-//      // Get email and password
-//      var email = message.data.email;
-//      var password = message.data.password;
-//
-//      // Authenticate using SherlockeService
-//      var SherlockeService = angular.element(document.body).injector().get('SherlockeService');
-//      SherlockeService.authenticate(email, password);
-//    }
-//  } else {
-//    sendResponse({error: 'Invalid origin \'' + message.origin + '\''});
-//  }
-//});
-
-
 /* Prioritize context menu item */
-
 function menuItemClicked(ChromeMessaging, info) {
   ChromeMessaging.callMethod('SherlockeApp', 'pinPage', {
     title: info.selectionText,

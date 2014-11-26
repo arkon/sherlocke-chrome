@@ -1,9 +1,5 @@
 'use strict';
 
-var BAKERSTREET_API = 'https://api.sherlocke.me/api';
-// var BAKERSTREET_API = 'https://23a0283b.ngrok.com/api';
-
-
 /* Declare AngularJS app */
 angular.module('SherlockePopup', ['ngRoute', 'truncate', 'BakerStreet']);
 
@@ -59,20 +55,20 @@ angular
   .module('SherlockePopup')
   .controller('PopupController', PopupController);
 
-function PinnedController($http) {
+function PinnedController($http, configuration) {
   var vm = this;
 
   vm.noPinned = true;
 
   $http
-    .get(BAKERSTREET_API + '/documents/pinned')
+    .get(configuration.bakerstreetApi + '/documents/pinned')
     .success(function (data) {
     vm.pinned = data;
 
     vm.noPinned = vm.pinned.length === 0;
   });
 }
-PinnedController.$inject = ['$http'];
+PinnedController.$inject = ['$http', 'configuration'];
 angular
   .module('SherlockePopup')
   .controller('PinnedController', PinnedController);
@@ -96,13 +92,13 @@ angular
   .controller('PriorityController', PriorityController);
 
 
-function HistoryController($http) {
+function HistoryController($http, configuration) {
   var vm = this;
 
   vm.noHistory = true;
 
   $http
-    .get(BAKERSTREET_API + '/pages')
+    .get(configuration.bakerstreetApi + '/pages')
     .success(function (data) {
     vm.historyPages = data.results;
     vm.noHistory = vm.historyPages.length === 0;
@@ -110,26 +106,26 @@ function HistoryController($http) {
 
   // To pin: POST to /documents with url (snippet: false)
 }
-HistoryController.$inject = ['$http'];
+HistoryController.$inject = ['$http', 'configuration'];
 angular
   .module('SherlockePopup')
   .controller('HistoryController', HistoryController);
 
 
-function SessionsController($scope, $http, $location, ResearchSession) {
+function SessionsController($scope, $http, $location, configuration, ResearchSession) {
   var vm = this;
 
   vm.sessions = [];
 
   vm.changeSession = function(session) {
     // POST the current session
-    $http.post(BAKERSTREET_API + '/research_session', { id: session });
+    $http.post(configuration.bakerstreetApi + '/research_session', { id: session });
 
     vm.currentSession = session;
   };
 
   $http
-    .get(BAKERSTREET_API + '/research_session')
+    .get(configuration.bakerstreetApi + '/research_session')
     .success(function (data) {
     vm.sessions = data.results;
 
@@ -165,7 +161,7 @@ function SessionsController($scope, $http, $location, ResearchSession) {
     });
   };
 }
-SessionsController.$inject = ['$scope', '$http', '$location', 'ResearchSession'];
+SessionsController.$inject = ['$scope', '$http', '$location', 'confuguration', 'ResearchSession'];
 angular
   .module('SherlockePopup')
   .controller('SessionsController', SessionsController);

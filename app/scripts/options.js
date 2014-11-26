@@ -2,7 +2,21 @@
 /* jshint sub:true */
 
 /* Declare AngularJS app */
-angular.module('SherlockeOptions', ['truncate', 'ChromeMessaging']);
+angular.module('SherlockeOptions', ['ngRoute', 'truncate', 'ChromeMessaging']);
+
+/* Module configuration */
+function config ($routeProvider) {
+  $routeProvider
+    .when('/', {
+      templateUrl: 'views/main.html',
+      resolve: {
+
+      }
+    });
+}
+angular
+    .module('SherlockeOptions')
+    .config(config);
 
 /*
  * Controllers
@@ -22,10 +36,15 @@ function AuthController($log, ChromeMessaging) {
     }).then(function (result) {
       $log.info('Auth result: ', result);
     }, function failure(reason) {
-      vm.alerts = reason.data['non_field_errors'];
+      if (reason.data) {
+        vm.alerts = reason.data['non_field_errors'];
+      }
       $log.warn('Auth failure: ', reason);
     });
   };
+
+  // Subscribe to the current user
+  //ChromeMessaging.subscribe('SherlockeApp', '')
 }
 AuthController.$inject = ['$log', 'ChromeMessaging'];
 angular

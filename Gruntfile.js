@@ -338,17 +338,17 @@ module.exports = function (grunt) {
     // Replace AngularJS constants per environment
     ngconstant: {
       options: {
-        name: 'config',
+        name: 'SherlockeConfig',
         dest: '<%= config.app %>/scripts/config.js'
       },
       development: {
         constants: {
-          'bakerstreetApi': 'http://localhost:4000'
+          'BAKERSTREET_API': 'http://localhost:4000'
         }
       },
       production: {
         constants: {
-          'bakerstreetApi': 'https://sherlocke.me'
+          'BAKERSTREET_API': 'https://sherlocke.me'
         }
       }
     }
