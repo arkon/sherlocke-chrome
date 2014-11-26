@@ -131,21 +131,21 @@ function SherlockeService($log, $q, Auth, BakerStreetService, Page /*Document*/)
       return $q.reject(reason);
     });
   };
-  vm.getBlacklist = function (domain) {
-    return $q(function (resolve) {
-      $http.get(BAKERSTREET_API + '/blacklist').
-        success(function(data/*, status, headers, config*/) {
-          resolve(data);
-        });
-    });
+  vm.getBlacklist = function (/*domain*/) {
+    //return $q(function (resolve) {
+    //  $http.get(BAKERSTREET_API + '/blacklist').
+    //    success(function(data/*, status, headers, config*/) {
+    //      resolve(data);
+    //    });
+    //});
   };
-  vm.blacklist = function (domain) {
-    return $q(function (resolve) {
-      $http.post(BAKERSTREET_API + '/blacklist', domain).
-        success(function(data/*, status, headers, config*/) {
-          resolve(data);
-        });
-    });
+  vm.blacklist = function (/*domain*/) {
+    //return $q(function (resolve) {
+    //  $http.post(BAKERSTREET_API + '/blacklist', domain).
+    //    success(function(data/*, status, headers, config*/) {
+    //      resolve(data);
+    //    });
+    //});
   };
 }
 SherlockeService.$inject = ['$log', '$q', 'Auth', 'BakerStreetService', 'Page'];

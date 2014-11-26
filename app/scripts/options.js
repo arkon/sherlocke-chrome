@@ -74,4 +74,3 @@ BlacklistController.$inject = ['$log', 'ChromeMessaging'];
 angular
     .module('SherlockeOptions')
     .controller('BlacklistController', BlacklistController);
-
