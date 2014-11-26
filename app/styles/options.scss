@@ -1,10 +1,24 @@
 @import 'core';
 
+$background-color: #e8eeef;
 $side-padding: 2em;
 
-body {
-  font-family: 'Open Sans', Arial, sans-serif;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: $background-color;
+  font-family: 'Open Sans', Arial, sans-serif;
 }
 
 input[type='submit'] {
@@ -12,31 +26,79 @@ input[type='submit'] {
   margin-top: 1em;
 }
 
-header {
-  background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white_name.png') no-repeat 2em center;
-  background-size: auto 45px;
-  color: #fff;
-  padding: $side-padding 1em $side-padding 17em;
 
-  h1 {
-    border-left: 1px solid #fff;
-    padding-left: 1em;
-  }
-}
-
-#options-content {
-  padding: 0 $side-padding;
-}
+/* Login form */
 
 #user-login {
-  border: 1px solid $brand-color;
-  border-radius: 5px;
-  color: $brand-color;
-  margin: 1em auto;
-  padding: $side-padding;
-  width: 200px;
+  height: 100%;
+  padding: 2em;
 }
 
-#username {
-  font-weight: 600;
+  #user-login-form {
+    border: 1px solid $brand-color;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px #bbb;
+    color: $brand-color;
+    margin: 0 auto 1em;
+    width: 280px;
+  }
+
+  #login-header {
+    background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white_name.png') no-repeat center center;
+    background-size: auto 45px;
+    height: 110px;
+  }
+
+  #login-form {
+    background-color: #fff;
+    border-radius: 0 0 5px 5px;
+    box-sizing: border-box;
+    padding: $side-padding;
+    width: 100%;
+
+    #email,
+    #password {
+      width: 216px;
+    }
+
+    input[type='submit'] {
+      margin: 1em auto 0;
+    }
+  }
+
+  #user-login-learn-more {
+    display: block;
+    text-align: center;
+  }
+
+
+/* Actual options content */
+
+#user-settings > section {
+  padding: $side-padding;
 }
+
+  header {
+    background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white_name.png') no-repeat 2em center;
+    background-size: auto 45px;
+    color: #fff;
+    padding: $side-padding 1em $side-padding 17em;
+
+    h1 {
+      border-left: 1px solid #fff;
+      padding-left: 1em;
+    }
+
+    h2#username {
+      float: right;
+      font-weight: 600;
+      margin-top: 0.15em;
+
+      a {
+        color: #fff;
+        font-weight: 300;
+      }
+    }
+  }
+
+

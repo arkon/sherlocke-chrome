@@ -10,45 +10,51 @@
     <link href="styles/options.css" rel="stylesheet">
     <!-- endbuild -->
   </head>
-  <body>
-    <header>
-      <h1>Options</h1>
-      <h2 ng-show="auth.isAuthenticated">Logged in as <span id="username">{{ currentUser }}</span></h2>
-    </header>
+  <body ng-controller="AuthController as auth">
+    <section id="user-login">
+      <form id="user-login-form" ng-hide="auth.isAuthenticated" ng-submit="auth.authenticate()">
+        <div id="login-header"></div>
 
-    <section id="options-content" ng-controller="AuthController as auth">
-      <form id="user-login" ng-if="!auth.isAuthenticated" ng-submit="auth.authenticate()">
-        <div class="alert" ng-if="auth.alerts">
-          <span ng-repeat="alert in auth.alerts">{{alert}}</span>
+        <div id="login-form">
+          <div class="alert" ng-if="auth.alerts">
+            <span ng-repeat="alert in auth.alerts">{{alert}}</span>
+          </div>
+
+          <label for="email">Email address</label>
+          <input id="email" type="email" ng-model="auth.email">
+
+          <label for="password">Password</label>
+          <input id="password" type="password" ng-model="auth.password">
+
+          <input type="submit" value="Sign in">
         </div>
-
-        <label for="email">Email address</label>
-        <input id="email" type="email" ng-model="auth.email">
-
-        <label for="password">Password</label>
-        <input id="password" type="password" ng-model="auth.password">
-
-        <input type="submit" value="Sign in">
       </form>
 
-      <section id="user-settings">
-        <section id="blacklist">
-          <h2>Blacklist</h2>
-          <ul>
-            <li ng-repeat="domain in domains">
-              <a class="unpin">Remove</a>
-              {{ domain }}
-            </li>
-          </ul>
+      <a id="user-login-learn-more" href="https://www.sherlocke.me/">Don't have an account yet? Learn more here.</a>
+    </section>
 
-          <!-- POST to /blacklist (domain) -->
-          <form ng-submit="auth.authenticate()">
-            <label for="domain">Domain</label>
-            <input id="domain" type="domain" ng-model="blacklist.domain">
+    <section id="user-settings" ng-show="auth.isAuthenticated">
+      <header>
+        <h2 id="username">{{ currentUser }} | <a href="#">Logout</a></h2>
+        <h1>Options</h1>
+      </header>
 
-            <input type="submit" value="Add">
-          </form>
-        </section>
+      <section id="blacklist">
+        <h2>Blacklisted websites</h2>
+        <ul>
+          <li ng-repeat="domain in domains">
+            <a class="unpin">Remove</a>
+            {{ domain }}
+          </li>
+        </ul>
+
+        <!-- POST to /blacklist (domain) -->
+        <form ng-submit="auth.authenticate()">
+          <label for="domain">Domain (e.g. "facebook.com" or "gmail.com"):</label>
+          <input id="domain" type="domain" ng-model="blacklist.domain">
+
+          <input type="submit" value="Add">
+        </form>
       </section>
     </section>
 
