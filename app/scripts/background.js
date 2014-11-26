@@ -52,6 +52,12 @@ function run(Auth, ChromeMessaging, SherlockeService, $http, BakerStreetService)
     'authenticate',
     SherlockeService.authenticate
   );
+
+  ChromeMessaging.publish(
+    'SherlockeApp',
+    'blacklist',
+    SherlockeService.authenticate
+  );
 }
 run.$inject = ['Auth', 'ChromeMessaging', 'SherlockeService', '$http', 'BakerStreetService'];
 angular
@@ -124,6 +130,22 @@ function SherlockeService($http, $log, $q, Auth, BakerStreetService, Page /*Docu
     }, function failure(reason) {
       $log.warn('Failed to authenticate: ', reason);
       return $q.reject(reason);
+    });
+  };
+  vm.getBlacklist = function (domain) {
+    return $q(function (resolve) {
+      $http.get(BAKERSTREET_API + '/blacklist').
+        success(function(data/*, status, headers, config*/) {
+          resolve(data);
+        });
+    });
+  };
+  vm.blacklist = function (domain) {
+    return $q(function (resolve) {
+      $http.post(BAKERSTREET_API + '/blacklist', domain).
+        success(function(data/*, status, headers, config*/) {
+          resolve(data);
+        });
     });
   };
 }

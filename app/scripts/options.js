@@ -31,3 +31,28 @@ AuthController.$inject = ['$log', 'ChromeMessaging'];
 angular
     .module('SherlockeOptions')
     .controller('AuthController', AuthController);
+
+
+function BlacklistController($log, ChromeMessaging) {
+  var vm = this;
+
+  vm.domains = ['facebook.com', 'google.com'];
+
+  // POST to /blacklist (domain)
+  vm.blacklist = function () {
+    // Send a message to background.js with the email and password
+    ChromeMessaging.callMethod('SherlockeApp', 'blacklist', {
+      domain: vm.domain
+    }).then(function (result) {
+      $log.info('Blacklist result: ', result);
+    }, function failure(reason) {
+      vm.alerts = reason.data['non_field_errors'];
+      $log.warn('Blacklist failure: ', reason);
+    });
+  };
+}
+BlacklistController.$inject = ['$log', 'ChromeMessaging'];
+angular
+    .module('SherlockeOptions')
+    .controller('BlacklistController', BlacklistController);
+

@@ -74,15 +74,20 @@ input[type='submit'] {
 
 /* Actual options content */
 
-#user-settings > section {
-  padding: $side-padding;
+.settings-content {
+  margin: 0 auto;
+  max-width: 900px;
 }
 
   header {
-    background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white_name.png') no-repeat 2em center;
-    background-size: auto 45px;
+    background-color: $brand-color;
     color: #fff;
-    padding: $side-padding 1em $side-padding 17em;
+
+    .settings-content {
+      background: url('chrome-extension://__MSG_@@extension_id__/images/logo_white_name.png') no-repeat left center;
+      background-size: auto 45px;
+      padding: $side-padding 0 $side-padding 15em;
+    }
 
     h1 {
       border-left: 1px solid #fff;
@@ -101,4 +106,33 @@ input[type='submit'] {
     }
   }
 
+  #user-settings-content {
+    padding: $side-padding 0;
+  }
 
+    #blacklist {
+      border: 1px solid $brand-color;
+      border-radius: 5px;
+      padding: $side-padding;
+
+      ul {
+        border-top: 1px solid $brand-color;
+        margin: 1em 0;
+      }
+
+      li {
+        border-bottom: 1px solid $brand-color;
+        list-style: none;
+        padding: 0.75em 0.25em;
+      }
+    }
+
+      .blacklist-unpin {
+        float: right;
+      }
+
+    #blacklist-form {
+      h2 {
+        margin: 1em 0 0.5em;
+      }
+    }

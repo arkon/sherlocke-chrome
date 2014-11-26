@@ -11,8 +11,8 @@
     <!-- endbuild -->
   </head>
   <body ng-controller="AuthController as auth">
-    <section id="user-login">
-      <form id="user-login-form" ng-hide="auth.isAuthenticated" ng-submit="auth.authenticate()">
+    <section id="user-login" ng-hide="auth.isAuthenticated">
+      <form id="user-login-form" ng-submit="auth.authenticate()">
         <div id="login-header"></div>
 
         <div id="login-form">
@@ -33,29 +33,36 @@
       <a id="user-login-learn-more" href="https://www.sherlocke.me/">Don't have an account yet? Learn more here.</a>
     </section>
 
-    <section id="user-settings" ng-show="auth.isAuthenticated">
+    <section id="user-settings" ng-show="!auth.isAuthenticated">
       <header>
-        <h2 id="username">{{ currentUser }} | <a href="#">Logout</a></h2>
-        <h1>Options</h1>
+        <div class="settings-content">
+          <h2 id="username">{{ currentUser }} | <a href="#">Logout</a></h2>
+          <h1>Options</h1>
+        </div>
       </header>
 
-      <section id="blacklist">
-        <h2>Blacklisted websites</h2>
-        <ul>
-          <li ng-repeat="domain in domains">
-            <a class="unpin">Remove</a>
-            {{ domain }}
-          </li>
-        </ul>
+      <div class="settings-content" id="user-settings-content">
 
-        <!-- POST to /blacklist (domain) -->
-        <form ng-submit="auth.authenticate()">
-          <label for="domain">Domain (e.g. "facebook.com" or "gmail.com"):</label>
-          <input id="domain" type="domain" ng-model="blacklist.domain">
+        <section id="blacklist" ng-controller="BlacklistController as blacklist">
+          <h1>Blacklisted websites</h1>
+          <ul>
+            <li ng-repeat="domain in blacklist.domains">
+              <a class="blacklist-unpin">Remove</a>
+              {{ domain }}
+            </li>
+          </ul>
 
-          <input type="submit" value="Add">
-        </form>
-      </section>
+          <p ng-if="blacklist.domains.length === 0">What</p>
+
+          <form id="blacklist-form" ng-submit="blacklist.blacklist()">
+            <h2>Add to blacklist</h2>
+            <label for="domain">Add a domain to the blacklist (e.g. "facebook.com" or "gmail.com"):</label>
+            <input id="domain" type="domain" ng-model="blacklist.domain" placeholder="Domain">
+            <input type="submit" value="Add">
+          </form>
+        </section>
+
+      </div>
     </section>
 
     <!-- build:js scripts/vendor.js -->
