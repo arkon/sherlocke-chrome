@@ -68,8 +68,8 @@
   "permissions": [
     "contextMenus",
     "storage",
+    "identity",
     "*://www.canlii.org/*"
-    // , "*://sherlocke.me/*"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
