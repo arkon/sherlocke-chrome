@@ -11,11 +11,10 @@
     <!-- endbuild -->
   </head>
   <body ng-controller="AuthController as auth">
-    <section id="user-login" ng-hide="auth.isAuthenticated">
-      <form id="user-login-form" ng-submit="auth.authenticate()">
-        <div id="login-header"></div>
-
-    <section id="options-content" >
+    <section id="options-content">
+      <section id="user-login" ng-hide="auth.isAuthenticated">
+        <form id="user-login-form" ng-submit="auth.authenticate()">
+          <div id="login-header"></div>
         <div id="login-form">
           <div class="alert" ng-if="auth.alerts">
             <span ng-repeat="alert in auth.alerts">{{alert}}</span>
