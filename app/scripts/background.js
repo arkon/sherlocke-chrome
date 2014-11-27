@@ -79,7 +79,7 @@ angular
 /*
  * Services
  */
-function SherlockeService($log, $q, Auth, BakerStreetService, Page /*Document*/) {
+function SherlockeService($location, $log, $q, Auth, BAKERSTREET_API, BakerStreetService, Page /*Document*/) {
   var vm = this;
 
   vm.currentUser = null;
@@ -122,13 +122,24 @@ function SherlockeService($log, $q, Auth, BakerStreetService, Page /*Document*/)
     });
   };
 
-  vm.authenticate = function (creds) {
-    return Auth.login(creds).then(function success(user) {
-      BakerStreetService.userToken = user.token;
-      return user;
-    }, function failure(reason) {
-      $log.warn('Failed to authenticate: ', reason);
-      return $q.reject(reason);
+  vm.authenticate = function () {
+    return $q(function (resolve, reject) {
+      chrome.identity.launchWebAuthFlow({
+        url: BAKERSTREET_API + '/o/authorize/?client_id=JK1B-RcY6jrlAb%3Fxxu.1RcLObMmv-E0lrUYVQoKS&response_type=token',
+        interactive: true
+      }, function(redirectUrl) {
+        if (typeof(redirectUrl) !== 'string') {
+          reject('Did not receive a valid redirectUrl', redirectUrl);
+        }
+
+        var matches = redirectUrl.match(/access_token=(.*?)(&.*)?$/);
+        if (matches.length >= 2) {
+          var accessToken = matches[1];
+          resolve(accessToken);
+        } else {
+          reject('Failed to parse redirectUrl', redirectUrl);
+        }
+      });
     });
   };
   vm.getBlacklist = function (/*domain*/) {
@@ -148,7 +159,7 @@ function SherlockeService($log, $q, Auth, BakerStreetService, Page /*Document*/)
     //});
   };
 }
-SherlockeService.$inject = ['$log', '$q', 'Auth', 'BakerStreetService', 'Page'];
+SherlockeService.$inject = ['$location', '$log', '$q', 'Auth', 'BAKERSTREET_API', 'BakerStreetService', 'Page'];
 angular
     .module('SherlockeApp')
     .service('SherlockeService', SherlockeService);

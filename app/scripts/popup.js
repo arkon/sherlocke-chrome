@@ -192,7 +192,6 @@ angular
   .directive('skSession', skSession);
 
 
-
 // // Event listener for clicks on links in a browser action popup.
 // // Open the link in a new tab of the current window.
 // function onAnchorClick(event) {
