@@ -54,7 +54,6 @@ function PopupController($log, ChromeMessaging) {
     vm.isAuthenticated = !!user;
   });
 }
-PopupController.$inject = ['$log', 'ChromeMessaging'];
 angular
   .module('SherlockePopup')
   .controller('PopupController', PopupController);
@@ -73,7 +72,6 @@ function PinnedController() {
   //  vm.noPinned = vm.pinned.length === 0;
   //});
 }
-PinnedController.$inject = [];
 angular
   .module('SherlockePopup')
   .controller('PinnedController', PinnedController);
@@ -91,7 +89,6 @@ function PriorityController() {
 
   vm.noPriority = vm.prioritized.length === 0;
 }
-PriorityController.$inject = ['$http'];
 angular
   .module('SherlockePopup')
   .controller('PriorityController', PriorityController);
@@ -112,10 +109,9 @@ function HistoryController() {
 
   // To pin: POST to /documents with url (snippet: false)
 }
-HistoryController.$inject = [];
 angular
-  .module('SherlockePopup')
-  .controller('HistoryController', HistoryController);
+    .module('SherlockePopup')
+    .controller('HistoryController', HistoryController);
 
 
 function SessionsController($location, $log, ChromeMessaging) {
@@ -190,7 +186,6 @@ function SessionsController($location, $log, ChromeMessaging) {
     //});
   };
 }
-SessionsController.$inject = ['$location', '$log', 'ChromeMessaging'];
 angular
   .module('SherlockePopup')
   .controller('SessionsController', SessionsController);
@@ -214,7 +209,6 @@ function skSession($sce) {
     }
   };
 }
-skSession.$inject= ['$sce'];
 angular
   .module('SherlockePopup')
   .directive('skSession', skSession);

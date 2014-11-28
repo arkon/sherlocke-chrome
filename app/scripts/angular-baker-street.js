@@ -12,7 +12,6 @@ function config(/*restmodProvider, configuration*/) {
   //  }
   //});
 }
-config.$inject = [/*'restmodProvider', 'configuration'*/];
 angular
     .module('BakerStreet')
     .config(config);
@@ -24,7 +23,6 @@ angular
 function BakerStreetService() {
 
 }
-BakerStreetService.$inject = [];
 angular
     .module('BakerStreet')
     .service('BakerStreetService', BakerStreetService);

@@ -1,12 +1,12 @@
 <div id="sherlocke-header">Sherlocke</div>
 <div id="sherlocke-content" ng-hide="side.isLoading">
-  <div sk-select id="sherlocke-filters">
-    <span id="sherlocke-filter" ng-model="documents.filter">All related documents</span>
-    <ul id="sherlocke-filters-list">
-      <li>All related documents</li>
-      <li>Legislation</li>
-      <li>Cases</li>
-      <li>Miscellaneous</li>
+  <div id="sherlocke-filters" sk-select ng-controller="FilterSelectController as selectCtrl">
+    <span id="sherlocke-filter" ng-model="side.documents.filter">All related documents</span>
+    <ul id="sherlocke-filters-list" ng-click="selectCtrl.click($event)">
+      <li id="sherlocke-filter-all">All related documents</li>
+      <li id="sherlocke-filter-legislation">Legislation</li>
+      <li id="sherlocke-filter-cases">Cases</li>
+      <li id="sherlocke-filter-misc">Miscellaneous</li>
     </ul>
   </div>
 
@@ -34,4 +34,4 @@
   <p id="sherlocke-loading-message">Analyzing documents...</p>
 </div>
 
-<div id="sherlocke-toggle"></div>
+<div id="sherlocke-toggle" ng-click="main.isSidebarHidden = !main.isSidebarHidden"></div>

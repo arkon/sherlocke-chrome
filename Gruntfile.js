@@ -287,13 +287,13 @@ module.exports = function (grunt) {
     concurrent: {
       chrome: [
         'compass:chrome',
-        'ngconstant:development'
+        'ngconstant:chrome'
       ],
       dist: [
         'compass:dist',
         'imagemin',
         'svgmin',
-        'ngconstant:production'
+        'ngconstant:dist'
       ],
       test: [
         'compass:test'
@@ -341,15 +341,30 @@ module.exports = function (grunt) {
         name: 'SherlockeConfig',
         dest: '<%= config.app %>/scripts/config.js'
       },
-      development: {
+      chrome: {
         constants: {
           'BAKERSTREET_API': 'http://localhost:8000'
         }
       },
-      production: {
+      dist: {
         constants: {
           'BAKERSTREET_API': 'https://sherlocke.me'
         }
+      }
+    },
+
+    // Automatic dependency injection annotations
+    ngAnnotate: {
+      options: {
+        singleQuotes: true
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= config.app %>/scripts',
+          src: '{,*/}*.js',
+          dest: '<%= config.dist %>/scripts'
+        }]
       }
     }
   });
@@ -373,6 +388,7 @@ module.exports = function (grunt) {
     'chromeManifest:dist',
     'useminPrepare',
     'concurrent:dist',
+    'ngAnnotate:dist',
     'cssmin',
     'concat',
     'uglify',

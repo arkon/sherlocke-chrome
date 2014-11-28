@@ -64,7 +64,6 @@ function run(ChromeMessaging, SherlockeService) {
     SherlockeService.authenticate
   );
 }
-run.$inject = ['ChromeMessaging', 'SherlockeService'];
 angular
     .module('SherlockeApp')
     .run(run);
@@ -82,7 +81,6 @@ function config(AuthProvider, ChromeMessagingProvider, BAKERSTREET_API) {
   // Set module name used to publish methods
   ChromeMessagingProvider.setModuleName('SherlockeApp');
 }
-config.$inject = ['AuthProvider', 'ChromeMessagingProvider', 'BAKERSTREET_API'];
 angular
     .module('SherlockeApp')
     .config(config);
@@ -229,7 +227,6 @@ function SherlockeService($location, $log, $q, $http, Auth, BAKERSTREET_API, Bak
     //});
   };
 }
-SherlockeService.$inject = ['$location', '$log', '$q', '$http', 'Auth', 'BAKERSTREET_API', 'BakerStreetService', 'ResearchSession', 'Page'];
 angular
     .module('SherlockeApp')
     .service('SherlockeService', SherlockeService);

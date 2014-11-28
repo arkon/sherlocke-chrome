@@ -6,7 +6,7 @@
  */
 angular.module('ChromeMessaging', []);
 
-var PublicationFactory = ['$rootScope', '$q', function ($rootScope, $q) {
+function PublicationFactory($rootScope, $q) {
   /**
    * A method published by a sandboxed Chrome script.
    *
@@ -99,8 +99,7 @@ var PublicationFactory = ['$rootScope', '$q', function ($rootScope, $q) {
   };
 
   return Publication;
-}];
-//PublicationFactory.$inject = ['$scope', '$q'];
+}
 angular
     .module('ChromeMessaging')
     .factory('Publication', PublicationFactory);
@@ -224,9 +223,9 @@ function ChromeMessagingProvider() {
     moduleName = name;
   };
 
-  this.$get = ['$q', 'Publication', function ($q, Publication) {
+  this.$get = function ($q, Publication) {
     return new ChromeMessaging($q, Publication, moduleName);
-  }];
+  };
 }
 angular
     .module('ChromeMessaging')

@@ -7,11 +7,32 @@ angular.module('SherlockeContent', ['truncate', 'ChromeMessaging']);
 /*
  * Controllers
  */
-function SidePanelController(/*$window, $document, $log, ChromeMessaging*/) {
+function MainController($scope) {
+  var vm = this;
+
+  // Whether sidebar is hidden
+  vm.isSidebarHidden = false;
+
+  // ngClass to set on the body
+  vm.bodyClass = '';
+  $scope.$watch(function () {
+    return vm.isSidebarHidden;
+  }, function (value) {
+    vm.bodyClass = value ? 'hide-sidebar' : '';
+  });
+}
+angular
+    .module('SherlockeContent')
+    .controller('MainController', MainController);
+
+function SidePanelController() {
   var vm = this;
 
   // Whether sidebar is loading
   vm.isLoading = true;
+
+  // Whether filter selection menu is shown
+  vm.showMenu = false;
 
   // The active research session
   vm.activeResearchSession = null;
@@ -47,7 +68,6 @@ function SidePanelController(/*$window, $document, $log, ChromeMessaging*/) {
                  { url: 'www.google.ca', source: 'Government of Canada', title: 'Something else with a really long title that needs multiple lines', text: 'Tonx wayfarers fashion axe, art party tofu farm-to-table meggings pop-up Etsy Shoreditch deep v sustainable small batch street art master cleanse. Twee ennui Blue Bottle Pinterest. Shoreditch gluten-free meditation, chia kogi cray banh mi XOXO hella farm-to-table Odd Future Blue Bottle Thundercats. Vice meditation viral chia, semiotics literally Pinterest. Before they sold out cliche +1 locavore, biodiesel try-hard polaroid Vice craft beer keffiyeh flexitarian. Pop-up single-origin coffee cold-pressed selfies keffiyeh artisan mumblecore health goth banjo flannel. Tattooed street art post-ironic direct trade quinoa four dollar toast, listicle artisan polaroid.', pinned: true }];
   vm.isLoading = false;
 }
-SidePanelController.$inject = ['$window', '$document', '$log', 'ChromeMessaging'];
 angular
     .module('SherlockeContent')
     .controller('SidePanelController', SidePanelController);
@@ -56,64 +76,32 @@ angular
 /*
  * Directives
  */
-var MainDirective = [function () {
-  return {
-    restrict: 'A',
-    link: function (scope) {
-      scope.$watch('isSidebarHidden', function (value) {
-        angular.element('body').toggleClass('hide-sidebar', value);
-      });
-    },
-    controllerAs: 'main',
-    controller: function ($scope) {
-      // Settings
-      chrome.storage.sync.get(['opt-hide-sidebar', 'opt-show-menu'], function (items) {
-        if ('opt-hide-sidebar' in items) {
-          $scope.isSidebarHidden = items['opt-hide-sidebar'];
-        } else {
-          chrome.storage.sync.set({ 'opt-hide-sidebar': false });
-          $scope.isSidebarHidden = false;
-        }
-
-        if ('opt-show-menu' in items) {
-          $scope.showMenu = items['opt-show-menu'];
-        } else {
-          chrome.storage.sync.set({ 'opt-show-menu': true });
-          $scope.showMenu = true;
-        }
-      });
-    }
-  };
-}];
-angular
-    .module('SherlockeContent')
-    .directive('skMain', MainDirective);
-
-var SidePanelDirective = ['$sce', function ($sce) {
+var SidePanelDirective = function ($sce) {
   return {
     restrict: 'A',
     templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/side-panel.html')),
-    link: function (scope, element) {
-      // Handle sidebar toggle
-      element.find('#sherlocke-toggle').click(function () {
-        var body = angular.element('body');
-        body.toggleClass('hide-sidebar');
-
-        scope.isSidebarHidden = body.hasClass('hide-sidebar');
-
-        // Sync setting
-        chrome.storage.sync.set({
-          'opt-hide-sidebar': scope.isSidebarHidden
-        });
-      });
-    }
+    link: function () {}
   };
-}];
+};
 angular
     .module('SherlockeContent')
     .directive('skSidePanel', SidePanelDirective);
 
-var SelectDirective = [function () {
+function FilterSelectController() {
+  var vm = this;
+
+  // Currently-selected filter
+  vm.filter = null;
+
+  vm.click = function ($event) {
+    vm.filter = $event.target;
+  };
+}
+angular
+    .module('SherlockeContent')
+    .controller('FilterSelectController', FilterSelectController);
+
+var SelectDirective = function () {
   return {
     link: function (scope, element) {
       // Handle showing/hiding of filters menu
@@ -124,31 +112,22 @@ var SelectDirective = [function () {
 
       $filters.click(function(e) {
         $sherlocke.toggleClass('show-menu');
-
-        if (scope.showMenu) {
-          chrome.storage.sync.set({ 'opt-show-menu': false });
-        }
-
         e.stopPropagation();
       });
 
       angular.element('body').click(function () {
         if ($sherlocke.hasClass('show-menu')) {
           $sherlocke.removeClass('show-menu');
-
-          if (scope.showMenu) {
-            chrome.storage.sync.set({ 'opt-show-menu': false });
-          }
         }
       });
 
       // Handle the filters
-      $('#sherlocke-filters li').click(function() {
+      $filters.find('li').click(function() {
         $('#sherlocke-filter').html(this.innerHTML);
       });
     }
   };
-}];
+};
 angular
     .module('SherlockeContent')
     .directive('skSelect', SelectDirective);
@@ -167,7 +146,8 @@ angular.element(document).ready(function () {
 
     // Inject the main directive & controller onto the page and insert the side panel
     angular.element('body')
-        .attr('sk-main', true)
+        .attr('ng-controller', 'MainController as main')
+        .attr('ng-class', 'main.bodyClass')
         .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController as side"></div></div>');
 
     angular.bootstrap(document, ['SherlockeContent']);

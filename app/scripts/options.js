@@ -42,7 +42,6 @@ function AuthController($log, ChromeMessaging) {
   // Subscribe to the current user
   //ChromeMessaging.subscribe('SherlockeApp', '')
 }
-AuthController.$inject = ['$log', 'ChromeMessaging'];
 angular
     .module('SherlockeOptions')
     .controller('AuthController', AuthController);
@@ -66,7 +65,6 @@ function BlacklistController($log, ChromeMessaging) {
     });
   };
 }
-BlacklistController.$inject = ['$log', 'ChromeMessaging'];
 angular
     .module('SherlockeOptions')
     .controller('BlacklistController', BlacklistController);
