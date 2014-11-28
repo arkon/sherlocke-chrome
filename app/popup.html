@@ -11,15 +11,16 @@
     <!-- endbuild -->
   </head>
   <body ng-controller="PopupController as popupCtrl">
+    <section class="block" id="popup-login" ng-if="!popupCtrl.isAuthenticated">
+      <a id="popup-login-btn" title="Sherlocke options" href="options.html" target="_blank">Log in</a>
+    </section>
+
     <section class="block" ng-if="popupCtrl.isAuthenticated">
       <section id="session" sk-session ng-controller="SessionsController as sessionsCtrl"></section>
       <section id="tab-content" ng-view></section>
     </section>
-    <section class="block" ng-if="!popupCtrl.isAuthenticated">
-      <a title="Sherlocke options" href="options.html" target="_blank">Go to options to log in</a>
-    </section>
 
-    <nav id="nav">
+    <nav id="nav" ng-if="popupCtrl.isAuthenticated">
       <div id="logo"></div>
 
       <ul class="tabs" sk-popup-tabs>

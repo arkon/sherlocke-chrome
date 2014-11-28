@@ -14,9 +14,11 @@
     <section id="options-content">
       <section id="user-login" ng-if="!auth.isAuthenticated">
 
-        <div id="login-header"></div>
-        <div id="login-form">
-          <button ng-click="auth.authenticate()">Sign in</button>
+        <div id="user-login-form">
+          <div id="login-header"></div>
+          <div id="login-form">
+            <button ng-click="auth.authenticate()">Log in</button>
+          </div>
         </div>
 
         <a id="user-login-learn-more" href="https://www.sherlocke.me/">Don't have an account yet? Learn more here.</a>

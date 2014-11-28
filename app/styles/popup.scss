@@ -110,6 +110,32 @@ form {
   vertical-align: top;
 }
 
+  #popup-login {
+    background-color: $brand-color;
+    display: block !important;
+    height: 440px;
+  }
+
+    #popup-login-btn {
+      box-sizing: border-box;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -1.5em;
+      margin-left: -5em;
+
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px darken($brand-color, 5%);
+      color: $brand-color;
+      display: block;
+      padding: 0.75em 1.5em;
+      height: 3em;
+      width: 10em;
+      text-align: center;
+    }
+
   #session {
     background-color: #eee;
     border-bottom: 1px solid $brand-color;

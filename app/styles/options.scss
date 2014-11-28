@@ -54,16 +54,7 @@ input[type='submit'] {
     border-radius: 0 0 5px 5px;
     box-sizing: border-box;
     padding: $side-padding;
-    width: 100%;
-
-    #email,
-    #password {
-      width: 216px;
-    }
-
-    input[type='submit'] {
-      margin: 1em auto 0;
-    }
+    text-align: center;
   }
 
   #user-login-learn-more {
