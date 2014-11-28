@@ -31,9 +31,6 @@ function SidePanelController() {
   // Whether sidebar is loading
   vm.isLoading = true;
 
-  // Whether filter selection menu is shown
-  vm.showMenu = false;
-
   // The active research session
   vm.activeResearchSession = null;
 
@@ -73,6 +70,35 @@ angular
     .controller('SidePanelController', SidePanelController);
 
 
+function FilterSelectController() {
+  var vm = this;
+
+  // Whether filter selection menu is shown
+  vm.showMenu = false;
+
+  // Currently-selected filter
+  vm.filter = {
+    type: 'all',
+    name: 'All related documents'
+  };
+
+  vm.toggle = function () {
+    vm.showMenu = !vm.showMenu;
+  };
+
+  vm.click = function ($event) {
+    var $target = angular.element($event.target);
+    vm.filter = {
+      type: $target.data('type'),
+      name: $target.text()
+    };
+  };
+}
+angular
+  .module('SherlockeContent')
+  .controller('FilterSelectController', FilterSelectController);
+
+
 /*
  * Directives
  */
@@ -86,52 +112,6 @@ var SidePanelDirective = function ($sce) {
 angular
     .module('SherlockeContent')
     .directive('skSidePanel', SidePanelDirective);
-
-function FilterSelectController() {
-  var vm = this;
-
-  // Currently-selected filter
-  vm.filter = null;
-
-  vm.click = function ($event) {
-    vm.filter = $event.target;
-  };
-}
-angular
-    .module('SherlockeContent')
-    .controller('FilterSelectController', FilterSelectController);
-
-var SelectDirective = function () {
-  return {
-    link: function (scope, element) {
-      // Handle showing/hiding of filters menu
-      var $filters   = element;
-      var $sherlocke = element.closest('#sherlocke');
-
-      $sherlocke.toggleClass('show-menu', scope.showMenu);
-
-      $filters.click(function(e) {
-        $sherlocke.toggleClass('show-menu');
-        e.stopPropagation();
-      });
-
-      angular.element('body').click(function () {
-        if ($sherlocke.hasClass('show-menu')) {
-          $sherlocke.removeClass('show-menu');
-        }
-      });
-
-      // Handle the filters
-      $filters.find('li').click(function() {
-        $('#sherlocke-filter').html(this.innerHTML);
-      });
-    }
-  };
-};
-angular
-    .module('SherlockeContent')
-    .directive('skSelect', SelectDirective);
-
 
 var blacklist = ['stackoverflow.com', 'youtube.com', 'facebook.com', 'css-tricks.com', 'unhaltable.slack.com', 'piazza.com'];
 

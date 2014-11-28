@@ -1,12 +1,16 @@
 <div id="sherlocke-header">Sherlocke</div>
 <div id="sherlocke-content" ng-hide="side.isLoading">
-  <div id="sherlocke-filters" sk-select ng-controller="FilterSelectController as selectCtrl">
-    <span id="sherlocke-filter" ng-model="side.documents.filter">All related documents</span>
+  <div id="sherlocke-filters"
+       sk-select
+       ng-controller="FilterSelectController as selectCtrl"
+       ng-class="{'show-menu': selectCtrl.showMenu}"
+       ng-click="selectCtrl.toggle()">
+    <span id="sherlocke-filter">{{selectCtrl.filter.name}}</span>
     <ul id="sherlocke-filters-list" ng-click="selectCtrl.click($event)">
-      <li id="sherlocke-filter-all">All related documents</li>
-      <li id="sherlocke-filter-legislation">Legislation</li>
-      <li id="sherlocke-filter-cases">Cases</li>
-      <li id="sherlocke-filter-misc">Miscellaneous</li>
+      <li data-type="all">All related documents</li>
+      <li data-type="legislation">Legislation</li>
+      <li data-type="cases">Cases</li>
+      <li data-type="misc">Miscellaneous</li>
     </ul>
   </div>
 
