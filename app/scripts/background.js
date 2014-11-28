@@ -6,6 +6,26 @@ angular.module('SherlockeApp', ['truncate', 'DjangoAuth', 'ChromeMessaging', 'Ba
 /* Callback for when all modules are loaded */
 function run(ChromeMessaging, SherlockeService) {
   /* Publish and handle messages sent to 'SherlockeApp' */
+
+  /* Usage:
+   *   ChromeMessaging.callMethod(
+   *       'authenticate',
+   *       {email: 'test@example.com', password: 'hunter2'}
+   *   ).then(function (user) {
+   *     console.log(user);
+   *   });
+   */
+  ChromeMessaging.publish(
+    'authenticate',
+    SherlockeService.authenticate
+  );
+
+  ChromeMessaging.publish(
+    'getCurrentUser',
+    SherlockeService.getCurrentUser,
+    { canSubscribe: true }
+  );
+
   ChromeMessaging.publish(
     'getCurrentResearchSession',
     SherlockeService.getCurrentResearchSession,
@@ -13,9 +33,13 @@ function run(ChromeMessaging, SherlockeService) {
   );
 
   ChromeMessaging.publish(
-    'getCurrentUser',
-    SherlockeService.getCurrentUser,
-    { canSubscribe: true }
+    'getResearchSessions',
+    SherlockeService.getResearchSessions
+  );
+
+  ChromeMessaging.publish(
+    'createResearchSession',
+    SherlockeService.createResearchSession
   );
 
   ChromeMessaging.publish(
@@ -32,19 +56,6 @@ function run(ChromeMessaging, SherlockeService) {
   ChromeMessaging.publish(
     'pinPage',
     SherlockeService.pinPage
-  );
-
-  /* Usage:
-   *   ChromeMessaging.callMethod(
-   *       'authenticate',
-   *       {email: 'test@example.com', password: 'hunter2'}
-   *   ).then(function (user) {
-   *     console.log(user);
-   *   });
-   */
-  ChromeMessaging.publish(
-    'authenticate',
-    SherlockeService.authenticate
   );
 
   ChromeMessaging.publish(
@@ -79,7 +90,7 @@ angular
 /*
  * Services
  */
-function SherlockeService($location, $log, $q, Auth, BAKERSTREET_API, BakerStreetService, Page /*Document*/) {
+function SherlockeService($location, $log, $q, $http, Auth, BAKERSTREET_API, BakerStreetService, ResearchSession, Page /*Document*/) {
   var vm = this;
 
   vm.currentUser = null;
@@ -87,9 +98,65 @@ function SherlockeService($location, $log, $q, Auth, BAKERSTREET_API, BakerStree
     return vm.currentUser;
   };
 
+  /*
+   * Research sessions
+   */
+  // Keep a reference to the current research session
   vm.currentResearchSession = null;
   vm.getCurrentResearchSession = function () {
     return vm.currentResearchSession;
+  };
+
+  /**
+   * Get the list of research sessions from Baker Street
+   */
+  vm.getResearchSessions = function () {
+    // TODO: use restmod
+    //var researchSessions = ResearchSession.$collection({});
+    //var v = researchSessions.$refresh({ page: 1 });
+
+    return $q(function (resolve, reject) {
+      if (!vm.currentUser.accessToken) {
+        reject('No access token set');
+      } else {
+        $http.get(BAKERSTREET_API + '/research_session.json', {
+          headers: {
+            'Authorization': 'Bearer ' + vm.currentUser.accessToken
+          }
+        }).then(function success(response) {
+          resolve(response.data.results);
+        }, function failure(response) {
+          reject(response);
+        });
+      }
+    });
+  };
+
+  /**
+   * Create a research session
+   *
+   * @param name The name of the new research session
+   */
+  vm.createResearchSession = function (name) {
+    // TODO: use restmod
+
+    return $q(function (resolve, reject) {
+      if (!vm.currentUser.accessToken) {
+        reject('No access token set');
+      } else {
+        $http.post(BAKERSTREET_API + '/research_session.json', {
+          'name': name
+        }, {
+          headers: {
+            'Authorization': 'Bearer ' + vm.currentUser.accessToken
+          }
+        }).then(function success(response) {
+          resolve(response.data);
+        }, function failure(response) {
+          reject(response);
+        });
+      }
+    });
   };
 
   vm.getDocuments = function () {
@@ -122,6 +189,7 @@ function SherlockeService($location, $log, $q, Auth, BAKERSTREET_API, BakerStree
     });
   };
 
+  vm.accessToken = null;
   vm.authenticate = function () {
     return $q(function (resolve, reject) {
       chrome.identity.launchWebAuthFlow({
@@ -134,8 +202,10 @@ function SherlockeService($location, $log, $q, Auth, BAKERSTREET_API, BakerStree
 
         var matches = redirectUrl.match(/access_token=(.*?)(&.*)?$/);
         if (matches.length >= 2) {
-          var accessToken = matches[1];
-          resolve(accessToken);
+          vm.currentUser = {
+            accessToken: matches[1]
+          };
+          resolve(vm.currentUser);
         } else {
           reject('Failed to parse redirectUrl', redirectUrl);
         }
@@ -159,7 +229,7 @@ function SherlockeService($location, $log, $q, Auth, BAKERSTREET_API, BakerStree
     //});
   };
 }
-SherlockeService.$inject = ['$location', '$log', '$q', 'Auth', 'BAKERSTREET_API', 'BakerStreetService', 'Page'];
+SherlockeService.$inject = ['$location', '$log', '$q', '$http', 'Auth', 'BAKERSTREET_API', 'BakerStreetService', 'ResearchSession', 'Page'];
 angular
     .module('SherlockeApp')
     .service('SherlockeService', SherlockeService);

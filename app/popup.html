@@ -11,15 +11,18 @@
     <!-- endbuild -->
   </head>
   <body ng-controller="PopupController as popupCtrl">
-    <section class="block">
+    <section class="block" ng-if="popupCtrl.isAuthenticated">
       <section id="session" sk-session ng-controller="SessionsController as sessionsCtrl"></section>
       <section id="tab-content" ng-view></section>
+    </section>
+    <section class="block" ng-if="!popupCtrl.isAuthenticated">
+      <a title="Sherlocke options" href="options.html" target="_blank">Go to options to log in</a>
     </section>
 
     <nav id="nav">
       <div id="logo"></div>
 
-      <ul class="tabs">
+      <ul class="tabs" sk-popup-tabs>
         <li><a href="#/tab1" id="tab-pinned" title="Pinned documents">Pinned</a></li>
         <li><a href="#/tab2" id="tab-priority" title="Prioritized items">Priority</a></li>
         <li><a href="#/tab3" id="tab-history" title="Browsing history">History</a></li>
@@ -39,6 +42,10 @@
 
     <!-- build:js scripts/angular-baker-street.js -->
     <script src="scripts/angular-baker-street.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/angular-chrome-messaging.js -->
+    <script src="scripts/angular-chrome-messaging.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/popup.js -->

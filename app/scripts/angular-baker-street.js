@@ -29,8 +29,21 @@ angular
     .module('BakerStreet')
     .service('BakerStreetService', BakerStreetService);
 
+//var AuthenticatedModel = ['restmod', function (restmod) {
+//  return restmod.mixin({
+//    hooks: {
+//      'before-request': function (request) {
+//        debugger;
+//      }
+//    }
+//  });
+//}];
+//angular
+//    .module('BakerStreet')
+//    .factory('AuthenticatedModel', AuthenticatedModel);
+
 var ResearchSession = ['restmod', function (restmod) {
-  return restmod.model('/research_session');
+  return restmod.model('/research_sessions'); //.mix('AuthenticatedModel');
 }];
 angular
     .module('BakerStreet')

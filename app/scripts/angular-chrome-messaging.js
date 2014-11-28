@@ -53,6 +53,11 @@ var PublicationFactory = ['$rootScope', '$q', function ($rootScope, $q) {
           // Add the port to the list of subscribers if it doesn't already exist
           if (m.subscribers.indexOf(port) === -1) {
             m.subscribers.push(port);
+
+            // When client disconnects, remove the subscription if necessary
+            port.onDisconnect.addListener(function () {
+              m.subscribers.splice(m.subscribers.indexOf(port), 1);
+            });
           }
         }
 
