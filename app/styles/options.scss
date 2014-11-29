@@ -41,6 +41,22 @@ input[type='submit'] {
     color: $brand-color;
     margin: 0 auto 1em;
     width: 280px;
+
+    button {
+      background-color: $brand-color;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px #a8a8a8;
+      color: #fff;
+      cursor: pointer;
+      display: block;
+      font-family: 'Open Sans', Arial, sans-serif;
+      margin: 0 auto;
+      padding: 0.75em 1.5em;
+      height: 3em;
+      width: 10em;
+      text-align: center;
+    }
   }
 
   #login-header {
