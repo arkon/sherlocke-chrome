@@ -254,6 +254,10 @@ form {
         display: table;
         padding: 0.65em 0;
         width: 100%;
+
+        a {
+          word-break: break-all;
+        }
       }
   }
 
