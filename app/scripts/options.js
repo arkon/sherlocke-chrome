@@ -47,24 +47,21 @@ angular
     .controller('AuthController', AuthController);
 
 
-function BlacklistController($log, ChromeMessaging) {
+function WhitelistController($log, ChromeMessaging) {
   var vm = this;
 
-  vm.domains = ['facebook.com', 'google.com'];
+  vm.whitelist = ['facebook.com', 'google.com'];
 
-  // POST to /blacklist (domain)
-  vm.blacklist = function () {
-    // Send a message to background.js with the email and password
-    ChromeMessaging.callMethod('SherlockeApp', 'blacklist', {
-      domain: vm.domain
-    }).then(function (result) {
-      $log.info('Blacklist result: ', result);
+  vm.getWhitelist = function () {
+    ChromeMessaging.callMethod('SherlockeApp', 'getWhitelist').then(function (result) {
+      $log.info('Whitelist result: ', result);
+      vm.whitelist = result;
     }, function failure(reason) {
       vm.alerts = reason.data['non_field_errors'];
-      $log.warn('Blacklist failure: ', reason);
+      $log.warn('Whitelist failure: ', reason);
     });
   };
 }
 angular
     .module('SherlockeOptions')
-    .controller('BlacklistController', BlacklistController);
+    .controller('WhitelistController', WhitelistController);

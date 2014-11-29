@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="SherlockeOptions">
+<html ng-app="SherlockeOptions" ng-csp>
   <head>
     <title>Sherlocke options</title>
     <!-- build:css styles/vendor.css -->
@@ -7,11 +7,12 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css styles/options.css -->
+    <link href="bower_components/angular/angular-csp.css" rel="stylesheet">
     <link href="styles/options.css" rel="stylesheet">
     <!-- endbuild -->
   </head>
   <body ng-controller="AuthController as auth">
-    <section id="options-content">
+    <section id="options-content" ng-cloak>
       <section id="user-login" ng-if="!auth.isAuthenticated">
 
         <div id="user-login-form">
@@ -24,11 +25,6 @@
         <a id="user-login-learn-more" href="https://www.sherlocke.me/">Don't have an account yet? Learn more here.</a>
       </section>
 
-      <section id="user-profile" ng-if="auth.isAuthenticated">
-        <span>Logged in as {{auth.email}}</span>
-        <a ng-href="{{auth.profileUrl}}">View profile</a>
-      </section>
-
       <section id="user-settings" ng-if="auth.isAuthenticated">
         <header>
           <div class="settings-content">
@@ -39,7 +35,7 @@
 
         <div class="settings-content" id="user-settings-content">
 
-          <section id="blacklist" ng-controller="BlacklistController as blacklist">
+          <section id="whitelist" ng-controller="BlacklistController as blacklist">
             <h1>Blacklisted websites</h1>
             <ul>
               <li ng-repeat="domain in blacklist.domains">

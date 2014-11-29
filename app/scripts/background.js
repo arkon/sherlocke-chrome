@@ -60,8 +60,8 @@ function run(ChromeMessaging, SherlockeService) {
 
   ChromeMessaging.publish(
     'SherlockeApp',
-    'blacklist',
-    SherlockeService.authenticate
+    'getWhitelist',
+    SherlockeService.getWhitelist
   );
 }
 angular
@@ -210,17 +210,11 @@ function SherlockeService($location, $log, $q, $http, Auth, BAKERSTREET_API, Bak
       });
     });
   };
-  vm.getBlacklist = function (/*domain*/) {
+
+  vm.getWhitelist = function (/*domain*/) {
+    // TODO
     //return $q(function (resolve) {
     //  $http.get(BAKERSTREET_API + '/blacklist').
-    //    success(function(data/*, status, headers, config*/) {
-    //      resolve(data);
-    //    });
-    //});
-  };
-  vm.blacklist = function (/*domain*/) {
-    //return $q(function (resolve) {
-    //  $http.post(BAKERSTREET_API + '/blacklist', domain).
     //    success(function(data/*, status, headers, config*/) {
     //      resolve(data);
     //    });
@@ -255,10 +249,4 @@ chrome.contextMenus.create({
   title: 'Prioritize this',
   contexts: ['selection', 'link', 'editable'],
   onclick: menuItemClicked
-});
-
-
-/* Bootstrap the app onto the generated background page */
-angular.element(document).ready(function() {
-  angular.bootstrap(document, ['SherlockeApp']);
 });
