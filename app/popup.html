@@ -17,7 +17,28 @@
     </section>
 
     <section class="block" ng-if="popupCtrl.isAuthenticated">
-      <section id="session" sk-session ng-controller="SessionsController as sessionsCtrl"></section>
+      <section id="session"
+               ng-controller="SessionsController as sessionsCtrl"
+               ng-class="{'paused': sessionsCtrl.isPaused}">
+        <select id="session-list"
+                ng-hide="sessionsCtrl.sessions.length === 0"
+                ng-change="sessionsCtrl.changeSession(sessionsCtrl.currentSession)"
+                ng-model="sessionsCtrl.currentSession">
+          <option ng-repeat="session in sessionsCtrl.sessions"
+                  value="{{ session.id }}"
+                  ng-selected="session.current">
+            {{ session.name }}
+          </option>
+        </select>
+        <span id="no-sessions" ng-show="sessionsCtrl.sessions.length === 0">No existing sessions</span>
+
+        <div id="session-controls">
+          <a href="#/pause" id="session-pause" class="session-btn" title="Pause session" ng-hide="sessionsCtrl.sessions.length === 0">Pause</a>
+          <a href="#/delete" id="session-delete" class="session-btn" title="Delete session" ng-hide="sessionsCtrl.sessions.length === 0">Delete</a>
+          <a href="#/new" id="session-new" class="session-btn" title="New session" ng-hide="sessionsCtrl.sessions.length === 0">New</a>
+          <a href="#/new" id="session-new-first" class="session-btn" title="New session" ng-show="sessionsCtrl.sessions.length === 0">New</a>
+        </div>
+      </section>
       <section id="tab-content" ng-view></section>
     </section>
 
