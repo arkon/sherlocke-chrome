@@ -12,11 +12,11 @@
     <!-- endbuild -->
   </head>
   <body ng-controller="PopupController as popupCtrl">
-    <section class="block" id="popup-login" ng-if="!popupCtrl.isAuthenticated">
+    <section class="block" id="popup-login" ng-if="!popupCtrl.user">
       <a id="popup-login-btn" title="Sherlocke options" href="options.html" target="_blank">Log in</a>
     </section>
 
-    <section class="block" ng-if="popupCtrl.isAuthenticated">
+    <section class="block" ng-if="popupCtrl.user">
       <section id="session"
                ng-controller="SessionsController as sessionsCtrl"
                ng-class="{'paused': sessionsCtrl.isPaused}">
@@ -50,7 +50,7 @@
       <section id="tab-content" ng-view></section>
     </section>
 
-    <nav id="nav" ng-if="popupCtrl.isAuthenticated">
+    <nav id="nav" ng-if="popupCtrl.user">
       <div id="logo"></div>
 
       <ul class="tabs" sk-popup-tabs>
