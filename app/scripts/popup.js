@@ -58,19 +58,35 @@ angular
   .module('SherlockePopup')
   .controller('PopupController', PopupController);
 
-function PinnedController() {
+function PinnedController($log, ChromeMessaging) {
   var vm = this;
 
-  vm.noPinned = true;
+  // The list of pinned documents
+  vm.pinnedDocuments = [];
 
-  // TODO: call BakerStreet via ChromeMessaging
-  //$http
-  //  .get(BAKERSTREET_API + '/documents/pinned')
-  //  .success(function (data) {
-  //  vm.pinned = data;
-  //
-  //  vm.noPinned = vm.pinned.length === 0;
-  //});
+  /**
+   * Load pinned documents from BakerStreet
+   */
+  vm.getPinnedDocuments = function () {
+    return ChromeMessaging.callMethod('SherlockeApp', 'getPinnedDocuments').then(function success(result) {
+      $log.info('Got pinned documents:', result);
+      vm.pinnedDocuments = result;
+    }, function failure(reason) {
+      $log.error('Failed to get pinned documents:', reason);
+    });
+  };
+
+  /**
+   * Pin a document via BakerStreet
+   */
+  vm.pinDocument = function (document) {
+    return ChromeMessaging.callMethod('SherlockeApp', 'pinDocument').then(function success(result) {
+      $log.info('Pinned document:', result);
+      return vm.getPinnedDocuments();
+    }, function failure(reason) {
+      $log.error('Failed to pin document', document, reason);
+    });
+  };
 }
 angular
   .module('SherlockePopup')
@@ -114,104 +130,68 @@ angular
     .controller('HistoryController', HistoryController);
 
 
-function SessionsController($location, $log, ChromeMessaging) {
+function SessionsController($log, ChromeMessaging) {
   var vm = this;
 
+  // The list of research sessions
   vm.sessions = [];
-  ChromeMessaging.callMethod('SherlockeApp', 'getResearchSessions').then(function success(researchSessions) {
-    vm.sessions = researchSessions;
-  }, function failure(reason) {
-    $log.error(reason);
-  });
 
+  // The current research session
   vm.currentSession = null;
-  ChromeMessaging.subscribe('SherlockeApp', 'getCurrentResearchSession').then(null, function rejected(reason) {
-    $log.error(reason);
-  }, function notified(researchSession) {
-    vm.currentSession = researchSession;
-  });
 
-  vm.changeSession = function(session) {
-    // POST the current session
-    // TODO: call BakerStreet via ChromeMessaging
-    //$http.post(BAKERSTREET_API + '/research_session', { id: session });
-
-    vm.currentSession = session;
-  };
-
-  // TODO: call BakerStreet via ChromeMessaging
-  //$http
-  //  .get(BAKERSTREET_API + '/research_session')
-  //  .success(function (data) {
-  //  vm.sessions = data.results;
-  //
-  //  // Select a valid item so that Angular doesn't show an empty option
-  //  vm.currentSession = vm.sessions[0].id;
-  //
-  //  vm.noSessions = vm.sessions.length === 0;
-  //});
-
-  vm.createSession = function(session) {
-    // TODO: move this to BakerStreet
-    //ResearchSession
-    //  .$create({ name: vm.session.name })
-    //  .$then(function (_session) {
-    //  vm.session = _session.$response.data;
-    //  vm.currentSession = _session.$response.data.id;
-    //
-    //  vm.sessions.$add(_session).then(function() {
-    //    $location.path('/');
-    //  });
-    //});
-
-    ChromeMessaging.callMethod('SherlockeApp', 'createResearchSession', session.name).then(function success(result) {
-      vm.sessions.push(result);
-      vm.session = result;
+  vm.getSessions = function () {
+    return ChromeMessaging.callMethod('SherlockeApp', 'getResearchSessions').then(function success(researchSessions) {
+      vm.sessions = researchSessions;
     }, function failure(reason) {
       $log.error(reason);
     });
   };
 
-  vm.destroy = function() {
-    // TODO: call BakerStreet via ChromeMessaging
-    //$http.delete(BAKERSTREET_API + '/research_session/' + vm.sessionID)
-    //.success(function(data) {
-    //  vm.sessions.$remove(vm.session).then(function () {
-    //    $location.path('/');
-    //  });
-    //  if (vm.sessions.length) {
-    //
-    //    vm.sessionId = data[0].id;
-    //  }
-    //});
+  vm.getCurrentSession = function () {
+    return ChromeMessaging.subscribe('SherlockeApp', 'getCurrentResearchSession').then(null, function rejected(reason) {
+      $log.error(reason);
+    }, function notified(researchSession) {
+      vm.currentSession = researchSession;
+    });
+  };
+
+  vm.changeSession = function(session) {
+    // TODO: remove this crap
+    return ChromeMessaging.callMethod('SherlockeApp', 'changeResearchSession', {
+      researchSession: session
+    }).then(function success(result) {
+      $log.info('Changed research session:', result);
+      vm.currentSession = result;
+    }, function failure(reason) {
+      $log.error('Failed to change research session:', reason);
+    });
+  };
+
+  vm.createSession = function(session) {
+    return ChromeMessaging.callMethod('SherlockeApp', 'createResearchSession', {
+      name: session.name
+    }).then(function success(result) {
+      $log.info('Created research session:', result);
+      return vm.getSessions();
+    }, function failure(reason) {
+      $log.error('Failed to create research session:', reason);
+    });
+  };
+
+  vm.deleteSession = function(session) {
+    return ChromeMessaging.callMethod('SherlockeApp', 'deleteResearchSession', {
+      researchSession: session
+    }, function success(result) {
+      $log.info('Deleted research session:', result);
+      return vm.getSessions();
+    }, function failure(reason) {
+      $log.error('Failed to delete research session:', reason);
+    });
   };
 }
 angular
   .module('SherlockePopup')
   .controller('SessionsController', SessionsController);
-
-
-/*
- * Directives
- */
-
-/**
- * Research session selector and controls
- */
-function skSession($sce) {
-  return {
-    templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/session-list.html')),
-    link: function ($scope, $element) {
-      // Handle pause button
-      $element.find('#session-pause').click(function() {
-        angular.element(this).toggleClass('paused');
-      });
-    }
-  };
-}
-angular
-  .module('SherlockePopup')
-  .directive('skSession', skSession);
 
 /**
  * Navigation tabs in the popup
