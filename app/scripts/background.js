@@ -113,6 +113,10 @@
       SherlockeService.getWhitelist
     );
 
+    ChromeMessaging.publish(
+      'addToWhitelist',
+      SherlockeService.addToWhitelist
+    );
 
   }
   angular
@@ -164,6 +168,18 @@
     // Whether the research session is paused
     vm.isResearchSessionPaused = true;
     ChromeBindings.publishVariable(vm, 'isResearchSessionPaused');
+
+    // List of allowed sites for the current research session
+    vm.whitelist = [];
+    ChromeBindings.publishVariable(vm, 'whitelist');
+
+    var downloadUserData = function () {
+      vm.updateResearchSessions().then(function () {
+        return vm.updateCurrentResearchSession();
+      }).then(function () {
+        return vm.updateWhitelist();
+      });
+    };
 
     /**
      * Fetches the research sessions from the network
@@ -237,7 +253,7 @@
             reject(response);
           });
         }
-      });
+      }).then(downloadUserData);
     };
 
     /**
@@ -333,10 +349,14 @@
             reject('Failed to parse redirectUrl', redirectUrl);
           }
         });
-      });
+      }).then(downloadUserData);
     };
 
-    vm.getWhitelist = function (/*domain*/) {
+    vm.getWhitelist = function () {
+      return vm.whitelist;
+    };
+
+    vm.updateWhitelist = function (/*domain*/) {
       // TODO
       //return $q(function (resolve) {
       //  $http.get(BAKERSTREET_API + '/blacklist').
@@ -359,7 +379,30 @@
             reject(response);
           });
         }
+      }).then(function (whitelist) {
+        vm.whitelist = whitelist;
       });
+    };
+
+    vm.addToWhitelist = function (urlPattern) {
+      // TODO: use restmod
+      return $q(function (resolve, reject) {
+        if (!vm.currentUser.accessToken) {
+          reject('No access token set');
+        } else {
+          $http.post(BAKERSTREET_API + '/research_session/sitelist.json', {
+            url: urlPattern
+          }, {
+            headers: {
+              'Authorization': 'Bearer ' + vm.currentUser.accessToken
+            }
+          }).then(function success(response) {
+            resolve(response.data);
+          }, function failure(response) {
+            reject(response);
+          });
+        }
+      }).then(vm.updateWhitelist);
     };
   }
   angular

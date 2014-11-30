@@ -5,7 +5,7 @@
       <p id="sherlocke-loading-message">Analyzing documents...</p>
     </div>
 
-    <div ng-if="side.isPaused">
+    <div ng-if="!side.isLoading && side.isPaused">
       Research session is paused
     </div>
 

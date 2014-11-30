@@ -40,14 +40,14 @@
             <ul>
               <li ng-repeat="urlPattern in whitelistCtrl.whitelist">
                 <a class="whitelist-unpin">Remove</a>
-                {{ urlPattern }}
+                {{ urlPattern.url }}
               </li>
             </ul>
 
             <p ng-if="whitelistCtrl.domains.length === 0">What</p>
 
             <form id="whitelist-form" name="urlPatternForm">
-              <h2>Add to blacklist</h2>
+              <h2>Add to whitelist</h2>
               <label for="urlPattern">Add a URL pattern to the whitelist (e.g. "facebook.com" or "gmail.com"):</label>
               <input id="urlPattern" name="urlPattern" type="text" ng-model="whitelistCtrl.newUrlPattern" placeholder="URL Pattern" required>
               <input type="submit" value="Add" ng-click="whitelistCtrl.addToWhitelist(whitelistCtrl.newUrlPattern)">

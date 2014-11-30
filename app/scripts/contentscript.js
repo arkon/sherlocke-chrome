@@ -5,24 +5,30 @@
   /* Declare AngularJS app */
   angular.module('SherlockeContent', ['truncate', 'ChromeMessaging']);
 
-  function run($q, $log, ContentService) {
+  function run($q, $log, $location, $rootScope, $compile, ContentService) {
     ContentService.bindCurrentUser.then(function (user) {
       return ContentService.bindCurrentSession;
-    }).then(function (researchSession) {
+    }).then(function (/*researchSession*/) {
       return ContentService.getWhitelist();
-    }).then(function success(result) {
-      $log.info('Fetched whitelist:', result);
+    }).then(function success(whitelist) {
+      $log.info('Fetched whitelist:', whitelist);
 
-      var $body = angular.element('body');
+      // TODO: regex-based matching
 
-      // Wrap the actual page contents within a div for manipulating width
-      $body.wrapInner('<div class="sherlocke-original-page" />');
+      if (_.some(whitelist, { url: $location.host() })) {
+        var $body = angular.element('body');
 
-      // Inject the main directive & controller onto the page and insert the side panel
-      $body
-        .attr('ng-controller', 'MainController as main')
-        .attr('ng-class', 'main.bodyClass')
-        .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController as side"></div></div>');
+        // Wrap the actual page contents within a div for manipulating width
+        $body.wrapInner('<div class="sherlocke-original-page" />');
+
+        // Inject the main directive & controller onto the page and insert the side panel
+        $body
+          .attr('ng-controller', 'MainController as main')
+          .attr('ng-class', 'main.bodyClass')
+          .append('<div id="sherlocke"><div sk-side-panel ng-controller="SidePanelController as side"></div></div>');
+
+        $compile($body)($rootScope);
+      }
     }, function failure(reason) {
       $log.error('Failed to fetch whitelist:', reason);
     });
@@ -86,7 +92,7 @@
     .module('SherlockeContent')
     .controller('MainController', MainController);
 
-  function SidePanelController($log, $sce, $window, $document, ChromeMessaging, ChromeBindings) {
+  function SidePanelController($log, $scope, $window, $document, ChromeMessaging, ChromeBindings, ContentService) {
     var vm = this;
 
     // Whether sidebar is loading
@@ -101,19 +107,32 @@
     // The list of documents
     vm.documents = [];
 
+    // The current user
+    vm.currentUser = null;
+    $scope.$watch(function () {
+      return ContentService.currentUser;
+    }, function (value) {
+      vm.currentUser = value;
+    });
+
     vm.sendCurrentPage = function () {
       var url   = $window.location.href;
       var title = $document[0].title.replace(/^CanLII - /, '');
 
-      return ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', {
-        url: url,
-        title: title,
-        content: angular.element('html').html()
-      });
+      var currentPage = {
+        'page_url': url,
+        'title': title,
+        'content': angular.element('html').html()
+      };
+
+      $log.info('Sending current page:', currentPage);
+
+      return ChromeMessaging.callMethod('SherlockeApp', 'sendCurrentPage', currentPage);
     };
 
     vm.getDocuments = function () {
       return ChromeMessaging.callMethod('SherlockeApp', 'getDocuments').then(function success(documents) {
+        $log.info('Received documents:', documents);
         vm.documents = documents;
         vm.isLoading = false;
       }, function failure(reason) {

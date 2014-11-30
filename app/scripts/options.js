@@ -20,16 +20,30 @@
     .config(config);
 
   /*
+   * Services
+   */
+  function OptionsService($log, ChromeMessaging) {
+    var s = this;
+
+    s.authenticate = function () {
+      // Send a message to background.js to authenticate
+      return ChromeMessaging.callMethod('SherlockeApp', 'authenticate');
+    };
+  }
+  angular
+    .module('SherlockeOptions')
+    .service('OptionsService', OptionsService);
+
+  /*
    * Controllers
    */
-  function AuthController($log, ChromeMessaging) {
+  function AuthController($log, OptionsService) {
     var vm = this;
 
     vm.isAuthenticated = false;
 
     vm.authenticate = function () {
-      // Send a message to background.js to authenticate
-      ChromeMessaging.callMethod('SherlockeApp', 'authenticate').then(function (result) {
+      OptionsService.authenticate().then(function (result) {
         vm.isAuthenticated = true;
         $log.info('Auth result: ', result);
       }, function failure(reason) {
@@ -48,30 +62,16 @@
     .controller('AuthController', AuthController);
 
 
-  function WhitelistController($log, ChromeMessaging) {
+  function WhitelistController($log, ChromeMessaging, ChromeBindings) {
     var vm = this;
 
-    vm.whitelist = ['facebook.com', 'google.com'];
-
-    vm.getWhitelist = function () {
-      return ChromeMessaging.callMethod('SherlockeApp', 'getWhitelist').then(function (result) {
-        $log.info('Whitelist result: ', result);
-        vm.whitelist = result;
-      }, function failure(reason) {
-        vm.alerts = reason.data['non_field_errors'];
-        $log.warn('Whitelist failure: ', reason);
-      });
-    };
+    vm.whitelist = [];
+    ChromeBindings
+      .bindVariable('SherlockeApp', 'whitelist')
+      .to(vm, 'whitelist');
 
     vm.addToWhitelist = function (urlPattern) {
-      ChromeMessaging.callMethod('SherlockeApp', 'addToWhitelist', {
-        urlPattern: urlPattern
-      }).then(function success() {
-        // Successfully added urlPattern to whitelist
-        return vm.getWhitelist();
-      }, function failure(reason) {
-        $log.error('Failed to add ' + urlPattern + ' to whitelist:', reason);
-      });
+      ChromeMessaging.callMethod('SherlockeApp', 'addToWhitelist', urlPattern);
     };
   }
   angular

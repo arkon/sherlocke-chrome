@@ -298,7 +298,7 @@
 
             // Once the local variable is assigned a non-null, non-undefined value, resolve the promise
             if (newValue !== null && newValue !== undefined) {
-              resolveOnce();
+              resolveOnce(newValue);
             }
           });
         });
