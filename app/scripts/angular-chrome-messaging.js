@@ -122,6 +122,10 @@ function ChromeMessaging($q, Publication, moduleName) {
    * @param [options]
    */
   this.publish = function (methodName, method, options) {
+    if (!moduleName) {
+      throw new Error('You must configure ChromeMessagingProvider with a moduleName');
+    }
+
     return new Publication(moduleName, methodName, method, options).method;
   };
 
@@ -146,6 +150,8 @@ function ChromeMessaging($q, Publication, moduleName) {
     var port = chrome.runtime.connect({
       name: moduleName + '.' + methodName
     });
+
+    // TODO: reject the deferred if the port is not valid
 
     // Send the method parameters, and don't watch the result
     port.postMessage({
@@ -217,16 +223,80 @@ function ChromeMessaging($q, Publication, moduleName) {
  * @constructor
  */
 function ChromeMessagingProvider() {
-  var moduleName;
+  var p = this;
 
-  this.setModuleName = function (name) {
-    moduleName = name;
-  };
+  p.moduleName = null;
 
   this.$get = function ($q, Publication) {
-    return new ChromeMessaging($q, Publication, moduleName);
+    return new ChromeMessaging($q, Publication, p.moduleName);
   };
 }
 angular
     .module('ChromeMessaging')
     .provider('ChromeMessaging', ChromeMessagingProvider);
+
+
+/**
+ * Service that allows a host script to publish variables to be bound by client scripts.
+ *
+ * @constructor
+ */
+function ChromeBindings($rootScope, ChromeMessaging) {
+  var checkKeyExists = function (controller, variableName) {
+    if (!(variableName in controller)) {
+      throw new Error('ChromeBindings could not find variable', variableName);
+    }
+  };
+
+  /**
+   * Publishes a variable to be bound by a client
+   *
+   * @param controller The object with member `variableName`
+   * @param {string} variableName The name of the variable on the given `controller`
+   */
+  this.publishVariable = function (controller, variableName) {
+    ChromeMessaging.publish('__cm_get_' + variableName, function getHostValue() {
+      return controller[variableName];
+    }, {
+      canSubscribe: true
+    });
+
+    ChromeMessaging.publish('__cm_set_' + variableName, function setHostValue(value) {
+      controller[variableName] = value;
+    });
+  };
+
+  /**
+   * Bind the remote variable to the local controller and variable.
+   *
+   * @param moduleName
+   * @param hostVariableName
+   * @returns {{to: Function}}
+   */
+  this.bindVariable = function (moduleName, hostVariableName) {
+    return { to: function (controller, localVariableName) {
+      checkKeyExists(controller, localVariableName);
+
+      var bindLocalToHost = _.once(function () {
+        // Set the remote variable when the local one changes
+        $rootScope.$watch(function () {
+          return controller[localVariableName];
+        }, function (value) {
+          ChromeMessaging.callMethod(moduleName, '__cm_set_' + hostVariableName, value);
+        });
+      });
+
+      // Subscribe to the getter method on the host
+      ChromeMessaging.subscribe(moduleName, '__cm_get_' + hostVariableName).then(null, null, function notified(newValue) {
+        checkKeyExists(controller, localVariableName);
+        controller[localVariableName] = newValue;
+
+        // When the local variable has been set the first time, then bind the local variable to the host
+        bindLocalToHost();
+      });
+    }};
+  };
+}
+angular
+    .module('ChromeMessaging')
+    .service('ChromeBindings', ChromeBindings);

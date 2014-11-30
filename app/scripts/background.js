@@ -7,6 +7,10 @@ angular.module('SherlockeApp', ['truncate', 'DjangoAuth', 'ChromeMessaging', 'Ba
 function run(ChromeMessaging, SherlockeService) {
   /* Publish and handle messages sent to 'SherlockeApp' */
 
+  /**********************
+   * Users
+   **********************/
+
   /* Usage:
    *   ChromeMessaging.callMethod(
    *       'authenticate',
@@ -26,15 +30,41 @@ function run(ChromeMessaging, SherlockeService) {
     { canSubscribe: true }
   );
 
+  /**********************
+   * Research sessions
+   **********************/
+
+  ChromeMessaging.publish(
+    'getResearchSessions',
+    SherlockeService.getResearchSessions,
+    { canSubscribe: true }
+  );
+
   ChromeMessaging.publish(
     'getCurrentResearchSession',
     SherlockeService.getCurrentResearchSession,
     { canSubscribe: true }
   );
 
+  //ChromeMessaging.publish(
+  //  'getIsResearchSessionPaused',
+  //  SherlockeService.getIsResearchSessionPaused,
+  //  { canSubscribe: true }
+  //);
+
   ChromeMessaging.publish(
-    'getResearchSessions',
-    SherlockeService.getResearchSessions
+    'updateResearchSessions',
+    SherlockeService.updateResearchSessions
+  );
+
+  ChromeMessaging.publish(
+    'updateCurrentResearchSession',
+    SherlockeService.updateCurrentResearchSession
+  );
+
+  ChromeMessaging.publish(
+    'changeResearchSession',
+    SherlockeService.changeResearchSession
   );
 
   ChromeMessaging.publish(
@@ -43,20 +73,49 @@ function run(ChromeMessaging, SherlockeService) {
   );
 
   ChromeMessaging.publish(
+    'deleteResearchSession',
+    SherlockeService.deleteResearchSession
+  );
+
+  ChromeMessaging.publish(
+    'resumeResearchSession',
+    SherlockeService.resumeResearchSession
+  );
+
+  ChromeMessaging.publish(
+    'pauseResearchSession',
+    SherlockeService.pauseResearchSession
+  );
+
+  /**********************
+   * Documents
+   **********************/
+
+  ChromeMessaging.publish(
     'getDocuments',
     SherlockeService.getDocuments,
     { canSubscribe: true }
   );
 
   ChromeMessaging.publish(
+    'pinDocument',
+    SherlockeService.pinDocument
+  );
+
+  /**********************
+   * Pages
+   **********************/
+
+  ChromeMessaging.publish(
     'sendCurrentPage',
     SherlockeService.sendCurrentPage
   );
 
-  ChromeMessaging.publish(
-    'pinPage',
-    SherlockeService.pinPage
-  );
+
+
+  /**********************
+   * Whitelist
+   **********************/
 
   ChromeMessaging.publish(
     'SherlockeApp',
@@ -79,7 +138,7 @@ function config(AuthProvider, ChromeMessagingProvider, BAKERSTREET_API) {
   AuthProvider.interceptAuth(false);
 
   // Set module name used to publish methods
-  ChromeMessagingProvider.setModuleName('SherlockeApp');
+  ChromeMessagingProvider.moduleName = 'SherlockeApp';
 }
 angular
     .module('SherlockeApp')
@@ -88,7 +147,7 @@ angular
 /*
  * Services
  */
-function SherlockeService($location, $log, $q, $http, Auth, BAKERSTREET_API, BakerStreetService, ResearchSession, Page /*Document*/) {
+function SherlockeService($q, $http, BAKERSTREET_API, ChromeMessaging, ChromeBindings) {
   var vm = this;
 
   vm.currentUser = null;
@@ -99,16 +158,51 @@ function SherlockeService($location, $log, $q, $http, Auth, BAKERSTREET_API, Bak
   /*
    * Research sessions
    */
+
+  // User's research sessions
+  vm.researchSessions = [];
+  //ChromeMessaging.publishVariable(vm, 'researchSessions');
+
   // Keep a reference to the current research session
   vm.currentResearchSession = null;
-  vm.getCurrentResearchSession = function () {
-    return vm.currentResearchSession;
-  };
+
+  // Whether the research session is paused
+  vm.isResearchSessionPaused = true;
+  ChromeBindings.publishVariable(vm, 'isResearchSessionPaused');
 
   /**
    * Get the list of research sessions from Baker Street
    */
   vm.getResearchSessions = function () {
+    return vm.researchSessions;
+  };
+
+  /**
+   * Get the user's current research session
+   */
+  vm.getCurrentResearchSession = function () {
+    return vm.currentResearchSession;
+  };
+
+  /**
+   * Get whether the current research session is paused
+   */
+  vm.getIsResearchSessionPaused = function () {
+    return vm.isResearchSessionPaused;
+  };
+
+  vm.resumeResearchSession = function () {
+    vm.isResearchSessionPaused = false;
+  };
+
+  vm.pauseResearchSession = function () {
+    vm.isResearchSessionPaused = true;
+  };
+
+  /**
+   * Fetches the research sessions from the network
+   */
+  vm.updateResearchSessions = function () {
     // TODO: use restmod
     //var researchSessions = ResearchSession.$collection({});
     //var v = researchSessions.$refresh({ page: 1 });
@@ -122,7 +216,57 @@ function SherlockeService($location, $log, $q, $http, Auth, BAKERSTREET_API, Bak
             'Authorization': 'Bearer ' + vm.currentUser.accessToken
           }
         }).then(function success(response) {
-          resolve(response.data.results);
+          var sessions = response.data.results;
+          vm.researchSessions = sessions;
+          resolve(sessions);
+        }, function failure(response) {
+          reject(response);
+        });
+      }
+    });
+  };
+
+  /**
+   * Fetches the current research session from the network
+   */
+  vm.updateCurrentResearchSession = function () {
+    // TODO: use restmod
+
+    return $q(function (resolve, reject) {
+      if (!vm.currentUser.accessToken) {
+        reject('No access token set');
+      } else {
+        $http.get(BAKERSTREET_API + '/research_session/current.json', {
+          headers: {
+            'Authorization': 'Bearer ' + vm.currentUser.accessToken
+          }
+        }).then(function success(response) {
+          var session = response.data;
+          vm.currentResearchSession = session;
+          resolve(session);
+        }, function failure(response) {
+          reject(response);
+        });
+      }
+    });
+  };
+
+  /**
+   * Change the current research session to the given session.
+   *
+   * TODO: remove this method. current research session should be tracked locally.
+   */
+  vm.changeResearchSession = function (researchSession) {
+    return $q(function (resolve, reject) {
+      if (!vm.currentUser.accessToken) {
+        reject('No access token set');
+      } else {
+        $http.post(BAKERSTREET_API + '/research_session.json', researchSession, {
+          headers: {
+            'Authorization': 'Bearer ' + vm.currentUser.accessToken
+          }
+        }).then(function success(response) {
+          resolve(response.data);
         }, function failure(response) {
           reject(response);
         });
@@ -133,9 +277,9 @@ function SherlockeService($location, $log, $q, $http, Auth, BAKERSTREET_API, Bak
   /**
    * Create a research session
    *
-   * @param name The name of the new research session
+   * @param session The session parameters
    */
-  vm.createResearchSession = function (name) {
+  vm.createResearchSession = function (session) {
     // TODO: use restmod
 
     return $q(function (resolve, reject) {
@@ -143,7 +287,7 @@ function SherlockeService($location, $log, $q, $http, Auth, BAKERSTREET_API, Bak
         reject('No access token set');
       } else {
         $http.post(BAKERSTREET_API + '/research_session.json', {
-          'name': name
+          'name': session.name
         }, {
           headers: {
             'Authorization': 'Bearer ' + vm.currentUser.accessToken
@@ -191,7 +335,7 @@ function SherlockeService($location, $log, $q, $http, Auth, BAKERSTREET_API, Bak
   vm.authenticate = function () {
     return $q(function (resolve, reject) {
       chrome.identity.launchWebAuthFlow({
-        url: BAKERSTREET_API + '/o/authorize/?client_id=JK1B-RcY6jrlAb%3Fxxu.1RcLObMmv-E0lrUYVQoKS&response_type=token',
+        url: BAKERSTREET_API + '/o/authorize/?client_id=sherlocke-chrome-dev&response_type=token',
         interactive: true
       }, function(redirectUrl) {
         if (typeof(redirectUrl) !== 'string') {

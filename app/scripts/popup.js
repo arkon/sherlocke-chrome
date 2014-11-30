@@ -130,36 +130,57 @@ angular
     .controller('HistoryController', HistoryController);
 
 
-function SessionsController($log, ChromeMessaging) {
+function SessionsController($log, ChromeMessaging, ChromeBindings) {
   var vm = this;
 
   // The list of research sessions
   vm.sessions = [];
+  //ChromeMessaging
+  //  .bindVariable('SherlockeApp', 'researchSessions')
+  //  .to(vm, 'sessions');
 
   // The current research session
   vm.currentSession = null;
 
-  vm.getSessions = function () {
-    return ChromeMessaging.callMethod('SherlockeApp', 'getResearchSessions').then(function success(researchSessions) {
-      vm.sessions = researchSessions;
-    }, function failure(reason) {
-      $log.error(reason);
-    });
+  // Whether the current research session is paused
+  vm.isPaused = true;
+  ChromeBindings
+    .bindVariable('SherlockeApp', 'isResearchSessionPaused')
+    .to(vm, 'isPaused');
+
+  /* Update local references when SherlockeApp changes */
+  ChromeMessaging.subscribe('SherlockeApp', 'getResearchSessions').then(null, function failure(reason) {
+    $log.error('Failed to fetch research sessions:', reason);
+  }, function notified(researchSessions) {
+    $log.info('Fetched research sessions:', researchSessions);
+    vm.sessions = researchSessions;
+  });
+  ChromeMessaging.subscribe('SherlockeApp', 'getCurrentResearchSession').then(null, function rejected(reason) {
+    $log.error(reason);
+  }, function notified(researchSession) {
+    $log.info('Fetched current research session:', researchSession);
+    if (researchSession) {
+      vm.currentSession = _.findWhere(vm.sessions, { id: researchSession.id });
+    }
+  });
+  //ChromeMessaging.subscribe('SherlockeApp', 'getIsResearchSessionPaused').then(null, function rejected(reason) {
+  //  $log.error(reason);
+  //}, function notified(isPaused) {
+  //  $log.info('Fetched current research session pause state:', isPaused);
+  //  vm.isPaused = isPaused;
+  //});
+
+  vm.updateSessions = function () {
+    return ChromeMessaging.callMethod('SherlockeApp', 'updateResearchSessions');
   };
 
-  vm.getCurrentSession = function () {
-    return ChromeMessaging.subscribe('SherlockeApp', 'getCurrentResearchSession').then(null, function rejected(reason) {
-      $log.error(reason);
-    }, function notified(researchSession) {
-      vm.currentSession = researchSession;
-    });
+  vm.updateCurrentSession = function () {
+    return ChromeMessaging.callMethod('SherlockeApp', 'updateCurrentResearchSession');
   };
 
   vm.changeSession = function(session) {
     // TODO: remove this crap
-    return ChromeMessaging.callMethod('SherlockeApp', 'changeResearchSession', {
-      researchSession: session
-    }).then(function success(result) {
+    return ChromeMessaging.callMethod('SherlockeApp', 'changeResearchSession', session).then(function success(result) {
       $log.info('Changed research session:', result);
       vm.currentSession = result;
     }, function failure(reason) {
@@ -167,12 +188,15 @@ function SessionsController($log, ChromeMessaging) {
     });
   };
 
+  /**
+   * Create a research session and set it as the current session
+   */
   vm.createSession = function(session) {
     return ChromeMessaging.callMethod('SherlockeApp', 'createResearchSession', {
       name: session.name
     }).then(function success(result) {
       $log.info('Created research session:', result);
-      return vm.getSessions();
+      return vm.changeSession(result).then(vm.getSessions);
     }, function failure(reason) {
       $log.error('Failed to create research session:', reason);
     });
@@ -188,6 +212,17 @@ function SessionsController($log, ChromeMessaging) {
       $log.error('Failed to delete research session:', reason);
     });
   };
+
+  vm.resumeSession = function () {
+    return ChromeMessaging.callMethod('SherlockeApp', 'resumeResearchSession');
+  };
+
+  vm.pauseSession = function () {
+    return ChromeMessaging.callMethod('SherlockeApp', 'pauseResearchSession');
+  };
+
+  /* Initialize by getting research sessions */
+  vm.updateSessions().then(vm.updateCurrentSession);
 }
 angular
   .module('SherlockePopup')

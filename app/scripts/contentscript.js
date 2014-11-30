@@ -25,14 +25,29 @@ angular
     .module('SherlockeContent')
     .controller('MainController', MainController);
 
-function SidePanelController() {
+function SidePanelController($log, ChromeMessaging, ChromeBindings) {
   var vm = this;
 
   // Whether sidebar is loading
   vm.isLoading = true;
 
   // The active research session
-  vm.activeResearchSession = null;
+  vm.currentSession = null;
+
+  // Whether the current research session is paused
+  vm.isPaused = true;
+  ChromeBindings
+    .bindVariable('SherlockeApp', 'isResearchSessionPaused')
+    .to(vm, 'isPaused');
+
+  ChromeMessaging.subscribe('SherlockeApp', 'getCurrentResearchSession').then(null, function rejected(reason) {
+    $log.error(reason);
+  }, function notified(researchSession) {
+    $log.info('Fetched current research session:', researchSession);
+    if (researchSession) {
+      vm.currentSession = _.findWhere(vm.sessions, { id: researchSession.id });
+    }
+  });
 
   /*
    * TODO: If the user has an active research session, then send the current page

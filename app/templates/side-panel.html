@@ -1,5 +1,15 @@
 <div id="sherlocke-header">Sherlocke</div>
-<div id="sherlocke-content" ng-hide="side.isLoading">
+
+<div id="sherlocke-loading" ng-if="side.isLoading">
+  <h1>Crunching data</h1>
+  <p id="sherlocke-loading-message">Analyzing documents...</p>
+</div>
+
+<div ng-if="side.isPaused">
+  Research session is paused
+</div>
+
+<div id="sherlocke-content" ng-if="!side.isLoading && !side.isPaused">
   <div id="sherlocke-filters"
        sk-select
        ng-controller="FilterSelectController as selectCtrl"
@@ -31,11 +41,6 @@
       </div>
     </li>
   </ul>
-</div>
-
-<div id="sherlocke-loading" ng-show="side.isLoading">
-  <h1>Crunching data</h1>
-  <p id="sherlocke-loading-message">Analyzing documents...</p>
 </div>
 
 <div id="sherlocke-toggle" ng-click="main.isSidebarHidden = !main.isSidebarHidden"></div>
