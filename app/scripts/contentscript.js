@@ -6,7 +6,7 @@
   angular.module('SherlockeContent', ['truncate', 'ChromeMessaging']);
 
   function run($q, $log, $location, $rootScope, $compile, ContentService) {
-    ContentService.bindCurrentUser.then(function (user) {
+    ContentService.bindCurrentUser.then(function (/*user*/) {
       return ContentService.bindCurrentSession;
     }).then(function (/*researchSession*/) {
       return ContentService.getWhitelist();

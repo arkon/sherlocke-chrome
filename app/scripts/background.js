@@ -315,7 +315,7 @@
       });
     };
 
-    vm.pinPage =  function (page, snippet) {
+    vm.pinPage =  function (/*page, snippet*/) {
       //return $q(function (resolve) {
       //  Page.$create({
       //    'page_url': page.url,
