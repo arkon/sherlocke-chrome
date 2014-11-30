@@ -35,22 +35,22 @@
 
         <div class="settings-content" id="user-settings-content">
 
-          <section id="whitelist" ng-controller="BlacklistController as blacklist">
-            <h1>Blacklisted websites</h1>
+          <section id="whitelist" ng-controller="WhitelistController as whitelistCtrl">
+            <h1>Whitelisted websites</h1>
             <ul>
-              <li ng-repeat="domain in blacklist.domains">
-                <a class="blacklist-unpin">Remove</a>
-                {{ domain }}
+              <li ng-repeat="urlPattern in whitelistCtrl.whitelist">
+                <a class="whitelist-unpin">Remove</a>
+                {{ urlPattern }}
               </li>
             </ul>
 
-            <p ng-if="blacklist.domains.length === 0">What</p>
+            <p ng-if="whitelistCtrl.domains.length === 0">What</p>
 
-            <form id="blacklist-form" ng-submit="blacklist.blacklist()">
+            <form id="whitelist-form" name="urlPatternForm">
               <h2>Add to blacklist</h2>
-              <label for="domain">Add a domain to the blacklist (e.g. "facebook.com" or "gmail.com"):</label>
-              <input id="domain" type="text" ng-model="blacklist.domain" placeholder="Domain">
-              <input type="submit" value="Add">
+              <label for="urlPattern">Add a URL pattern to the whitelist (e.g. "facebook.com" or "gmail.com"):</label>
+              <input id="urlPattern" name="urlPattern" type="text" ng-model="whitelistCtrl.newUrlPattern" placeholder="URL Pattern" required>
+              <input type="submit" value="Add" ng-click="whitelistCtrl.addToWhitelist(whitelistCtrl.newUrlPattern)">
             </form>
           </section>
 
