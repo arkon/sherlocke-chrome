@@ -53,12 +53,23 @@ function WhitelistController($log, ChromeMessaging) {
   vm.whitelist = ['facebook.com', 'google.com'];
 
   vm.getWhitelist = function () {
-    ChromeMessaging.callMethod('SherlockeApp', 'getWhitelist').then(function (result) {
+    return ChromeMessaging.callMethod('SherlockeApp', 'getWhitelist').then(function (result) {
       $log.info('Whitelist result: ', result);
       vm.whitelist = result;
     }, function failure(reason) {
       vm.alerts = reason.data['non_field_errors'];
       $log.warn('Whitelist failure: ', reason);
+    });
+  };
+
+  vm.addToWhitelist = function (urlPattern) {
+    ChromeMessaging.callMethod('SherlockeApp', 'addToWhitelist', {
+      urlPattern: urlPattern
+    }).then(function success() {
+      // Successfully added urlPattern to whitelist
+      return vm.getWhitelist();
+    }, function failure(reason) {
+      $log.error('Failed to add ' + urlPattern + ' to whitelist:', reason);
     });
   };
 }
