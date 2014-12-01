@@ -22,6 +22,5 @@
   },
   "_source": "git://github.com/sherlocke/angular-chrome-messaging.git",
   "_target": "*",
-  "_originalSource": "sherlocke/angular-chrome-messaging",
-  "_direct": true
+  "_originalSource": "sherlocke/angular-chrome-messaging"
 }
