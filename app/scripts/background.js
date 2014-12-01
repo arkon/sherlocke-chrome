@@ -2,7 +2,7 @@
 
 (function () {
   /* Declare AngularJS app */
-  angular.module('SherlockeApp', ['truncate', 'DjangoAuth', 'ChromeMessaging', 'BakerStreet', 'SherlockeConfig']);
+  angular.module('SherlockeApp', ['truncate', 'ChromeMessaging', 'BakerStreet', 'SherlockeConfig']);
 
   /* Callback for when all modules are loaded */
   function run(ChromeMessaging, SherlockeService) {
