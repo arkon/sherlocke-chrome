@@ -1,48 +1,47 @@
-<div ng-if="side.currentUser">
+<div ng-if="side.currentUser && side.currentSession">
   <div id="sherlocke-header">Sherlocke</div>
-    <div id="sherlocke-loading" ng-if="side.isLoading">
-      <h1>Crunching data</h1>
-      <p id="sherlocke-loading-message">Analyzing documents...</p>
-    </div>
+  <div id="sherlocke-loading" ng-if="side.isLoading">
+    <h1>Crunching data</h1>
+    <p id="sherlocke-loading-message">Analyzing documents...</p>
+  </div>
 
-    <div ng-if="!side.isLoading && side.isPaused">
-      Research session is paused
-    </div>
+  <div ng-if="!side.isLoading && side.isPaused">
+    Research session is paused
+  </div>
 
-    <div id="sherlocke-content" ng-if="!side.isLoading && !side.isPaused">
-      <div id="sherlocke-filters"
-           sk-select
-           ng-controller="FilterSelectController as selectCtrl"
-           ng-class="{'show-menu': selectCtrl.showMenu}"
-           ng-click="selectCtrl.toggle()">
-        <span id="sherlocke-filter">{{selectCtrl.filter.name}}</span>
-        <ul id="sherlocke-filters-list" ng-click="selectCtrl.click($event)">
-          <li data-type="all">All related documents</li>
-          <li data-type="legislation">Legislation</li>
-          <li data-type="cases">Cases</li>
-          <li data-type="misc">Miscellaneous</li>
-        </ul>
-      </div>
-
-      <ul id="sherlocke-suggestions">
-        <!-- <li ng-repeat="document in side.evidence | limitTo:10 | filter: document.source === documents.filter:true"> -->
-        <li ng-repeat="document in side.documents | limitTo:10">
-          <a ng-href="{{ document.url }}">
-            <h1>{{ document.title }}</h1>
-            <p>{{ document.text | characters:110 }}</p>
-          </a>
-          <div class="suggestion-info">
-            <p>{{ document.source }}</p>
-            <div class="suggestion-actions">
-              <a class="suggestion-hide" title="Don't show this document" href="#">Hide</a>
-              <a class="suggestion-pin" title="Pin document" href="#" ng-show="document.pinned">Pin</a>
-              <a class="suggestion-unpin" title="Unpin document" href="#" ng-hide="document.pinned">Unpin</a>
-            </div>
-          </div>
-        </li>
+  <div id="sherlocke-content" ng-if="!side.isLoading && !side.isPaused">
+    <div id="sherlocke-filters"
+         sk-select
+         ng-controller="FilterSelectController as selectCtrl"
+         ng-class="{'show-menu': selectCtrl.showMenu}"
+         ng-click="selectCtrl.toggle()">
+      <span id="sherlocke-filter">{{selectCtrl.filter.name}}</span>
+      <ul id="sherlocke-filters-list" ng-click="selectCtrl.click($event)">
+        <li data-type="all">All related documents</li>
+        <li data-type="legislation">Legislation</li>
+        <li data-type="cases">Cases</li>
+        <li data-type="misc">Miscellaneous</li>
       </ul>
     </div>
 
+    <ul id="sherlocke-suggestions">
+      <!-- <li ng-repeat="document in side.evidence | limitTo:10 | filter: document.source === documents.filter:true"> -->
+      <li ng-repeat="document in side.documents | limitTo:10">
+        <a ng-href="{{ document.url }}">
+          <h1>{{ document.title }}</h1>
+          <p>{{ document.text | characters:110 }}</p>
+        </a>
+        <div class="suggestion-info">
+          <p>{{ document.source }}</p>
+          <div class="suggestion-actions">
+            <a class="suggestion-hide" title="Don't show this document" href="#">Hide</a>
+            <a class="suggestion-pin" title="Pin document" href="#" ng-show="document.pinned">Pin</a>
+            <a class="suggestion-unpin" title="Unpin document" href="#" ng-hide="document.pinned">Unpin</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
 
   <div id="sherlocke-toggle" ng-click="main.isSidebarHidden = !main.isSidebarHidden"></div>
 </div>

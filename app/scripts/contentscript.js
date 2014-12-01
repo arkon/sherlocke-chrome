@@ -115,6 +115,14 @@
       vm.currentUser = value;
     });
 
+    // The current research session
+    vm.currentSession = null;
+    $scope.$watch(function () {
+      return ContentService.currentSession;
+    }, function (value) {
+      vm.currentSession = value;
+    });
+
     vm.sendCurrentPage = function () {
       var url   = $window.location.href;
       var title = $document[0].title.replace(/^CanLII - /, '');
