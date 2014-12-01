@@ -13,7 +13,7 @@
   </head>
   <body ng-controller="AuthController as auth">
     <section id="options-content" ng-cloak>
-      <section id="user-login" ng-if="!auth.isAuthenticated">
+      <section id="user-login" ng-if="!auth.currentUser">
 
         <div id="user-login-form">
           <div id="login-header"></div>
@@ -25,7 +25,7 @@
         <a id="user-login-learn-more" href="https://www.sherlocke.me/">Don't have an account yet? Learn more here.</a>
       </section>
 
-      <section id="user-settings" ng-if="auth.isAuthenticated">
+      <section id="user-settings" ng-if="auth.currentUser">
         <header>
           <div class="settings-content">
             <h2 id="username">{{ currentUser }} | <a href="#">Logout</a></h2>
@@ -39,7 +39,7 @@
             <h1>Whitelisted websites</h1>
             <ul>
               <li ng-repeat="urlPattern in whitelistCtrl.whitelist">
-                <a class="whitelist-unpin">Remove</a>
+                <a class="whitelist-unpin" ng-click="whitelistCtrl.removeFromWhitelist(urlPattern)">Remove</a>
                 {{ urlPattern.url }}
               </li>
             </ul>

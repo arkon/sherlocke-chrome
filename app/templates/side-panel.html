@@ -1,12 +1,13 @@
 <div ng-if="side.currentUser && side.currentSession">
   <div id="sherlocke-header">Sherlocke</div>
-  <div id="sherlocke-loading" ng-if="side.isLoading">
-    <h1>Crunching data</h1>
-    <p id="sherlocke-loading-message">Analyzing documents...</p>
+
+  <div ng-if="side.isPaused">
+    Research session is paused
   </div>
 
-  <div ng-if="!side.isLoading && side.isPaused">
-    Research session is paused
+  <div id="sherlocke-loading" ng-if="side.isLoading && !side.isPaused">
+    <h1>Crunching data</h1>
+    <p id="sherlocke-loading-message">Analyzing documents...</p>
   </div>
 
   <div id="sherlocke-content" ng-if="!side.isLoading && !side.isPaused">

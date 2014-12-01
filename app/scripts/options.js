@@ -37,25 +37,17 @@
   /*
    * Controllers
    */
-  function AuthController($log, OptionsService) {
+  function AuthController($log, OptionsService, ChromeBindings) {
     var vm = this;
 
-    vm.isAuthenticated = false;
+    vm.currentUser = null;
+    ChromeBindings
+      .bindVariable('SherlockeApp', 'currentUser')
+      .to(vm, 'currentUser');
 
     vm.authenticate = function () {
-      OptionsService.authenticate().then(function (result) {
-        vm.isAuthenticated = true;
-        $log.info('Auth result: ', result);
-      }, function failure(reason) {
-        if (reason.data) {
-          vm.alerts = reason.data['non_field_errors'];
-        }
-        $log.warn('Auth failure: ', reason);
-      });
+      OptionsService.authenticate();
     };
-
-    // Subscribe to the current user
-    //ChromeMessaging.subscribe('SherlockeApp', '')
   }
   angular
     .module('SherlockeOptions')
@@ -72,6 +64,10 @@
 
     vm.addToWhitelist = function (urlPattern) {
       ChromeMessaging.callMethod('SherlockeApp', 'addToWhitelist', urlPattern);
+    };
+
+    vm.removeFromWhitelist = function (urlPattern) {
+      ChromeMessaging.callMethod('SherlockeApp', 'removeFromWhitelist', urlPattern);
     };
   }
   angular

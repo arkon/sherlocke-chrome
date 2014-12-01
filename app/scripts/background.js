@@ -47,12 +47,6 @@
       { canSubscribe: true }
     );
 
-    //ChromeMessaging.publish(
-    //  'getIsResearchSessionPaused',
-    //  SherlockeService.getIsResearchSessionPaused,
-    //  { canSubscribe: true }
-    //);
-
     ChromeMessaging.publish(
       'updateResearchSessions',
       SherlockeService.updateResearchSessions
@@ -84,8 +78,7 @@
 
     ChromeMessaging.publish(
       'getDocuments',
-      SherlockeService.getDocuments,
-      { canSubscribe: true }
+      SherlockeService.getDocuments
     );
 
     ChromeMessaging.publish(
@@ -137,7 +130,7 @@
   /*
    * Services
    */
-  function SherlockeService($q, $http, BAKERSTREET_API, ChromeMessaging, ChromeBindings) {
+  function SherlockeService($q, $log, $http, BAKERSTREET_API, ChromeBindings) {
     var vm = this;
 
     vm.currentUser = null;
@@ -279,6 +272,22 @@
 
     vm.getDocuments = function () {
       // TODO
+
+      return $q(function (resolve, reject) {
+        if (!vm.currentUser.accessToken) {
+          reject('No access token set');
+        } else {
+          $http.get(BAKERSTREET_API + '/documents.json', {
+            headers: {
+              'Authorization': 'Bearer ' + vm.currentUser.accessToken
+            }
+          }).then(function success(response) {
+            resolve(response.data);
+          }, function failure(response) {
+            reject(response);
+          });
+        }
+      });
     };
 
     vm.sendCurrentPage =  function (page) {
@@ -397,6 +406,11 @@
           });
         }
       }).then(vm.updateWhitelist);
+    };
+
+    vm.removeFromWhitelist = function (/*urlPattern*/) {
+      // TODO: use restmod
+      $log.warn('SherlockeService.removeFromWhitelist not yet implemented');
     };
   }
   angular

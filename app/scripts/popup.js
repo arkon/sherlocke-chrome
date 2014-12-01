@@ -127,40 +127,30 @@
     .module('SherlockePopup')
     .controller('HistoryController', HistoryController);
 
-
   function SessionsController($log, $location, ChromeMessaging, ChromeBindings) {
     var vm = this;
 
     // The list of research sessions
     vm.sessions = [];
-    //ChromeMessaging
-    //  .bindVariable('SherlockeApp', 'researchSessions')
-    //  .to(vm, 'sessions');
+    ChromeBindings
+      .bindVariable('SherlockeApp', 'researchSessions')
+      .to(vm, 'sessions');
 
     // The current research session
     vm.currentSession = null;
+    vm.bindCurrentSession = ChromeBindings
+      .bindVariable('SherlockeApp', 'currentResearchSession')
+      .toAccessors(function getter() {
+        return vm.currentSession;
+      }, function setter(newValue) {
+        vm.currentSession = newValue ? _.findWhere(vm.sessions, { id: newValue.id }) : newValue;
+      });
 
     // Whether the current research session is paused
     vm.isPaused = true;
     ChromeBindings
       .bindVariable('SherlockeApp', 'isResearchSessionPaused')
       .to(vm, 'isPaused');
-
-    /* Update local references when SherlockeApp changes */
-    ChromeMessaging.subscribe('SherlockeApp', 'getResearchSessions').then(null, function failure(reason) {
-      $log.error('Failed to fetch research sessions:', reason);
-    }, function notified(researchSessions) {
-      $log.info('Fetched research sessions:', researchSessions);
-      vm.sessions = researchSessions;
-    });
-    ChromeMessaging.subscribe('SherlockeApp', 'getCurrentResearchSession').then(null, function rejected(reason) {
-      $log.error(reason);
-    }, function notified(researchSession) {
-      $log.info('Fetched current research session:', researchSession);
-      if (researchSession) {
-        vm.currentSession = _.findWhere(vm.sessions, { id: researchSession.id });
-      }
-    });
 
     vm.updateSessions = function () {
       return ChromeMessaging.callMethod('SherlockeApp', 'updateResearchSessions');

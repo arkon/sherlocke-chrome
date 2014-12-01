@@ -38,7 +38,7 @@
         "bower_components/lodash/dist/lodash.js",
         "bower_components/angular/angular.js",
         "bower_components/angular-truncate/src/truncate.js",
-        "scripts/angular-chrome-messaging.js",
+        "bower_components/angular-chrome-messaging/angular-chrome-messaging.js",
         "scripts/contentscript.js"
       ]
     }
