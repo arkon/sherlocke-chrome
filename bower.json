@@ -7,7 +7,8 @@
     "lodash": "~2.4.1",
     "angular-restmod": "~1.1.3",
     "angular-route": "~1.3.2",
-    "angular-truncate": "*"
+    "angular-truncate": "*",
+    "angular-chrome-messaging": "sherlocke/angular-chrome-messaging"
   },
   "devDependencies": {}
 }
