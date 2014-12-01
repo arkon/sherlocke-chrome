@@ -126,13 +126,7 @@
   /*
    * Provider configuration
    */
-  function config(AuthProvider, ChromeMessagingProvider, BAKERSTREET_API) {
-    // Configure Auth service with AuthProvider
-    AuthProvider.loginPath(BAKERSTREET_API + '/users/login.json');
-    AuthProvider.logoutPath(BAKERSTREET_API + '/users/logout.json');
-    AuthProvider.resourceName(false);
-    AuthProvider.interceptAuth(false);
-
+  function config(ChromeMessagingProvider) {
     // Set module name used to publish methods
     ChromeMessagingProvider.moduleName = 'SherlockeApp';
   }
@@ -193,7 +187,7 @@
         if (!vm.currentUser.accessToken) {
           reject('No access token set');
         } else {
-          $http.get(BAKERSTREET_API + '/research_session.json', {
+          $http.get(BAKERSTREET_API + '/research_sessions.json', {
             headers: {
               'Authorization': 'Bearer ' + vm.currentUser.accessToken
             }
@@ -218,7 +212,7 @@
         if (!vm.currentUser.accessToken) {
           reject('No access token set');
         } else {
-          $http.get(BAKERSTREET_API + '/research_session/current.json', {
+          $http.get(BAKERSTREET_API + '/research_sessions/current.json', {
             headers: {
               'Authorization': 'Bearer ' + vm.currentUser.accessToken
             }
@@ -243,7 +237,7 @@
         if (!vm.currentUser.accessToken) {
           reject('No access token set');
         } else {
-          $http.post(BAKERSTREET_API + '/research_session.json', researchSession, {
+          $http.post(BAKERSTREET_API + '/research_sessions.json', researchSession, {
             headers: {
               'Authorization': 'Bearer ' + vm.currentUser.accessToken
             }
@@ -268,7 +262,7 @@
         if (!vm.currentUser.accessToken) {
           reject('No access token set');
         } else {
-          $http.post(BAKERSTREET_API + '/research_session.json', {
+          $http.post(BAKERSTREET_API + '/research_sessions.json', {
             'name': session.name
           }, {
             headers: {
@@ -369,7 +363,7 @@
         if (!vm.currentUser.accessToken) {
           reject('No access token set');
         } else {
-          $http.get(BAKERSTREET_API + '/research_session/sitelist.json', {
+          $http.get(BAKERSTREET_API + '/research_sessions/sitelist.json', {
             headers: {
               'Authorization': 'Bearer ' + vm.currentUser.accessToken
             }
@@ -390,7 +384,7 @@
         if (!vm.currentUser.accessToken) {
           reject('No access token set');
         } else {
-          $http.post(BAKERSTREET_API + '/research_session/sitelist.json', {
+          $http.post(BAKERSTREET_API + '/research_sessions/sitelist.json', {
             url: urlPattern
           }, {
             headers: {
