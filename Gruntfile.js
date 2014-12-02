@@ -121,6 +121,8 @@ module.exports = function (grunt) {
         'test/spec/{,*/}*.js'
       ]
     },
+
+    // Run tests
     mocha: {
       all: {
         options: {
@@ -130,7 +132,7 @@ module.exports = function (grunt) {
       }
     },
 
-     // Compiles Sass to CSS and generates necessary files if requested
+    // Compiles Sass to CSS and generates necessary files if requested
     compass: {
       options: {
         sassDir: '<%= config.app %>/styles',
@@ -175,47 +177,24 @@ module.exports = function (grunt) {
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
-    useminPrepare: {
-      options: {
-        dest: '<%= config.dist %>'
-      },
-      html: [
-        '<%= config.app %>/popup.html',
-        '<%= config.app %>/options.html'
-      ]
-    },
+    //useminPrepare: {
+    //  options: {
+    //    dest: '<%= config.dist %>'
+    //  },
+    //  html: [
+    //    '<%= config.app %>/popup.html',
+    //    '<%= config.app %>/options.html'
+    //  ]
+    //},
 
     // Performs rewrites based on rev and the useminPrepare configuration
-    usemin: {
-      options: {
-        assetsDirs: ['<%= config.dist %>', '<%= config.dist %>/images']
-      },
-      html: ['<%= config.dist %>/{,*/}*.html'],
-      css: ['<%= config.dist %>/styles/{,*/}*.css']
-    },
-
-    // The following *-min tasks produce minifies files in the dist folder
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>/images',
-          src: '{,*/}*.{gif,jpeg,jpg,png}',
-          dest: '<%= config.dist %>/images'
-        }]
-      }
-    },
-
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.app %>/images',
-          src: '{,*/}*.svg',
-          dest: '<%= config.dist %>/images'
-        }]
-      }
-    },
+    //usemin: {
+    //  options: {
+    //    assetsDirs: ['<%= config.dist %>', '<%= config.dist %>/images']
+    //  },
+    //  html: ['<%= config.dist %>/{,*/}*.html'],
+    //  css: ['<%= config.dist %>/styles/{,*/}*.css']
+    //},
 
     htmlmin: {
       dist: {
@@ -238,30 +217,31 @@ module.exports = function (grunt) {
       }
     },
 
-    // By default, your `index.html`'s <!-- Usemin block --> will take care of
-    // minification. These next options are pre-configured if you do not wish
-    // to use the Usemin blocks.
-    // cssmin: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/styles/main.css': [
-    //         '<%= config.app %>/styles/{,*/}*.css'
-    //       ]
-    //     }
-    //   }
-    // },
-    // uglify: {
-    //   dist: {
-    //     files: {
-    //       '<%= config.dist %>/scripts/scripts.js': [
-    //         '<%= config.dist %>/scripts/scripts.js'
-    //       ]
-    //     }
-    //   }
-    // },
-    // concat: {
-    //   dist: {}
-    // },
+    cssmin: {
+      dist: {
+        files: {
+          '<%= config.dist %>/styles/main.css': [
+            '<%= config.app %>/styles/{,*/}*.css'
+          ]
+        }
+      }
+    },
+
+
+    uglify: {
+      dist: {
+        files: {
+          '<%= config.dist %>/scripts/scripts.js': [
+            '<%= config.dist %>/scripts/scripts.js'
+          ]
+        }
+      }
+    },
+
+
+    concat: {
+      dist: {}
+    },
 
     // Copies remaining files to places other tasks can use
     copy: {
@@ -281,23 +261,6 @@ module.exports = function (grunt) {
           ]
         }]
       }
-    },
-
-    // Run some tasks in parallel to speed up build process
-    concurrent: {
-      chrome: [
-        'compass:chrome',
-        'ngconstant:chrome'
-      ],
-      dist: [
-        'compass:dist',
-        'imagemin',
-        'svgmin',
-        'ngconstant:dist'
-      ],
-      test: [
-        'compass:test'
-      ]
     },
 
     // Auto buildnumber, exclude debug files. smart builds that event pages
@@ -347,6 +310,9 @@ module.exports = function (grunt) {
         }
       },
       dist: {
+        options: {
+          dest: '<%= config.dist %>/scripts/config.js'
+        },
         constants: {
           'BAKERSTREET_API': 'https://sherlocke.me'
         }
@@ -372,7 +338,8 @@ module.exports = function (grunt) {
   grunt.registerTask('debug', function () {
     grunt.task.run([
       'jshint',
-      'concurrent:chrome',
+      'compass:chrome',
+      'ngconstant:chrome',
       'connect:chrome',
       'watch'
     ]);
@@ -384,16 +351,31 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    // Clear out dist directory
     'clean:dist',
-    'chromeManifest:dist',
-    'useminPrepare',
-    'concurrent:dist',
+
+    // Compile SCSS
+    'compass:dist',
+
+    // Generate AngularJS config module
+    'ngconstant:dist',
+
+    // Annotate AngularJS dependencies
     'ngAnnotate:dist',
+
+    // Minify CSS
     'cssmin',
+
+    // Concatenate JavaScripts
     'concat',
+
+    // Minify JavaScripts
     'uglify',
+
+    // Copy remaining files to dist
     'copy',
-    'usemin',
+
+    // Create the archive zip
     'compress'
   ]);
 
