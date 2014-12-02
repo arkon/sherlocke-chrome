@@ -189,11 +189,13 @@ form {
         background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-pause.png');
         border-radius: 3px 0 0 3px;
         border-right: none;
+      }
 
-        &.paused {
-          background-color: $brand-color;
-          background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-pause-white.png');
-        }
+      #session-resume {
+        background-color: $brand-color;
+        background-image: url('chrome-extension://__MSG_@@extension_id__/images/session-pause-white.png');
+        border-radius: 3px 0 0 3px;
+        border-right: none;
       }
 
       #session-delete {
