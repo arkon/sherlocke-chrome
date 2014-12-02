@@ -26,6 +26,11 @@
     );
 
     ChromeMessaging.publish(
+      'logout',
+      SherlockeService.logout
+    );
+
+    ChromeMessaging.publish(
       'getCurrentUser',
       SherlockeService.getCurrentUser,
       { canSubscribe: true }
@@ -331,7 +336,6 @@
       //});
     };
 
-    vm.accessToken = null;
     vm.authenticate = function () {
       return $q(function (resolve, reject) {
         chrome.identity.launchWebAuthFlow({
@@ -353,6 +357,15 @@
           }
         });
       }).then(downloadUserData);
+    };
+
+    vm.logout = function () {
+      // Clear things
+      vm.currentUser = null;
+      vm.researchSessions = [];
+      vm.currentResearchSession = null;
+      vm.isResearchSessionPaused = true;
+      vm.whitelist = [];
     };
 
     vm.getWhitelist = function () {

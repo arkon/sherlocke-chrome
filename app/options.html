@@ -28,7 +28,7 @@
       <section id="user-settings" ng-if="auth.currentUser">
         <header>
           <div class="settings-content">
-            <h2 id="username">{{ currentUser }} | <a href="#">Logout</a></h2>
+            <h2 id="username">{{ currentUser }} | <a href="#" ng-click="auth.logout()">Logout</a></h2>
             <h1>Options</h1>
           </div>
         </header>

@@ -29,6 +29,10 @@
       // Send a message to background.js to authenticate
       return ChromeMessaging.callMethod('SherlockeApp', 'authenticate');
     };
+
+    s.logout = function () {
+      return ChromeMessaging.callMethod('SherlockeApp', 'logout');
+    };
   }
   angular
     .module('SherlockeOptions')
@@ -48,6 +52,8 @@
     vm.authenticate = function () {
       OptionsService.authenticate();
     };
+
+    vm.logout = OptionsService.logout;
   }
   angular
     .module('SherlockeOptions')
