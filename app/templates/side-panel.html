@@ -30,7 +30,7 @@
       <li ng-repeat="document in side.documents | limitTo:10">
         <a ng-href="{{ document.url }}">
           <h1>{{ document.title }}</h1>
-          <p>{{ document.text | characters:110 }}</p>
+          <p>{{ document.content | characters:110 }}</p>
         </a>
         <div class="suggestion-info">
           <p>{{ document.source }}</p>
