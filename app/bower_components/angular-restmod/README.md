@@ -15,8 +15,9 @@
 
 Angular Restmod
 ===============
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/platanus/angular-restmod?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Build Status](https://api.travis-ci.org/platanus/angular-restmod.svg)](https://travis-ci.org/angular-platanus/restmod) [![Code Climate](https://codeclimate.com/github/platanus/angular-restmod/badges/gpa.svg)](https://codeclimate.com/github/platanus/angular-restmod) [![Stories in Ready](https://badge.waffle.io/platanus/angular-restmod.png?label=ready&title=Ready)](https://waffle.io/platanus/angular-restmod) [![Bower version](https://badge.fury.io/bo/angular-restmod.svg)](http://badge.fury.io/bo/angular-restmod)
+[![Build Status](https://api.travis-ci.org/platanus/angular-restmod.svg)](https://travis-ci.org/platanus/angular-restmod) [![Code Climate](https://codeclimate.com/github/platanus/angular-restmod/badges/gpa.svg)](https://codeclimate.com/github/platanus/angular-restmod) [![Stories in Ready](https://badge.waffle.io/platanus/angular-restmod.png?label=ready&title=Ready)](https://waffle.io/platanus/angular-restmod) [![Bower version](https://badge.fury.io/bo/angular-restmod.svg)](http://badge.fury.io/bo/angular-restmod)
 
 Restmod creates objects that you can use from within Angular to interact with your RESTful API.
 
@@ -487,6 +488,8 @@ Will send GET to /bikes/1/parts/:id instead of /parts/:id
 
 <!-- end -->
 
+You can also define `hasMany` relation hooks. Check the [hooks advanced documentation](https://github.com/platanus/angular-restmod/blob/master/docs/guides/hooks.md) for more information.
+
 <!-- end -->
 
 #### HasOne
@@ -577,6 +580,8 @@ owner.$save();
 > will send a PUT to /bikes/1/owner
 
 <!-- end -->
+
+You can also define `hasOne` relation hooks. Check the [hooks advanced documentation](https://github.com/platanus/angular-restmod/blob/master/docs/guides/hooks.md) for more information.
 
 <!-- ignore -->
 
@@ -991,7 +996,7 @@ Note that a hook can be defined for a type, a collection or a record. Also, hook
 
 # Mixins
 
-To ease up the definition of models, and keep thing DRY, Restmod provides you with mixin capabilities. For example, say you already defined a Vehicle model as a factory:
+To ease up the definition of models, and keep things DRY, Restmod provides you with mixin capabilities. For example, say you already defined a Vehicle model as a factory:
 
 ```javascript
 Angular.factory('Vehicle', function() {
@@ -1018,3 +1023,5 @@ Some links:
 
 REST api designs guidelines: https://github.com/interagent/http-api-design
 REST json api standard: http://jsonapi.org
+
+[Authors and Contributors](https://github.com/platanus/angular-restmod/blob/master/authors.md)

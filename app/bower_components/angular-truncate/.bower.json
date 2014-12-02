@@ -3,16 +3,17 @@
   "main": [
     "./src/truncate.js"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "angular": "~1.2.0"
+  },
   "homepage": "https://github.com/sparkalow/angular-truncate",
-  "_release": "fdf60fda26",
+  "_release": "997d4b4bda",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "fdf60fda265042d12e9414b5354b2cc52f1419de"
+    "commit": "997d4b4bda5d3508193d8b2120156696f8e14de3"
   },
   "_source": "git://github.com/sparkalow/angular-truncate.git",
   "_target": "*",
-  "_originalSource": "angular-truncate",
-  "_direct": true
+  "_originalSource": "angular-truncate"
 }
