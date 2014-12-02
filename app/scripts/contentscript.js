@@ -5,7 +5,7 @@
   /* Declare AngularJS app */
   angular.module('SherlockeContent', ['truncate', 'ChromeMessaging']);
 
-  function run($q, $log, $location, $rootScope, $compile, ContentService) {
+  function run($q, $log, $location, $document, $rootScope, $compile, ContentService) {
     ContentService.bindCurrentUser.then(function (/*user*/) {
       return ContentService.bindCurrentSession;
     }).then(function (/*researchSession*/) {
@@ -18,8 +18,8 @@
       if (_.some(whitelist, { url: $location.host() })) {
         var $body = angular.element('body');
 
-        // Wrap the actual page contents within a div for manipulating width
-        $body.wrapInner('<div class="sherlocke-original-page" />');
+        // Put the content into an iframe
+        $body.html('<iframe class="sherlocke-original-page" src="' + $document[0].URL + '" seamless />');
 
         // Inject the main directive & controller onto the page and insert the side panel
         $body

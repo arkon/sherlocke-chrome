@@ -49,6 +49,7 @@ $light-grey: #f2f2f2;
 /* Sidebar/page widths */
 
 .sherlocke-original-page {
+  border: none;
   height: 100%;
   width: calc(100% - 250px);
   z-index: 0;
