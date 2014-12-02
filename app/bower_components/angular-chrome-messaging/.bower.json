@@ -1,0 +1,27 @@
+{
+  "name": "angular-chrome-messaging",
+  "homepage": "https://github.com/sherlocke/angular-chrome-messaging",
+  "authors": [
+    "Spencer Elliott <me@elliottsj.com>"
+  ],
+  "description": "AngularJS interface for chrome.runtime messaging. Allows for remote procedure calls and data binding.",
+  "main": "angular-chrome-messaging.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "18e4fcb95a",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "18e4fcb95a157b229c55d9c6def587d9d6f5d9df"
+  },
+  "_source": "git://github.com/sherlocke/angular-chrome-messaging.git",
+  "_target": "*",
+  "_originalSource": "sherlocke/angular-chrome-messaging",
+  "_direct": true
+}
