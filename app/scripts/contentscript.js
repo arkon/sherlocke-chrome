@@ -127,7 +127,7 @@
       var currentPage = {
         'page_url': url,
         'title': title,
-        'content': angular.element('html').html()
+        'content': angular.element('.sherlocke-original-page').html()
       };
 
       $log.info('Sending current page:', currentPage);
