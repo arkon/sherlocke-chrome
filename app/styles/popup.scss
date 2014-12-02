@@ -96,7 +96,7 @@ form {
   #options {
     @extend %nav-item;
     background-image: url('chrome-extension://__MSG_@@extension_id__/images/gear.png');
-    background-size: auto;
+    background-size: 12px 12px;
     position: absolute;
     bottom: 0;
   }
