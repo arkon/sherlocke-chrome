@@ -1,18 +1,18 @@
-node_modules
-temp
-.tmp
-dist
-.sass-cache
-package
+/node_modules
+/temp
+/.tmp
+/dist
+/.sass-cache
+/package
 
 # Generated configuration
-app/scripts/config.js
+/app/scripts/config.js
 
 # JetBrains IDEs
 .idea
 
 # Generated CSS
-app/styles/*.css
+/app/styles/*.css
 
 # OS files
 Thumbs.db
