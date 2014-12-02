@@ -31,7 +31,7 @@ form {
 }
 
 #popup-login {
-  background-color: $brand-color;
+  background: $brand-color url('chrome-extension://__MSG_@@extension_id__/images/logo_white.png') no-repeat center 8em;
   display: block !important;
   height: 440px;
 }
